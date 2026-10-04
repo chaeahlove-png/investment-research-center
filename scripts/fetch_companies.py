@@ -47,7 +47,35 @@ CONCEPTS = {
     "operatingIncome": [("us-gaap", "OperatingIncomeLoss"), ("ifrs-full", "ProfitLossFromOperatingActivities")],
     "netIncome": [("us-gaap", "NetIncomeLoss"), ("ifrs-full", "ProfitLossAttributableToOwnersOfParent"), ("ifrs-full", "ProfitLoss")],
     "epsDiluted": [("us-gaap", "EarningsPerShareDiluted"), ("ifrs-full", "DilutedEarningsPerShare")],
+    # V20 FREE FINAL+ (추가 항목 · 기존 키 변경 없음)
+    "grossProfit": [("us-gaap", "GrossProfit"), ("ifrs-full", "GrossProfit")],
+    "rnd": [("us-gaap", "ResearchAndDevelopmentExpense"), ("us-gaap", "ResearchAndDevelopmentExpenseExcludingAcquiredInProcessCost")],
+    "ocf": [("us-gaap", "NetCashProvidedByUsedInOperatingActivities"), ("ifrs-full", "CashFlowsFromUsedInOperatingActivities")],
+    "capex": [("us-gaap", "PaymentsToAcquirePropertyPlantAndEquipment"),
+              ("ifrs-full", "PurchaseOfPropertyPlantAndEquipmentClassifiedAsInvestingActivities")],
 }
+INSTANTS = {
+    "equity": [("us-gaap", "StockholdersEquity"), ("ifrs-full", "EquityAttributableToOwnersOfParent")],
+    "cash": [("us-gaap", "CashAndCashEquivalentsAtCarryingValue"), ("ifrs-full", "CashAndCashEquivalents")],
+    "sharesOutstanding": [("dei", "EntityCommonStockSharesOutstanding")],
+}
+OK_FORMS = ("10-Q", "10-K", "20-F", "10-Q/A", "10-K/A", "20-F/A", "6-K")
+
+def latest_instant(facts, cands):
+    """재무상태표·표지 항목(시점 값) 중 가장 최근 보고값."""
+    for tax, name in cands:
+        units = facts.get(tax, {}).get(name, {}).get("units")
+        if not units: continue
+        unit = "shares" if "shares" in units else ("USD" if "USD" in units else next(iter(units)))
+        rows = [e for e in units[unit] if "start" not in e and e.get("form", "") in OK_FORMS and e.get("val") is not None]
+        if not rows: continue
+        e = max(rows, key=lambda e: (e["end"], e.get("filed", "")))
+        return {"value": e["val"], "end": e["end"][:10], "form": e.get("form"), "filed": e.get("filed"),
+                "unit": unit, "concept": f"{tax}:{name}"}
+    return None
+
+def balance(facts):
+    return {k: latest_instant(facts, c) for k, c in INSTANTS.items()}
 
 def classify(e):
     if "start" not in e: return None
@@ -186,10 +214,11 @@ def collect_company(ticker, tmap):
         for i, form in enumerate(r.get("form", [])):
             if form not in FORMS_LIST: continue
             accn = r["accessionNumber"][i]; doc = r.get("primaryDocument", [""] * (i + 1))[i]
+            items = (r.get("items") or [""] * (i + 1))[i] if i < len(r.get("items") or []) else ""
             filings.append({"form": form, "date": r["filingDate"][i], "reportDate": (r.get("reportDate") or [""] * (i + 1))[i],
-                            "accn": accn, "desc": (r.get("primaryDocDescription") or [""] * (i + 1))[i],
+                            "accn": accn, "desc": (r.get("primaryDocDescription") or [""] * (i + 1))[i], "items": items,
                             "url": f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{accn.replace('-', '')}/{doc}"})
-            if len(filings) >= 10: break
+            if len(filings) >= 15: break
         out["filings"] = filings
         main = next((f for f in filings if f["form"] in FORMS_MAIN), None)
     except Exception as e:  # noqa
@@ -197,6 +226,7 @@ def collect_company(ticker, tmap):
     try:
         facts = get_json(f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik10}.json").get("facts", {})
         out["metrics"] = fundamentals(facts)
+        out["balance"] = balance(facts)
     except Exception as e:  # noqa
         out["errors"].append(f"companyfacts: {e}"); out["metrics"] = None
     try:

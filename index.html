@@ -1,0 +1,1402 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Investment Research Center</title>
+<style>
+:root{--bg:#f5f7fa;--card:#fff;--text:#172033;--muted:#687386;--line:#e5e9ef;--accent:#2563eb;--green:#0f8a55;--red:#d64545;--nav:#111827}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;background:var(--bg);color:var(--text)}
+.app{display:flex;min-height:100vh}.side{width:220px;background:var(--nav);color:#fff;padding:24px 16px;position:fixed;top:0;bottom:0}
+.logo{font-weight:800;font-size:18px;margin:4px 10px 28px}.logo span{color:#60a5fa}
+.nav button{display:block;width:100%;text-align:left;background:none;border:0;color:#cbd5e1;padding:12px 14px;border-radius:9px;margin:3px 0;font-size:14px;cursor:pointer}.nav button.active,.nav button:hover{background:#1f2937;color:#fff}
+.main{margin-left:220px;width:calc(100% - 220px);padding:28px 34px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.title{font-size:25px;font-weight:800}.sub{font-size:13px;color:var(--muted);margin-top:5px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:0 1px 2px #00000006}.label{font-size:12px;color:var(--muted);margin-bottom:8px}.big{font-size:22px;font-weight:800}.up{color:var(--green)}.down{color:var(--red)}
+.section{margin-top:24px}.section h2{font-size:17px;margin:0 0 12px}.two{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:12px 9px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-weight:600;background:#fafbfc}.tag{display:inline-block;padding:4px 7px;border-radius:6px;font-size:11px;background:#eef2ff;color:#3652b7;margin-right:4px}.tag.green{background:#eaf8f1;color:#0d7a4b}.tag.red{background:#fff0f0;color:#b33a3a}
+.company{cursor:pointer}.company:hover td{background:#f8fafc}.pill{font-size:11px;padding:5px 8px;border-radius:999px;background:#eef2f7;color:#596579}
+.search{border:1px solid var(--line);background:white;border-radius:8px;padding:9px 11px;width:230px}
+.view{display:none}.view.active{display:block}.back{border:0;background:none;color:var(--accent);cursor:pointer;padding:0;margin-bottom:14px}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.note{background:#f8fafc;border-left:3px solid var(--accent);padding:12px 14px;border-radius:6px;font-size:13px;line-height:1.55}
+.news li{padding:11px 0;border-bottom:1px solid var(--line);font-size:13px;line-height:1.45}.news li:last-child{border:0}.date{color:var(--muted);font-size:11px;margin-right:7px}
+@media(max-width:900px){.side{width:72px}.logo{font-size:0}.logo span{font-size:18px}.nav button{font-size:0}.nav button:first-letter{font-size:18px}.main{margin-left:72px;width:calc(100% - 72px);padding:20px}.grid,.kpis{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr}}
+
+.modal{display:none;position:fixed;inset:0;background:#0007;z-index:20;align-items:center;justify-content:center}
+.modal.open{display:flex}.modalbox{width:min(520px,92vw);background:#fff;border-radius:14px;padding:22px;box-shadow:0 20px 60px #0003}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.formgrid label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px}
+.formgrid input,.formgrid select{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 13px;cursor:pointer}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.filterbtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 11px;cursor:pointer;font-size:12px}.filterbtn.on{background:#172033;color:#fff}
+.level-core{background:#fff0f0;color:#b33a3a}.level-interest{background:#eef2ff;color:#3652b7}.level-watch{background:#eef2f7;color:#596579}
+.smallbtn{border:0;background:none;color:#d64545;cursor:pointer}
+
+details.market-detail{margin-top:12px;border-top:1px solid #e8ebf1;padding-top:10px}
+details.market-detail summary{cursor:pointer;font-weight:700;color:#26364d;list-style:none}
+details.market-detail summary::-webkit-details-marker{display:none}
+details.market-detail summary:after{content:" ↓";font-weight:400}
+details.market-detail[open] summary:after{content:" ↑"}
+.brief-section{margin-top:14px;line-height:1.7}
+.clickcard{cursor:pointer;transition:.15s}
+.clickcard:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(20,32,55,.08)}
+
+.research-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.narrative-preview{line-height:1.75}
+.manage-actions{display:flex;gap:6px;flex-wrap:wrap}
+.mini-btn{border:1px solid #d9dee8;background:white;border-radius:7px;padding:5px 8px;cursor:pointer;font-size:12px}
+.mini-btn:hover{background:#f4f6f9}
+
+.mix-row{margin:10px 0}.mix-head{display:flex;justify-content:space-between;gap:12px;font-size:13px}
+.mix-bar{height:7px;background:#edf0f5;border-radius:5px;overflow:hidden;margin-top:5px}
+.mix-fill{height:100%;background:#27364d;border-radius:5px}
+.radar-card{border:1px solid #e2e6ed;border-radius:12px;padding:16px;margin-bottom:12px}
+.radar-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.radar-badge{font-size:11px;font-weight:800;border:1px solid #ccd4e0;border-radius:20px;padding:4px 8px;white-space:nowrap}
+.breaker{border-left:3px solid #697386;padding:9px 12px;background:#f7f8fa;border-radius:4px;line-height:1.65}
+.metric-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:12px 0}
+.metric-mini{padding:10px;border:1px solid #e5e8ee;border-radius:9px;background:#fff}
+.metric-mini b{display:block;font-size:16px;margin-top:3px}
+
+/* ===== V19 FINAL VISUAL POLISH ===== */
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Segoe UI",sans-serif;
+  letter-spacing:-0.012em;
+  background:#f3f5f8;
+}
+.side{
+  width:232px;
+  padding:28px 16px;
+  border-right:1px solid rgba(255,255,255,.05);
+}
+.logo{
+  font-size:19px;
+  letter-spacing:-.35px;
+  margin:3px 10px 30px;
+}
+.nav button{
+  padding:12px 13px;
+  margin:4px 0;
+  font-weight:600;
+  letter-spacing:-.15px;
+}
+.main{
+  margin-left:232px;
+  width:calc(100% - 232px);
+  max-width:1680px;
+  padding:32px 40px 56px;
+}
+.top{
+  min-height:48px;
+  margin-bottom:22px;
+  padding-bottom:16px;
+  border-bottom:1px solid var(--line);
+}
+.title{
+  font-size:27px;
+  line-height:1.15;
+  letter-spacing:-.65px;
+}
+.sub{
+  font-size:12.5px;
+  line-height:1.55;
+}
+.card{
+  border-radius:14px;
+  padding:20px;
+  box-shadow:0 1px 3px rgba(18,28,45,.035);
+}
+.section{margin-top:20px}
+.section h2,.card h2{
+  letter-spacing:-.35px;
+  line-height:1.3;
+}
+.grid{gap:12px}
+.two,.three{gap:14px}
+.big{
+  font-size:23px;
+  letter-spacing:-.45px;
+}
+.kpis{gap:10px}
+table{
+  font-size:12.5px;
+  line-height:1.45;
+}
+th{
+  font-size:11.5px;
+  letter-spacing:-.1px;
+  padding:10px 9px;
+}
+td{padding:11px 9px}
+.note{
+  padding:13px 15px;
+  line-height:1.65;
+}
+.research-grid{
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:10px;
+}
+.metric-strip{
+  grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+  gap:9px;
+}
+.metric-mini{
+  min-height:74px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:11px 12px;
+}
+.metric-mini b{
+  font-size:17px;
+  letter-spacing:-.25px;
+}
+.pill{
+  font-weight:650;
+  padding:5px 9px;
+}
+.radar-card{
+  padding:18px;
+}
+.search{
+  width:min(280px,100%);
+}
+details.market-detail{
+  background:#fbfcfd;
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:11px 13px;
+}
+details.market-detail[open]{
+  padding-bottom:13px;
+}
+@media(min-width:1450px){
+  .main{padding-left:48px;padding-right:48px}
+  .card{padding:22px}
+}
+@media(max-width:1100px){
+  .main{padding:26px 26px 44px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .kpis{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:900px){
+  .side{width:72px}
+  .main{margin-left:72px;width:calc(100% - 72px);padding:20px}
+}
+@media(max-width:620px){
+  .main{padding:16px 14px 36px}
+  .grid,.kpis,.two,.three,.research-grid,.metric-strip{grid-template-columns:1fr}
+  .top{align-items:flex-start;gap:10px;flex-direction:column}
+  .card{padding:16px}
+  table{display:block;overflow-x:auto;white-space:nowrap}
+}
+
+
+/* ===== V19.1 RADAR TYPOGRAPHY ALIGNMENT ===== */
+#radar .top{margin-bottom:22px}
+#radar .card{margin-bottom:14px}
+#radar .card > h2{
+  font-size:17px;
+  font-weight:700;
+  margin:0 0 8px;
+  line-height:1.35;
+}
+#radar .card > .sub{
+  margin-top:0;
+  margin-bottom:12px;
+}
+#radar .grid4{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-top:12px;
+}
+#radar .kpi{
+  min-height:82px;
+  padding:12px 13px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fafbfc;
+}
+#radar .kpi span,
+#radar .kpi small{
+  display:block;
+  font-size:11.5px;
+  line-height:1.45;
+  color:var(--muted);
+}
+#radar .kpi b{
+  display:block;
+  margin:5px 0 3px;
+  font-size:16px;
+  line-height:1.3;
+  letter-spacing:-.25px;
+}
+#radar .research-grid{margin-top:12px !important}
+#radar .note,
+#radar .breaker{
+  font-size:13px;
+  line-height:1.65;
+}
+#radar .note b,
+#radar .breaker b{
+  display:inline-block;
+  margin-bottom:3px;
+  font-size:13px;
+  font-weight:700;
+}
+#radar .breaker{
+  margin-top:10px !important;
+  padding:12px 14px;
+  border-left:3px solid #697386;
+  background:#f8fafc;
+  border-radius:6px;
+}
+#radar .metric-strip{margin:12px 0}
+#radar table{margin-top:4px}
+@media(max-width:1100px){
+  #radar .grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:620px){
+  #radar .grid4{grid-template-columns:1fr}
+}
+
+
+/* ===== V19.2 COMPANY BUSINESS MIX BALANCE ===== */
+#businessMix .mix-row{margin:7px 0}
+#businessMix .mix-head{font-size:12px;line-height:1.3}
+#businessMix .mix-bar{height:5px;margin-top:3px}
+#businessMix .sub{font-size:11.5px;line-height:1.4}
+
+
+
+/* ===== V19.3 BUSINESS MIX / MARKET POSITION BALANCE ===== */
+#company .business-position-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  align-items:stretch;
+  gap:10px;
+}
+#company .business-position-grid > .note{
+  height:100%;
+  min-height:190px;
+  padding:13px 14px;
+  overflow:hidden;
+}
+#company .business-position-grid > .note > b{
+  display:block;
+  margin-bottom:6px;
+  font-size:13px;
+  line-height:1.35;
+}
+#company #businessMix{
+  margin-top:4px !important;
+}
+#company #businessMix .mix-row{
+  margin:5px 0;
+}
+#company #businessMix .mix-head{
+  font-size:11.5px;
+  line-height:1.2;
+  gap:6px;
+}
+#company #businessMix .mix-head > :first-child{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+#company #businessMix .mix-bar{
+  height:4px;
+  margin-top:2px;
+}
+#company #businessMix .sub{
+  font-size:10.5px;
+  line-height:1.25;
+  margin-top:1px;
+}
+#company #marketPosition,
+#company #competitorRanking{
+  font-size:12px;
+  line-height:1.55;
+  margin-top:4px !important;
+}
+@media(max-width:1100px){
+  #company .business-position-grid{
+    grid-template-columns:1fr;
+  }
+  #company .business-position-grid > .note{
+    min-height:0;
+  }
+}
+
+
+/* ===== V20 FREE · Phase 1 — data status / PRO lock layer ===== */
+.status{display:inline-block;font-size:11px;font-weight:650;line-height:1.4;border-radius:5px;padding:3px 7px;background:#f1f3f6;color:#5d6878;border:1px dashed #cfd5df;white-space:nowrap;letter-spacing:-.1px;vertical-align:middle}
+.status.check{background:#fff8ec;color:#8a5a12;border:1px solid #f0dcb6}
+.status.paid{background:#eef1f6;color:#2f3d55;border:1px solid #d5dbe5}
+.status.undisclosed{background:#f6f7f9;color:#5d6878;border:1px solid #e1e5ec}
+.big .status{font-size:12px}
+.pro-badge{display:inline-flex;align-items:center;font-size:10px;font-weight:800;letter-spacing:.03em;color:#fff;background:#27364d;border:0;border-radius:4px;padding:3px 6px;cursor:pointer;vertical-align:middle;line-height:1.2;font-family:inherit}
+.pro-badge:hover{background:#172033}
+.pro-badge:focus-visible,.mini-btn:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.locked{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#4b5668;font-size:12.5px;line-height:1.5}
+.locked-box{border:1px dashed #cfd5df;background:#fafbfc;border-radius:8px;padding:12px 13px}
+.meta{font-size:11px;color:var(--muted);margin-top:7px;line-height:1.45}
+.mini-btn.on{background:#172033;color:#fff;border-color:#172033}
+.empty-row td{color:var(--muted);text-align:center;padding:20px 9px;background:#fcfcfd}
+.plan-chip{position:absolute;left:16px;right:16px;bottom:22px;font-size:11px;color:#94a3b8;line-height:1.5;padding:10px 12px;border:1px solid #243041;border-radius:9px}
+.plan-chip b{color:#e2e8f0}
+.lvl-select{border:1px solid var(--line);border-radius:6px;padding:4px 6px;background:#fff;font-size:12px}
+.narr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-top:10px}
+.narr-item{border:1px solid var(--line);border-radius:8px;padding:10px 11px;background:#fff;font-size:12px}
+.narr-item b{display:block;margin-bottom:5px;font-size:12.5px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:9px}
+#company > .card > h2,#events > .card > h2{font-size:17px;letter-spacing:-.35px}
+.metric-mini{font-size:12px;color:var(--muted)}
+.metric-mini b{color:var(--text)}
+#events > .note:last-child{margin-top:16px}
+#f13Quarter{white-space:nowrap;align-self:flex-start}
+.narr-grid{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+@media(max-width:900px){.plan-chip{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="logo">Investment <span>Research</span></div>
+  <div class="nav">
+    <button class="active" onclick="show('dashboard',this)">▣  대시보드</button>
+    <button onclick="show('events',this)">◷  Market Brief</button>
+    <button onclick="show('13f',this)">◎  종목발굴 · 13F</button>
+    <button onclick="show('radar',this)">✦  Investment Radar</button>
+  </div>
+  <div class="plan-chip"><b>FREE</b> · 무료 공개 데이터만 사용<br>AI 분석 기능은 <button class="pro-badge" onclick="explainPro('plan')">PRO</button></div>
+</aside>
+<main class="main">
+
+<!-- ================= DASHBOARD ================= -->
+<section id="dashboard" class="view active">
+  <div class="top"><div><div class="title">Investment Research Center</div><div class="sub">증권사 투자전문가용 · 기업 중심 리서치 대시보드 · <span id="appOpenedAt">—</span></div></div><input class="search" id="dashSearch" placeholder="관심기업 검색 (예: 삼성, QCOM)" oninput="filterCompanies(this.value)"></div>
+  <div class="grid">
+    <div class="card"><div class="label">관심기업</div><div class="big" id="kpiWatchCount">—</div><div class="sub" id="kpiWatchSplit">브라우저 저장 목록 기준</div></div>
+    <div class="card clickcard" onclick="goMarket('주요 일정')"><div class="label">이번 주 실적</div><div class="big" id="kpiEarnings">—</div><div class="sub" id="kpiEarningsSub"></div></div>
+    <div class="card clickcard" onclick="goMarket('Macro Watch')"><div class="label">주요 이벤트</div><div class="big" id="kpiEvents">—</div><div class="sub" id="kpiEventsSub"></div></div>
+    <div class="card clickcard" onclick="explainPro('ai_research_notes')"><div class="label">리서치 업데이트</div><div class="big"><button class="pro-badge" onclick="event.stopPropagation();explainPro('ai_research_notes')">PRO</button></div><div class="sub">AI 리서치 업데이트 — 유료버전 필요</div></div>
+  </div>
+
+<div class="section">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div><h2 style="margin-bottom:4px">오늘의 변화</h2><div class="sub">관심기업에서 새로 확인해야 할 변화만 모아보는 Morning Monitor</div></div>
+      <div style="text-align:right"><span class="pill" id="todayAsOf">데이터 기준: —</span><div class="sub" style="margin-top:6px">Last Updated: <span id="todayUpdated">—</span></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-top:14px">
+      <div class="note"><b>데이터 변화 (자동 · 무료)</b><br><div id="todayChanges" style="margin-top:6px"></div></div>
+      <div class="note"><b>변화의 투자 의미</b><br><div id="todayAi" style="margin-top:6px"></div></div>
+    </div>
+    <div class="note" style="margin-top:10px"><b>자동 감지 범위:</b> 무료 — 주가 급변 · 신규 SEC 공시(8-K·10-Q·10-K) · 실적 발표일 D-Day · 신규 13F 분기 공시. 유료 — EPS Revision · 목표주가 변화 · 뉴스 중요도 판단 · AI 해석.</div>
+  </div>
+</div>
+<div class="section two">
+    <div class="card"><h2>관심기업 현황</h2>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+ <div class="manage-actions" id="dashFilters">
+  <button class="mini-btn on" data-f="all" onclick="setDashFilter('all')">전체</button>
+  <button class="mini-btn" data-f="핵심" onclick="setDashFilter('핵심')">핵심</button>
+  <button class="mini-btn" data-f="관심" onclick="setDashFilter('관심')">관심</button>
+  <button class="mini-btn" data-f="관찰" onclick="setDashFilter('관찰')">관찰</button>
+  <button class="mini-btn" data-f="KR" onclick="setDashFilter('KR')">한국</button>
+  <button class="mini-btn" data-f="US" onclick="setDashFilter('US')">미국</button>
+ </div>
+ <button class="btn primary" onclick="openAdd()">+ 관심종목 추가</button>
+</div>
+<div class="sub" style="margin-bottom:10px">종목 클릭 → Company Integrated Research · 등급 변경/삭제는 이 표에서 바로 처리</div>
+      <table id="companyTable"><thead><tr><th>기업</th><th>주가</th><th>등락</th><th>등급</th><th>메모</th><th></th></tr></thead>
+      <tbody id="dashWatchBody"></tbody></table>
+      <div class="meta" id="dashPriceMeta">시세 Source: — · Last Updated: —</div>
+    </div>
+    <div class="card"><h2>주요 일정</h2>
+      <div class="sub" style="margin-bottom:8px">실적 발표 · 주요 경제지표 · 기업 이벤트</div>
+      <ul class="news" id="dashCalendar"></ul>
+      <div class="meta" id="dashCalendarMeta">Source: — · Last Updated: —</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WATCHLIST (legacy view, kept) ================= -->
+<section id="companies" class="view">
+  <div class="top">
+    <div><div class="title">관심종목</div><div class="sub">한국/미국 · 섹터 · 중요도별로 관리하고 계속 추가할 수 있습니다.</div></div>
+    <button class="btn primary" onclick="openAdd()">+ 관심종목 추가</button>
+  </div>
+  <div class="filters">
+    <button class="filterbtn on" onclick="setWatchFilter('all',this)">전체</button>
+    <button class="filterbtn" onclick="setWatchFilter('KR',this)">한국</button>
+    <button class="filterbtn" onclick="setWatchFilter('US',this)">미국</button>
+    <button class="filterbtn" onclick="setWatchFilter('핵심',this)">핵심</button>
+    <button class="filterbtn" onclick="setWatchFilter('관심',this)">관심</button>
+    <button class="filterbtn" onclick="setWatchFilter('관찰',this)">관찰</button>
+  </div>
+  <div class="card">
+    <table><thead><tr><th>시장</th><th>종목</th><th>티커/코드</th><th>섹터</th><th>등급</th><th>투자 메모</th><th></th></tr></thead>
+    <tbody id="watchBody"></tbody></table>
+  </div>
+  <div class="section two">
+    <div class="card"><h2>관리 원칙</h2><div class="note"><b>핵심</b> — 지속적으로 업데이트할 주요 종목<br><b>관심</b> — 매수/투자 검토 후보<br><b>관찰</b> — 산업·경쟁사·이벤트 확인용</div></div>
+    <div class="card"><h2>기업 상세 연결</h2><div class="note">각 관심종목은 Company Integrated Research로 연결됩니다. 무료 데이터는 단계별로 연결하고, AI 분석은 유료버전에서 활성화합니다.</div></div>
+  </div>
+</section>
+
+<!-- ================= COMPANY INTEGRATED RESEARCH ================= -->
+<section id="company" class="view">
+  <button class="back" onclick="show('dashboard',document.querySelector('.nav button'))">← 대시보드로</button>
+  <div class="top">
+    <div><div class="title" id="ctitle">—</div><div class="sub" id="csub">—</div></div>
+    <div style="display:flex;gap:8px;align-items:center"><span class="pill" id="clevel">—</span><button class="back" onclick="openCompanyResearch()">Investment Narrative ↓</button></div>
+  </div>
+  <div class="note" style="margin-bottom:12px"><b>금액 표시 기준</b> · 국내 기업은 조원(예: 171.5조원), 해외 기업은 달러 원금액과 원화 환산액(예: $40.2B (약 54.0조원))을 함께 표시합니다. 원화 환산 환율: <span id="fxNote"></span></div>
+
+<div class="card" style="margin-bottom:12px">
+  <h2 style="margin:0 0 10px">기업 개요</h2>
+  <div class="kv" id="profileGrid"></div>
+  <div class="meta" id="profileMeta"></div>
+</div>
+
+<div class="card" style="margin-bottom:12px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px">
+    <div><div class="label">실적 모멘텀</div><div class="big" style="font-size:18px" id="signalEarnings"></div></div>
+    <div><div class="label">컨센서스 변화</div><div class="big" style="font-size:18px" id="signalConsensus"></div></div>
+    <div><div class="label">밸류에이션</div><div class="big" style="font-size:18px" id="signalValuation"></div></div>
+    <div><div class="label">Catalyst</div><div class="big" style="font-size:18px" id="signalCatalyst"></div></div>
+    <div><div class="label">Risk</div><div class="big" style="font-size:18px" id="signalRisk"></div></div>
+  </div>
+  <div class="sub" style="margin-top:10px">단순 매수/매도 점수가 아니라 실적·컨센서스·밸류·이벤트·리스크가 어느 방향인지 빠르게 확인하는 투자판단 보조 영역입니다.</div>
+</div>
+<div class="kpis">
+    <div class="card"><div class="label">최근 분기</div><div class="big" id="quarter"></div></div>
+    <div class="card"><div class="label">매출</div><div class="big" id="revenue"></div><div class="sub" id="revchange"></div></div>
+    <div class="card"><div class="label">이익 / EPS</div><div class="big" id="profit"></div><div class="sub" id="profitlabel"></div></div>
+    <div class="card"><div class="label">밸류 · 컨센서스 요약</div><div class="big" id="valuation"></div><div class="sub" id="valuationSub"></div></div>
+    <div class="card"><div class="label">다음 확정 일정</div><div class="big" id="nextdate"></div><div class="sub" id="nextevent"></div></div>
+  </div>
+  <div class="meta" id="kpiMeta"></div>
+  <div class="section two">
+    <div class="card">
+      <h2>최근 실적 핵심</h2><div class="note" id="earningsSummary"></div>
+      <h2 style="margin-top:20px">투자 포인트</h2><div class="note" id="thesis"></div>
+      <h2 style="margin-top:20px">최근 공시 · 이슈</h2><ul class="news" id="companyIssues"></ul>
+    </div>
+    <div class="card">
+      <h2>실적 / 가이던스</h2>
+      <table><thead><tr><th>항목</th><th>최근 / 가이던스</th><th>상태</th></tr></thead><tbody id="metricRows"></tbody></table>
+      <div class="meta" id="metricMeta"></div>
+      <h2 style="margin-top:20px">체크할 리스크</h2><div class="note" id="companyRisks"></div>
+    </div>
+  </div>
+
+<div class="section">
+ <div class="card">
+  <h2>Business Mix · Market Position</h2>
+  <div class="sub" style="margin-bottom:12px">이 회사가 어디서 돈을 벌고, 업계에서 어느 위치인지 빠르게 보는 영역</div>
+  <div class="research-grid business-position-grid">
+   <div class="note"><b>사업부별 매출 · 이익 기여</b><div id="businessMix" style="margin-top:8px"></div></div>
+   <div class="note"><b>현재 시장 위치</b><div id="marketPosition" style="margin-top:8px"></div></div>
+   <div class="note"><b>주요 경쟁사 순위</b><div id="competitorRanking" style="margin-top:8px"></div></div>
+  </div>
+  <div class="sub" style="margin-top:10px">※ 사업부별 영업이익을 공시하지 않은 회사는 추정하지 않고 <b>미공개</b>로 표시합니다. 시장점유율은 유료 리서치 기관 데이터가 필요해 무료버전에서는 표시하지 않습니다.</div>
+ </div>
+</div>
+<div class="section">
+ <div class="card">
+  <h2>Valuation</h2>
+  <div class="sub" style="margin-bottom:10px">무료 데이터로 신뢰성 있게 확인 가능한 지표만 표시합니다.</div>
+  <div class="metric-strip" id="valuationStrip"></div>
+  <div class="meta" id="valuationMeta"></div>
+ </div>
+</div>
+<div class="section">
+ <div class="card">
+  <h2>기업 이해 · Competitive Position</h2>
+  <div class="research-grid">
+   <div class="note"><b>기업 개요</b><br><span id="integratedOverview"></span></div>
+   <div class="note"><b>핵심 경쟁력</b><br><span id="integratedStrength"></span></div>
+   <div class="note"><b>시장 위치 / 경쟁사</b><br><span id="integratedCompetition"></span></div>
+  </div>
+ </div>
+</div>
+<div class="section two">
+ <div class="card">
+  <h2>Investment Thesis · Growth</h2>
+  <div class="note" id="integratedGrowth"></div>
+ </div>
+ <div class="card">
+  <h2>앞으로 확인할 숫자</h2>
+  <div class="note" id="integratedChecks"></div>
+ </div>
+</div>
+<div class="section">
+ <div class="card">
+  <h2>Thesis Breakers · 투자논리 훼손 조건</h2>
+  <div class="sub" style="margin-bottom:10px">단순 위험요인이 아니라 어떤 숫자·사건이 발생하면 현재 투자논리를 다시 검토해야 하는지 명시</div>
+  <div class="breaker" id="thesisBreakers"></div>
+ </div>
+</div>
+<div class="section">
+ <div class="card">
+  <h2>Investment Narrative</h2>
+  <div class="sub" style="margin-bottom:10px">실제 실적·성장률·가이던스 숫자를 근거로 한 서술형 분석</div>
+  <div class="note narrative-preview" id="narrativeShort"></div>
+  <div class="narr-grid" id="narrativeGrid"></div>
+  <details class="market-detail"><summary>내러티브 전체 보기</summary><div class="brief-section" id="narrativeFull"></div></details>
+ </div>
+</div>
+</section>
+
+<!-- ================= MARKET BRIEF ================= -->
+<section id="events" class="view">
+ <div class="top">
+  <div><div class="title">Market Brief & Calendar</div><div class="sub">매일 확인하는 시황 · Macro Watch · 핵심 뉴스 · 일정/실적</div></div>
+  <span class="pill" id="briefAsOf">데이터 기준: —</span>
+ </div>
+
+ <div class="card">
+  <h2 style="margin:0 0 10px">Market Snapshot</h2>
+  <div class="kpis" id="marketSnapshot"></div>
+  <div class="meta" id="marketSnapshotMeta"></div>
+ </div>
+
+ <div class="section two">
+  <div class="card">
+   <h2>오늘의 시황</h2>
+   <div class="note"><b>미국 · 핵심 요약</b><div id="briefUS" style="margin-top:6px"></div></div>
+   <div class="note" style="margin-top:10px"><b>한국 · 핵심 요약</b><div id="briefKR" style="margin-top:6px"></div></div>
+   <h2 style="margin-top:20px">오늘의 결론</h2>
+   <div class="note" id="briefConclusion"></div>
+  </div>
+
+  <div class="card">
+   <h2>Macro Watch</h2>
+   <table><thead><tr><th>지표</th><th>최근값</th><th>발표일 / 다음 발표</th><th>상태</th></tr></thead><tbody id="macroRows"></tbody></table>
+   <div class="meta" id="macroMeta"></div>
+   <div class="locked-box" style="margin-top:10px" id="macroAi"></div>
+  </div>
+ </div>
+
+ <div class="section two">
+  <div class="card">
+   <h2>주요 일정 · 실적</h2>
+   <table><thead><tr><th>날짜</th><th>이벤트</th><th>구분</th></tr></thead><tbody id="briefCalendar"></tbody></table>
+   <div class="meta" id="briefCalendarMeta"></div>
+  </div>
+  <div class="card">
+   <h2>핵심 뉴스 Monitor</h2>
+   <ul class="news" id="newsList"></ul>
+   <div class="meta" id="newsMeta"></div>
+   <div class="locked-box" style="margin-top:10px" id="newsAi"></div>
+  </div>
+ </div>
+ <div class="note"><b>업데이트 원칙:</b> 원시 데이터(지수·금리·환율·유가·경제지표·일정·헤드라인)는 무료 공개 소스에서 자동 갱신하고 각 항목에 출처와 업데이트 시각을 표시합니다. 데이터를 가져오지 못하면 이전 숫자를 남기지 않고 상태를 표시합니다.</div>
+</section>
+
+<!-- ================= INVESTMENT RADAR ================= -->
+<section id="radar" class="view">
+ <div class="top"><div><div class="title">Investment Radar</div><div class="sub">관심종목과 무관하게 시장 전체에서 선별하는 투자 아이디어</div></div><span class="pill">주 1–2개 신규 · 매일 재평가</span></div>
+
+ <div class="card locked-box" style="background:#fff">
+  <div class="locked"><button class="pro-badge" onclick="explainPro('ai_radar')">PRO</button><b style="color:var(--text)">Investment Radar — AI 종목발굴 기능은 유료버전 필요</b></div>
+  <div class="sub" style="margin-top:6px">무료버전에서는 추천 종목을 생성하지 않습니다. 과거 테스트용 예시 종목(VST · SGOV)과 수치는 최신 추천으로 오인될 수 있어 제거했습니다.</div>
+ </div>
+
+ <div class="card">
+  <h2>Investment Radar 운영 기준</h2>
+  <div class="grid4">
+   <div class="kpi"><span>신규 아이디어</span><b>주 1–2개</b><small>시장 전체에서 선별</small></div>
+   <div class="kpi"><span>기존 종목 점검</span><b>매일 재평가</b><small>매력도 상승 · 유지 · 주의 · 투자 논리 훼손</small></div>
+   <div class="kpi"><span>수시 발굴</span><b>수시 추가</b><small>실적 · 정책 · 급락 등</small></div>
+   <div class="kpi"><span>대상</span><b>시장 전체</b><small>한국 · 미국 · ETF 포함</small></div>
+  </div>
+ </div>
+
+ <div id="radarSlots"></div>
+
+ <div class="card">
+  <h2>Radar History</h2>
+  <table><thead><tr><th>선정일</th><th>유형</th><th>종목</th><th>핵심 논리</th><th>상태</th></tr></thead>
+  <tbody id="radarHistory"></tbody></table>
+ </div>
+</section>
+
+<!-- ================= 13F ================= -->
+<section id="13f" class="view">
+  <div class="top">
+    <div><div class="title">13F Radar · Quarterly Discovery</div><div class="note" style="margin:8px 0 12px"><b>사용 주기: 분기 중심</b> · 13F는 매일 확인하는 화면이 아니라 신규 공시 시즌에 종목 아이디어를 발굴하는 도구입니다. 발견한 종목은 관찰에 추가한 뒤 대시보드에서 지속 추적합니다.</div><div class="sub">신규 종목 발굴 + 투자회사별 포트폴리오 변화</div></div>
+    <span class="pill" id="f13Quarter">분기 데이터</span>
+  </div>
+  <div class="card" style="margin-bottom:14px">
+    <div class="note" id="f13Status"></div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:14px">
+    <button class="btn" onclick="show13fTab('discovery')">🔎 신규종목 Discovery</button>
+    <button class="btn" onclick="show13fTab('manager')">🏛 투자회사별 TOP 10</button>
+  </div>
+
+  <div id="tab13f-discovery">
+    <div class="grid">
+      <div class="card"><div class="label">High Conviction</div><div class="big" id="f13Kpi1"></div><div class="sub">Discovery Score 80+</div></div>
+      <div class="card"><div class="label">신규 편입</div><div class="big" id="f13Kpi2"></div><div class="sub">이번 분기 신규</div></div>
+      <div class="card"><div class="label">연속 증액</div><div class="big" id="f13Kpi3"></div><div class="sub">2분기 이상</div></div>
+      <div class="card"><div class="label">복수 기관 동시 매수</div><div class="big" id="f13Kpi4"></div><div class="sub">복수 투자자 신규/증액</div></div>
+    </div>
+    <div class="section card">
+      <h2>🔥 High Conviction Ideas</h2>
+      <table id="discoveryTable">
+        <thead><tr><th>종목</th><th>Score</th><th>핵심 신호</th><th>연속 증액</th><th>투자자</th><th>판단</th></tr></thead>
+        <tbody id="discoveryRows"></tbody>
+      </table>
+      <div class="meta" id="discoveryMeta"></div>
+    </div>
+    <div class="section two">
+      <div class="card"><h2>Discovery Score</h2><div class="note">신규 편입 + 연속 주식수 증가 + 복수 투자자 동시 매수 + 포트폴리오 내 의미 있는 비중 + 최근 분기 증액 강도를 종합합니다. 점수는 SEC 원문 데이터로만 계산하며, 데이터가 없으면 점수를 만들지 않습니다.</div></div>
+      <div class="card"><h2>핵심 원칙</h2><div class="note"><b>비중 증가만으로 매수라고 판단하지 않습니다.</b><br><br>주가 상승 효과를 구분하기 위해 실제 보유 <b>주식 수 변화</b>를 우선 확인하고 포트폴리오 비중 변화를 보조지표로 사용합니다.</div></div>
+    </div>
+  </div>
+
+  <div id="tab13f-manager" style="display:none">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+        <div><h2 style="margin:0 0 4px">투자회사별 포트폴리오</h2><div class="sub">회사 선택 → 상위 10개 보유종목과 분기 변화 확인</div></div>
+        <select class="search" style="width:260px" id="managerSelect" onchange="renderManager(this.value)">
+          <option value="berkshire">Berkshire Hathaway</option>
+          <option value="duquesne">Duquesne Family Office</option>
+          <option value="appaloosa">Appaloosa Management</option>
+          <option value="pershing">Pershing Square</option>
+          <option value="baupost">Baupost Group</option>
+        </select>
+      </div>
+    </div>
+    <div class="section card">
+      <h2 id="managerTitle">Berkshire Hathaway · TOP 10</h2>
+      <table>
+        <thead><tr><th>순위</th><th>종목</th><th>비중</th><th>전분기 대비</th><th>주식수 변화</th><th>연속 증액</th><th>상태</th></tr></thead>
+        <tbody id="managerRows"></tbody>
+      </table>
+      <div class="meta" id="managerMeta"></div>
+      <div class="note" style="margin-top:12px">TOP 10은 포트폴리오 이해용이고, <b>신규 종목 발굴은 전체 보유종목의 신규·증액 데이터를 대상으로</b> 분석하는 구조입니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RESEARCH NOTES (legacy view, kept; content locked) ================= -->
+<section id="notes" class="view">
+  <div class="top">
+    <div><div class="title">Research Notes</div><div class="sub">관심기업별 핵심 리서치 · 산업 위치 · 경쟁사 · 내러티브</div></div>
+    <select id="researchSelect" class="search" style="width:250px">
+      <option value="qcom">Qualcomm · QCOM</option>
+      <option value="amzn">Amazon · AMZN</option>
+      <option value="tsm">TSMC · TSM</option>
+      <option value="arm">Arm · ARM</option>
+      <option value="005930">삼성전자 · 005930</option>
+      <option value="000660">SK하이닉스 · 000660</option>
+    </select>
+  </div>
+  <div id="research-placeholder" class="card">
+    <h2 id="placeholder-title">Research Notes</h2>
+    <div class="locked-box"><div class="locked"><button class="pro-badge" onclick="explainPro('ai_research_notes')">PRO</button><span>AI Research Notes — 유료버전 필요</span></div>
+    <div class="sub" style="margin-top:6px">기업별 리서치 노트는 Company Integrated Research 화면으로 통합되었습니다. 이전 버전의 노트 본문은 출처가 검증되지 않은 수치를 포함하고 있어 제거했습니다.</div></div>
+  </div>
+</section>
+</main></div>
+
+<!-- ================= MODALS ================= -->
+<div id="confirmModal" class="modal">
+ <div class="modalbox" style="width:min(400px,92vw)">
+  <div class="title" style="font-size:18px">관심기업 삭제</div>
+  <div class="note" style="margin-top:12px" id="confirmText"></div>
+  <div class="actions"><button class="btn" onclick="closeConfirm(false)">취소</button><button class="btn primary" style="background:var(--red);border-color:var(--red)" onclick="closeConfirm(true)">삭제</button></div>
+ </div>
+</div>
+<div id="addModal" class="modal">
+ <div class="modalbox">
+  <div class="title" style="font-size:20px">관심종목 추가</div>
+  <div class="sub" style="margin-bottom:18px">종목은 브라우저에 저장되며 계속 추가/삭제할 수 있습니다.</div>
+  <div class="formgrid">
+   <div><label>시장</label><select id="fMarket"><option value="KR">한국</option><option value="US">미국</option></select></div>
+   <div><label>등급</label><select id="fLevel"><option>핵심</option><option selected>관심</option><option>관찰</option></select></div>
+   <div style="grid-column:1/-1;position:relative"><label>기업 검색</label><input id="fName" autocomplete="off" placeholder="예: 삼성, 하이닉스, 엔비디아, 퀄컴, QCOM, 005930"><div id="stockSuggestions" style="display:none;position:absolute;left:0;right:0;top:64px;z-index:20;background:#fff;border:1px solid #d9dee8;border-radius:10px;max-height:230px;overflow:auto"></div></div>
+   <div><label>티커 / 종목코드</label><input id="fTicker" placeholder="종목 선택 시 자동입력"></div>
+   <div><label>섹터</label><input id="fSector" placeholder="종목 선택 시 자동입력"></div>
+   <div style="grid-column:1/-1"><label>메모 (선택)</label><input id="fMemo" placeholder="예: HBM / 메모리"></div>
+   <div style="grid-column:1/-1;display:none" id="addMsg" class="status check"></div>
+   <div style="grid-column:1/-1"><div class="note">한글명 · 영문명 · 티커/종목코드로 검색할 수 있습니다. 목록에 없는 기업은 기업명과 티커를 직접 입력해 추가할 수 있습니다.</div></div>
+  </div>
+  <div class="actions"><button class="btn" onclick="closeAdd()">취소</button><button class="btn primary" onclick="addWatch()">추가</button></div>
+ </div>
+</div>
+
+<div id="proModal" class="modal" onclick="if(event.target===this)closePro()">
+ <div class="modalbox" style="width:min(440px,92vw)">
+  <div style="display:flex;align-items:center;gap:8px"><span class="pro-badge" style="cursor:default">PRO</span><div class="title" style="font-size:18px" id="proTitle">유료버전 기능</div></div>
+  <div class="note" style="margin-top:14px" id="proReason"></div>
+  <div class="sub" style="margin-top:10px">현재는 무료버전입니다. 결제 기능은 아직 제공하지 않습니다.</div>
+  <div class="actions"><button class="btn primary" onclick="closePro()">확인</button></div>
+ </div>
+</div>
+
+<script>
+/* =====================================================================
+   Investment Research Center · V20 FREE · Phase 1
+   ---------------------------------------------------------------------
+   구조
+   1) CONFIG      : 플랜, 상태 코드, PRO 기능 정의
+   2) UI helpers  : 상태 배지 / PRO 잠금 / Source·Last Updated 표시
+   3) Providers   : 데이터 소스별 모듈 (Phase 2~5에서 내부 구현만 교체)
+   4) AI gate     : 유료 AI 기능 진입점 (무료버전에서는 항상 잠금)
+   5) Store       : 관심기업 (localStorage 'irc_watchlist' 유지)
+   6) Renderers   : 화면별 렌더링
+   원칙: 가져오지 못한 데이터는 숫자를 만들지 않고 상태만 표시한다.
+   ===================================================================== */
+
+/* ---------- 1) CONFIG ---------- */
+const APP = { version:'V20.1 FREE · Phase 2', plan:'FREE', tz:'Asia/Seoul',
+  // GitHub Actions가 생성하는 시장 데이터 JSON (GitHub Pages에서 같은 저장소 경로로 제공)
+  marketDataUrl:'data/market.json' };
+
+const STATUS = {
+  PENDING:     { text:'데이터 연결 준비중', cls:'' },
+  CHECK:       { text:'데이터 확인 필요',   cls:'check' },
+  UPDATE:      { text:'업데이트 필요',     cls:'check' },
+  SEC:         { text:'SEC 데이터 확인 필요', cls:'check' },
+  PAID:        { text:'유료버전 필요',     cls:'paid' },
+  PAID_DATA:   { text:'유료 데이터 필요',   cls:'paid' },
+  UNDISCLOSED: { text:'미공개',           cls:'undisclosed' },
+  OK:          { text:'정상',             cls:'undisclosed' },
+  FAILED:      { text:'업데이트 실패',     cls:'check' },
+  STALE:       { text:'업데이트 필요',     cls:'check' },
+  NOT_RUN:     { text:'업데이트 필요',     cls:'check' },
+  UNREACHABLE: { text:'데이터 확인 필요',   cls:'check' },
+  KEY_REQUIRED:{ text:'데이터 확인 필요',   cls:'check' },
+  RESTRICTED:  { text:'라이선스 제한',     cls:'undisclosed' }
+};
+
+// PRO 기능 목록. 유료버전에서는 enabled 판단만 바꾸면 같은 UI 슬롯이 활성화된다.
+const FEATURES = {
+  plan:              { label:'AI 분석 기능', reason:'시장·기업 데이터와 뉴스를 AI가 종합 분석하는 기능은 향후 AI 버전에서 제공됩니다. 무료버전은 공개 데이터 표시까지만 담당합니다.' },
+  ai_today:          { label:'AI 변화 해석', reason:'관심기업 데이터 변화가 투자 판단에 어떤 의미인지 해석하려면 여러 데이터와 뉴스를 AI가 종합 분석해야 하므로 향후 AI 버전에서 제공됩니다.' },
+  ai_market:         { label:'AI 종합분석', reason:'금리·물가·지수·뉴스 등 여러 데이터를 AI가 종합해 시장 영향을 판단해야 하므로 향후 AI 버전에서 제공됩니다.' },
+  ai_news:           { label:'AI 뉴스분석', reason:'뉴스 요약과 투자 영향 분석은 AI가 기사 내용을 읽고 판단해야 하므로 향후 AI 버전에서 제공됩니다.' },
+  ai_radar:          { label:'AI 종목발굴', reason:'시장 전체에서 신규 투자 아이디어를 선별하고 기존 Radar 종목을 매일 재평가하는 기능은 향후 AI 버전에서 제공됩니다.' },
+  ai_narrative:      { label:'AI Investment Narrative', reason:'실적·밸류에이션·Catalyst·리스크를 연결한 서술형 분석은 AI가 여러 데이터를 종합해야 하므로 향후 AI 버전에서 제공됩니다.' },
+  ai_thesis:         { label:'AI 투자 포인트', reason:'투자 포인트와 성장 논리 정리는 AI 판단이 필요하므로 향후 AI 버전에서 제공됩니다.' },
+  ai_strength:       { label:'AI 경쟁력 분석', reason:'경쟁력 평가는 산업 자료와 기업 데이터를 AI가 종합해야 하므로 향후 AI 버전에서 제공됩니다.' },
+  ai_checks:         { label:'AI 체크포인트', reason:'앞으로 확인할 숫자를 기업별로 선정하려면 AI 분석이 필요하므로 향후 AI 버전에서 제공됩니다.' },
+  ai_risk:           { label:'AI 리스크 분석', reason:'기업별 리스크 판단은 AI 분석이 필요하므로 향후 AI 버전에서 제공됩니다.' },
+  ai_catalyst:       { label:'AI Catalyst', reason:'Catalyst 판단은 일정·뉴스·실적을 AI가 종합해야 하므로 향후 AI 버전에서 제공됩니다.' },
+  ai_breaker:        { label:'AI 분석', reason:'투자 논리 훼손 여부 판단은 실적·뉴스·가이던스 변화를 AI가 지속적으로 점검해야 하므로 향후 AI 버전에서 제공됩니다.' },
+  ai_research_notes: { label:'AI 리서치 업데이트', reason:'기업별 리서치 노트 자동 갱신은 AI 분석이 필요하므로 향후 AI 버전에서 제공됩니다.' },
+  consensus:         { label:'Consensus · 목표주가', reason:'애널리스트 컨센서스와 목표주가는 무료로 신뢰성 있게 확보할 수 있는 공개 소스가 없어 유료 데이터 연결이 필요합니다.', paidData:true },
+  market_share:      { label:'시장점유율 · 경쟁사 순위', reason:'시장점유율은 Counterpoint, TrendForce 같은 유료 리서치 기관 자료가 필요해 무료버전에서는 표시하지 않습니다.', paidData:true }
+};
+
+/* ---------- 2) UI helpers ---------- */
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function chip(code){const s=STATUS[code]||STATUS.CHECK;return `<span class="status ${s.cls}">${s.text}</span>`}
+function proBadge(f){return `<button class="pro-badge" onclick="event.stopPropagation();explainPro('${f}')" aria-label="${esc(FEATURES[f].label)} 안내">PRO</button>`}
+function proLock(f,text){
+  const F=FEATURES[f];
+  const t=text||(F.label+' — '+(F.paidData?'유료 데이터 필요':'유료버전 필요'));
+  return `<div class="locked">${proBadge(f)}<span>${esc(t)}</span></div>`;
+}
+function proInline(f){return `${proBadge(f)} <span class="status paid">${FEATURES[f].paidData?'유료 데이터 필요':'유료버전 필요'}</span>`}
+function metaLine(source,updated){return `Source: ${esc(source||'—')} · Last Updated: ${esc(updated||'—')}`}
+function fmtKST(d){
+  try{return new Intl.DateTimeFormat('ko-KR',{timeZone:APP.tz,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace(/\.\s?/g,'-').replace(/-(\d{2}:)/,' $1').replace(/-$/,'')+' KST'}
+  catch(e){return d.toISOString()}
+}
+function setHTML(id,html){const el=document.getElementById(id);if(el)el.innerHTML=html}
+
+// 금액 표시 규칙 (Phase 3부터 사용). 숫자가 없으면 상태만 반환한다.
+const Money = {
+  // 원 단위 값 → "171.5조원"
+  krw(won){ if(won==null||isNaN(won)) return null; const jo=won/1e12; return (Math.abs(jo)>=1? jo.toFixed(1)+'조원' : (won/1e8).toFixed(0)+'억원'); },
+  // 달러 값 + 환율 객체 {rate, asOf, source} → "$40.2B (약 54.0조원)"
+  usd(usd,fx){
+    if(usd==null||isNaN(usd)) return null;
+    const a=Math.abs(usd), base = a>=1e9?'$'+(usd/1e9).toFixed(1)+'B' : a>=1e6?'$'+(usd/1e6).toFixed(0)+'M' : '$'+usd.toFixed(2);
+    if(!fx||!fx.rate) return base;               // 환율이 없으면 원화 환산을 하지 않는다
+    return base+' (약 '+Money.krw(usd*fx.rate)+')';
+  }
+};
+
+/* ---------- 3) Providers ----------
+   모든 provider는 같은 형태를 반환한다:
+   { status:'OK'|'PENDING'|'CHECK'|'UPDATE'|'SEC'|'PAID_DATA', source, updatedAt, data }
+   Phase 1에서는 연결 전 상태만 반환한다. 이후 Phase에서 내부 구현만 교체.
+------------------------------------------------------------------------ */
+const pending = (phase, extra={}) => Promise.resolve(Object.assign({status:'PENDING',source:null,updatedAt:null,data:null,phase},extra));
+
+const MarketDataProvider = {
+  // Phase 2: GitHub Actions(scripts/fetch_market.py)가 생성한 data/market.json을 읽는다.
+  // 앱은 숫자를 만들지 않는다. JSON 값 + 기준일(asOf) + 출처만 표시한다.
+  series: [
+    {key:'spx',   label:'S&P 500'},
+    {key:'ndx',   label:'Nasdaq'},
+    {key:'dji',   label:'Dow'},
+    {key:'kospi', label:'KOSPI'},
+    {key:'kosdaq',label:'KOSDAQ'},
+    {key:'us10y', label:'미국 10년 국채금리'},
+    {key:'dxy',   label:'Dollar Index'},
+    {key:'wti',   label:'WTI'},
+    {key:'usdkrw',label:'USD/KRW'}
+  ],
+  _cache:null,
+  load(){
+    if(this._cache) return this._cache;
+    this._cache = (async()=>{
+      try{
+        const r = await fetch(APP.marketDataUrl+'?t='+Date.now(), {cache:'no-store'});
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        const j = await r.json();
+        if(!j || typeof j!=='object' || !j.series) throw new Error('형식 오류');
+        return {ok:true, json:j};
+      }catch(e){
+        console.warn('market.json 로드 실패:',e);
+        return {ok:false, error:String(e), fileMode: location.protocol==='file:'};
+      }
+    })();
+    return this._cache;
+  },
+  // 개별 시리즈의 표시 상태를 결정한다. 기준일이 허용 기간보다 오래되면 값을 숨긴다.
+  evaluate(item, now=new Date()){
+    if(!item) return {status:'NOT_RUN'};
+    if(item.status!=='OK') return {status:item.status, item};
+    if(item.value==null || !item.asOf) return {status:'FAILED', item};
+    const age = (now - new Date(item.asOf+'T00:00:00Z'))/86400000;
+    if(age > (item.maxAgeDays||7)) return {status:'STALE', item, age:Math.floor(age)};
+    return {status:'OK', item, age:Math.floor(age)};
+  },
+  async getSnapshot(){
+    const L = await this.load();
+    if(!L.ok) return {status:'UNREACHABLE', source:null, updatedAt:null, data:null, fileMode:L.fileMode, error:L.error};
+    const j=L.json;
+    if(j.runStatus==='NOT_RUN' || !j.generatedAt) return {status:'NOT_RUN', source:'GitHub Actions', updatedAt:null, data:{series:{}}};
+    const series={};
+    this.series.forEach(s=>{ series[s.key]=this.evaluate(j.series[s.key]); });
+    return {status:j.runStatus==='FAILED'?'FAILED':'OK', runStatus:j.runStatus, source:'GitHub Actions · data/market.json',
+            updatedAt:fmtKST(new Date(j.generatedAt)), generatedAt:j.generatedAt, data:{series}};
+  },
+  getQuotes(tickers){ return pending('Phase 3',{data:null,tickers}); }   // 개별 종목 시세는 Phase 2 범위 밖
+};
+
+// 시장 데이터 표시 형식
+const MarketFmt = {
+  value(key,v){
+    if(v==null) return '—';
+    if(key==='us10y') return v.toFixed(2)+'%';
+    if(key==='usdkrw') return v.toLocaleString('ko-KR',{minimumFractionDigits:2,maximumFractionDigits:2})+'원';
+    if(key==='wti') return '$'+v.toFixed(2);
+    return v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  },
+  change(key,it){
+    if(it.prev==null||it.value==null) return null;
+    const d=it.value-it.prev;
+    if(key==='us10y') return {d, text:(d>=0?'+':'')+(d*100).toFixed(0)+'bp'};
+    const pct=it.prev? d/Math.abs(it.prev)*100 : 0;
+    const abs = key==='usdkrw' ? (d>=0?'+':'')+d.toFixed(2)+'원 ' : '';
+    return {d, pct, text: abs+'('+(pct>=0?'+':'')+pct.toFixed(2)+'%)'};
+  }
+};
+// 규칙 기반 변화 감지 (AI 판단 아님): 기준 이상 움직인 항목만 표시
+const MOVE_RULES = { us10y:{bp:5}, usdkrw:{pct:0.5}, wti:{pct:2}, dxy:{pct:0.5} };
+
+const FxProvider = {
+  async getUsdKrw(){
+    const snap = await MarketDataProvider.getSnapshot();
+    const e = snap.data && snap.data.series && snap.data.series.usdkrw;
+    if(!e) return {status:snap.status==='OK'?'FAILED':snap.status, source:null, updatedAt:null, data:null};
+    if(e.status!=='OK') return {status:e.status, source:e.item&&e.item.source, updatedAt:null, data:null};
+    return {status:'OK', source:e.item.source, updatedAt:e.item.asOf, data:{rate:e.item.value, asOf:e.item.asOf}};
+  }
+};
+
+const CompanyDataProvider = {
+  // TODO(Phase 3): 미국 — SEC EDGAR XBRL companyfacts / submissions (무료, User-Agent 헤더 필수, 브라우저 CORS 미지원 가능성 높음)
+  //                한국 — 기업 공식 IR / OpenDART(무료 API 키, CORS 미지원) → 정적 JSON 파이프라인 검토
+  getFundamentals(ticker){ return pending('Phase 3',{ticker}); },
+  getSegments(ticker){ return pending('Phase 3',{ticker}); },
+  getValuation(ticker){ return pending('Phase 3',{ticker}); },
+  getFilings(ticker){ return pending('Phase 3',{ticker}); },
+  getConsensus(){ return Promise.resolve({status:'PAID_DATA',source:null,updatedAt:null,data:null}); },
+  getMarketShare(){ return Promise.resolve({status:'PAID_DATA',source:null,updatedAt:null,data:null}); }
+};
+
+const Sec13FProvider = {
+  // TODO(Phase 4): SEC EDGAR 13F-HR information table 파싱 → 신규/증가/감소/연속 매집/비중/동시 보유 계산.
+  // CIK는 Phase 4에서 EDGAR로 재확인 후 verified:true 로 변경. 확인 전에는 화면에 쓰지 않는다.
+  managers: {
+    berkshire: {name:'Berkshire Hathaway',     cik:'0001067983', verified:false},
+    duquesne:  {name:'Duquesne Family Office', cik:'0001536411', verified:false},
+    appaloosa: {name:'Appaloosa Management',   cik:'0001656456', verified:false},
+    pershing:  {name:'Pershing Square',        cik:'0001336528', verified:false},
+    baupost:   {name:'Baupost Group',          cik:'0001061768', verified:false}
+  },
+  getDiscovery(){ return Promise.resolve({status:'SEC',source:null,updatedAt:null,data:null}); },
+  getManagerTop(key){ return Promise.resolve({status:'SEC',source:null,updatedAt:null,data:null,key}); }
+};
+
+const NewsProvider = {
+  // TODO(Phase 5): 공개 RSS 헤드라인(출처·발행시각 포함). RSS도 대부분 CORS 미지원 → 파이프라인 방식과 함께 결정.
+  getHeadlines(){ return pending('Phase 5'); }
+};
+
+const CalendarProvider = {
+  // TODO(Phase 2/5): 실적 발표일(기업 IR·SEC 8-K), 경제지표(BLS·BEA·Fed 공식 일정), 기업 이벤트.
+  getEvents(){ return pending('Phase 2'); },
+  getMacro(){ return pending('Phase 5'); }
+};
+
+/* ---------- 4) AI gate ----------
+   유료버전에서 AIProvider.enabled=true + 서버측 키 관리로 활성화. 브라우저 코드에 API 키를 넣지 않는다. */
+const AIProvider = {
+  enabled:false,
+  isUnlocked(feature){ return APP.plan==='PRO' && this.enabled && !!FEATURES[feature]; },
+  async analyze(feature,context){ return {status:'PAID',feature,data:null}; }
+};
+
+// Radar 데이터 구조 (유료버전에서 채워짐)
+const RADAR_SCHEMA = {
+  idea:{ ticker:'', name:'', type:'growth|defensive|event', selectedAt:'', overview:'', structure:'', role:'', metrics:[], whyNow:'', breaker:'', sources:[] },
+  statusValues:['매력도 상승','유지','주의','투자 논리 훼손']
+};
+const radarStore = { ideas:[], history:[] };   // 무료버전: 항상 비어 있음
+
+/* ---------- 5) Store · 관심기업 ---------- */
+const stockCatalog=[
+ {name:'삼성전자',en:'Samsung Electronics',ticker:'005930',market:'KR',exchange:'KOSPI',sector:'반도체 / IT',aliases:['삼성','삼전','samsung']},
+ {name:'SK하이닉스',en:'SK hynix',ticker:'000660',market:'KR',exchange:'KOSPI',sector:'반도체 / 메모리',aliases:['하이닉스','sk하이닉스','hynix','skhynix']},
+ {name:'삼성SDI',en:'Samsung SDI',ticker:'006400',market:'KR',exchange:'KOSPI',sector:'2차전지',aliases:['삼성에스디아이','sdi']},
+ {name:'삼성전기',en:'Samsung Electro-Mechanics',ticker:'009150',market:'KR',exchange:'KOSPI',sector:'전자부품',aliases:[]},
+ {name:'삼성바이오로직스',en:'Samsung Biologics',ticker:'207940',market:'KR',exchange:'KOSPI',sector:'바이오',aliases:['삼바']},
+ {name:'LG에너지솔루션',en:'LG Energy Solution',ticker:'373220',market:'KR',exchange:'KOSPI',sector:'2차전지',aliases:['엘지에너지솔루션','lg엔솔','엔솔']},
+ {name:'현대차',en:'Hyundai Motor',ticker:'005380',market:'KR',exchange:'KOSPI',sector:'자동차',aliases:['현대자동차','hyundai']},
+ {name:'기아',en:'Kia',ticker:'000270',market:'KR',exchange:'KOSPI',sector:'자동차',aliases:['kia']},
+ {name:'NAVER',en:'NAVER',ticker:'035420',market:'KR',exchange:'KOSPI',sector:'인터넷 / 플랫폼',aliases:['네이버']},
+ {name:'카카오',en:'Kakao',ticker:'035720',market:'KR',exchange:'KOSPI',sector:'인터넷 / 플랫폼',aliases:['kakao']},
+ {name:'셀트리온',en:'Celltrion',ticker:'068270',market:'KR',exchange:'KOSPI',sector:'바이오',aliases:['celltrion']},
+ {name:'POSCO홀딩스',en:'POSCO Holdings',ticker:'005490',market:'KR',exchange:'KOSPI',sector:'철강 / 소재',aliases:['포스코','포스코홀딩스','posco']},
+ {name:'KB금융',en:'KB Financial Group',ticker:'105560',market:'KR',exchange:'KOSPI',sector:'금융',aliases:['kb','국민은행']},
+ {name:'한화에어로스페이스',en:'Hanwha Aerospace',ticker:'012450',market:'KR',exchange:'KOSPI',sector:'방산 / 항공우주',aliases:['한화에어로']},
+ {name:'HD현대일렉트릭',en:'HD Hyundai Electric',ticker:'267260',market:'KR',exchange:'KOSPI',sector:'전력기기',aliases:['현대일렉트릭']},
+ {name:'에코프로비엠',en:'EcoPro BM',ticker:'247540',market:'KR',exchange:'KOSDAQ',sector:'2차전지 소재',aliases:['에코프로']},
+ {name:'알테오젠',en:'Alteogen',ticker:'196170',market:'KR',exchange:'KOSDAQ',sector:'바이오',aliases:['alteogen']},
+ {name:'Qualcomm',en:'Qualcomm',ticker:'QCOM',market:'US',exchange:'NASDAQ',sector:'반도체 / Connectivity',aliases:['퀄컴']},
+ {name:'Amazon',en:'Amazon',ticker:'AMZN',market:'US',exchange:'NASDAQ',sector:'클라우드 / 커머스',aliases:['아마존']},
+ {name:'TSMC',en:'Taiwan Semiconductor',ticker:'TSM',market:'US',exchange:'NYSE (ADR)',sector:'반도체 / Foundry',aliases:['티에스엠씨','대만반도체','tsmc']},
+ {name:'Arm Holdings',en:'Arm Holdings',ticker:'ARM',market:'US',exchange:'NASDAQ',sector:'반도체 IP',aliases:['암홀딩스','암 홀딩스','arm']},
+ {name:'NVIDIA',en:'NVIDIA',ticker:'NVDA',market:'US',exchange:'NASDAQ',sector:'반도체 / AI',aliases:['엔비디아']},
+ {name:'Broadcom',en:'Broadcom',ticker:'AVGO',market:'US',exchange:'NASDAQ',sector:'반도체 / 네트워크',aliases:['브로드컴']},
+ {name:'Micron',en:'Micron Technology',ticker:'MU',market:'US',exchange:'NASDAQ',sector:'반도체 / 메모리',aliases:['마이크론']},
+ {name:'AMD',en:'Advanced Micro Devices',ticker:'AMD',market:'US',exchange:'NASDAQ',sector:'반도체',aliases:['에이엠디']},
+ {name:'Intel',en:'Intel',ticker:'INTC',market:'US',exchange:'NASDAQ',sector:'반도체',aliases:['인텔']},
+ {name:'Microsoft',en:'Microsoft',ticker:'MSFT',market:'US',exchange:'NASDAQ',sector:'소프트웨어 / 클라우드',aliases:['마이크로소프트','마소']},
+ {name:'Alphabet',en:'Alphabet',ticker:'GOOGL',market:'US',exchange:'NASDAQ',sector:'인터넷 / AI',aliases:['구글','알파벳','google']},
+ {name:'Apple',en:'Apple',ticker:'AAPL',market:'US',exchange:'NASDAQ',sector:'IT 하드웨어',aliases:['애플']},
+ {name:'Meta Platforms',en:'Meta Platforms',ticker:'META',market:'US',exchange:'NASDAQ',sector:'인터넷 / AI',aliases:['메타','페이스북','facebook']},
+ {name:'Tesla',en:'Tesla',ticker:'TSLA',market:'US',exchange:'NASDAQ',sector:'자동차 / 에너지',aliases:['테슬라']}
+];
+// 정적 기업 설명 (수치 없음 · 실시간 데이터 아님). 기존 V19.3의 정성적 개요만 유지.
+const staticProfiles={
+ QCOM:'스마트폰 모뎀·AP에서 출발해 Automotive, IoT, PC, Data Center로 확장 중인 무선통신·저전력 컴퓨팅 플랫폼 기업.',
+ AMZN:'전자상거래·AWS 클라우드·광고를 결합한 글로벌 플랫폼 기업.',
+ TSM:'고객이 설계한 반도체를 위탁 생산하는 순수 파운드리 기업. AI GPU·CPU·ASIC 등 첨단 반도체 생산과 첨단 패키징을 담당.',
+ ARM:'CPU 아키텍처와 IP를 라이선스하고 칩 출하에 따라 로열티를 받는 반도체 설계 플랫폼 기업.',
+ '005930':'메모리(DRAM·NAND)·파운드리·시스템LSI와 모바일·가전·디스플레이를 함께 보유한 종합 IT 기업.',
+ '000660':'DRAM·HBM·NAND를 생산하는 메모리 반도체 기업.'
+};
+const defaultWatch=[
+ {market:'US',name:'Qualcomm',en:'Qualcomm',ticker:'QCOM',sector:'반도체',level:'핵심',memo:'On-device AI / 자동차 / 6G'},
+ {market:'US',name:'Amazon',en:'Amazon',ticker:'AMZN',sector:'클라우드·커머스',level:'핵심',memo:'AWS AI / 마진'},
+ {market:'US',name:'TSMC',en:'Taiwan Semiconductor',ticker:'TSM',sector:'파운드리',level:'관심',memo:'AI / 선단공정 / CoWoS'},
+ {market:'US',name:'Arm Holdings',en:'Arm Holdings',ticker:'ARM',sector:'반도체 IP',level:'관심',memo:'AI PC / 로열티'},
+ {market:'KR',name:'삼성전자',en:'Samsung Electronics',ticker:'005930',sector:'반도체·전자',level:'핵심',memo:'HBM / 메모리 / Foundry'},
+ {market:'KR',name:'SK하이닉스',en:'SK hynix',ticker:'000660',sector:'반도체',level:'핵심',memo:'HBM / DRAM'}
+];
+const LEVELS=['핵심','관심','관찰'];
+function loadWatch(){
+  try{
+    const v=JSON.parse(localStorage.getItem('irc_watchlist'));
+    if(Array.isArray(v)) return v.filter(x=>x&&x.ticker&&x.name);
+  }catch(e){}
+  return defaultWatch.map(x=>Object.assign({},x));
+}
+let watch=loadWatch();
+function saveWatch(){try{localStorage.setItem('irc_watchlist',JSON.stringify(watch))}catch(e){console.warn('watchlist 저장 실패',e)}}
+function catalogFor(ticker){return stockCatalog.find(s=>s.ticker===String(ticker).toUpperCase())||null}
+function levelClass(x){return x==='핵심'?'level-core':x==='관심'?'level-interest':'level-watch'}
+function refreshWatchViews(){renderDashboardWatch();renderWatch();renderDashboardKpis();renderTodayChanges();}
+
+/* ---------- 6) Renderers ---------- */
+function show(id,btn){
+ document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
+ if(btn) btn.classList.add('active');
+ window.scrollTo(0,0);
+}
+function navBtn(i){return document.querySelectorAll('.nav button')[i]||null}
+
+/* PRO modal */
+function explainPro(f){
+  const F=FEATURES[f]||FEATURES.plan;
+  document.getElementById('proTitle').textContent=F.label+(F.paidData?' · 유료 데이터 필요':' · 유료버전 필요');
+  document.getElementById('proReason').textContent=F.reason;
+  document.getElementById('proModal').classList.add('open');
+}
+function closePro(){document.getElementById('proModal').classList.remove('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePro();closeAdd();if(document.getElementById('confirmModal').classList.contains('open'))closeConfirm(false);}});
+
+/* Dashboard */
+let dashFilter='all', dashQuery='';
+function matchesQuery(x,q){
+  if(!q) return true;
+  const c=catalogFor(x.ticker);
+  const hay=[x.name,x.en,x.ticker,x.sector,x.memo].concat(c?[c.name,c.en].concat(c.aliases):[]).join(' ').toLowerCase().replace(/\s+/g,'');
+  return hay.includes(q.toLowerCase().replace(/\s+/g,''));
+}
+function filterCompanies(q){dashQuery=q||'';renderDashboardWatch();}
+function setDashFilter(v){
+  dashFilter=v;
+  document.querySelectorAll('#dashFilters .mini-btn').forEach(b=>b.classList.toggle('on',b.dataset.f===v));
+  renderDashboardWatch();
+}
+function renderDashboardWatch(){
+  const body=document.getElementById('dashWatchBody'); if(!body) return;
+  const rows=watch.filter(x=>(dashFilter==='all'||x.level===dashFilter||x.market===dashFilter)&&matchesQuery(x,dashQuery));
+  if(!rows.length){body.innerHTML=`<tr class="empty-row"><td colspan="6">${watch.length?'해당 조건의 관심기업이 없습니다.':'관심기업이 없습니다. “+ 관심종목 추가”로 시작하세요.'}</td></tr>`;return;}
+  body.innerHTML=rows.map(x=>{
+    const i=watch.indexOf(x);
+    const opts=LEVELS.map(l=>`<option ${x.level===l?'selected':''}>${l}</option>`).join('');
+    return `<tr class="company" onclick="company('${esc(x.ticker)}')">
+      <td><b>${esc(x.name)}</b><br><span class="pill">${esc(x.ticker)}</span> <span class="sub">${x.market==='KR'?'한국':'미국'}</span></td>
+      <td>${chip('PENDING')}</td><td>—</td>
+      <td onclick="event.stopPropagation()"><select class="lvl-select" aria-label="등급 변경" onchange="changeDashLevel(${i},this.value)">${opts}</select></td>
+      <td>${esc(x.memo||'-')}</td>
+      <td onclick="event.stopPropagation()"><button class="mini-btn" onclick="deleteDashWatch(${i})">삭제</button></td></tr>`;
+  }).join('');
+}
+function changeDashLevel(i,v){if(!watch[i])return;watch[i].level=v;saveWatch();refreshWatchViews();}
+// 브라우저 confirm()/alert()는 호스팅 환경에서 차단될 수 있어 앱 내부 확인창을 사용
+let _confirmCb=null;
+function askConfirm(text,cb){_confirmCb=cb;document.getElementById('confirmText').textContent=text;document.getElementById('confirmModal').classList.add('open');}
+function closeConfirm(ok){document.getElementById('confirmModal').classList.remove('open');const cb=_confirmCb;_confirmCb=null;if(ok&&cb)cb();}
+function deleteDashWatch(i){if(!watch[i])return;const t=watch[i].ticker;askConfirm(watch[i].name+'을(를) 관심종목에서 삭제할까요?',()=>{const k=watch.findIndex(x=>x.ticker===t);if(k>=0){watch.splice(k,1);saveWatch();refreshWatchViews();}});}
+
+function renderDashboardKpis(){
+  const kr=watch.filter(x=>x.market==='KR').length, us=watch.length-kr;
+  const core=watch.filter(x=>x.level==='핵심').length;
+  setHTML('kpiWatchCount',watch.length+'개');
+  setHTML('kpiWatchSplit',`한국 ${kr} · 미국 ${us} · 핵심 ${core}`);
+  setHTML('kpiEarnings',chip('PENDING')); setHTML('kpiEarningsSub','실적 발표일 연결 후 자동 집계');
+  setHTML('kpiEvents',chip('PENDING'));   setHTML('kpiEventsSub','경제지표·기업 이벤트 연결 후 자동 집계');
+}
+async function renderTodayChanges(){
+  const snap=await MarketDataProvider.getSnapshot();
+  setHTML('todayAsOf','데이터 기준: '+(snap.updatedAt||'—'));
+  setHTML('todayUpdated',esc(snap.updatedAt||'—'));
+  let html='';
+  if(snap.status==='OK'){
+    const moves=[];
+    Object.entries(MOVE_RULES).forEach(([k,rule])=>{
+      const e=snap.data.series[k]; if(!e||e.status!=='OK') return;
+      const c=MarketFmt.change(k,e.item); if(!c) return;
+      const hit = rule.bp ? Math.abs(c.d*100)>=rule.bp : Math.abs(c.pct)>=rule.pct;
+      if(hit) moves.push(`<div style="margin-top:4px"><b>${esc(e.item.label)}</b> ${MarketFmt.value(k,e.item.value)} <span class="${c.d>=0?'up':'down'}">${c.text}</span> <span class="sub">기준일 ${esc(e.item.asOf)}</span></div>`);
+    });
+    const failed=Object.values(snap.data.series).filter(e=>['FAILED','STALE'].includes(e.status)).length;
+    html = (moves.length? moves.join('') : '<div class="sub" style="margin-top:4px">기준 이상 움직인 시장 지표 없음</div>')
+      + `<div class="sub" style="margin-top:6px">감지 기준: 10년물 ±5bp · USD/KRW ±0.5% · WTI ±2% · Dollar Index ±0.5% (전일 관측치 대비)</div>`
+      + (failed? `<div style="margin-top:6px">${chip('FAILED')} <span class="sub">시장 지표 ${failed}개 업데이트 실패/지연 · Market Brief에서 확인</span></div>`:'')
+      + `<div class="sub" style="margin-top:6px">관심기업 주가·공시 변화 ${chip('PENDING')}</div>`;
+  } else {
+    html = `${chip(snap.status)}<div class="sub" style="margin-top:6px">${snapMessage(snap)}</div>`;
+  }
+  setHTML('todayChanges',html);
+  setHTML('todayAi',proLock('ai_today','AI 변화 해석 — 유료버전 필요'));
+}
+function snapMessage(snap){
+  if(snap.status==='UNREACHABLE') return snap.fileMode
+    ? '파일로 직접 열면 데이터 파일을 읽을 수 없습니다. GitHub Pages 주소로 열어주세요.'
+    : '시장 데이터 파일(data/market.json)을 불러오지 못했습니다.';
+  if(snap.status==='NOT_RUN') return 'GitHub Actions가 아직 데이터를 수집하지 않았습니다.';
+  if(snap.status==='FAILED') return '최근 수집 실행에서 모든 시장 지표 수집에 실패했습니다.';
+  return '';
+}
+async function renderDashCalendar(){
+  const r=await CalendarProvider.getEvents();
+  const items=[['실적 발표','관심기업 공식 IR · SEC 8-K'],['주요 경제지표','BLS · BEA · Fed 공식 일정'],['기업 이벤트','기업 IR 일정']];
+  setHTML('dashCalendar',items.map(([t,s])=>`<li><b>${t}</b> ${chip(r.status)}<br><span class="sub">연결 예정 소스: ${s}</span></li>`).join(''));
+  setHTML('dashCalendarMeta',metaLine(r.source,r.updatedAt));
+  setHTML('dashPriceMeta','시세 '+metaLine(null,null));
+}
+
+/* Legacy watchlist view (kept) */
+let watchFilter='all';
+function renderWatch(){
+ const body=document.getElementById('watchBody'); if(!body)return;
+ const rows=watch.filter(x=>watchFilter==='all'||x.market===watchFilter||x.level===watchFilter);
+ body.innerHTML=rows.map(x=>{const i=watch.indexOf(x);
+   return `<tr><td>${x.market==='KR'?'🇰🇷 한국':'🇺🇸 미국'}</td><td><b>${esc(x.name)}</b></td><td>${esc(x.ticker)}</td><td>${esc(x.sector||'-')}</td><td><span class="tag ${levelClass(x.level)}">${esc(x.level)}</span></td><td>${esc(x.memo||'-')}</td><td><button class="smallbtn" onclick="removeWatch(${i})">삭제</button></td></tr>`
+ }).join('');
+}
+function setWatchFilter(v,b){watchFilter=v;document.querySelectorAll('.filterbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderWatch()}
+function removeWatch(i){deleteDashWatch(i)}
+
+/* Add modal + search */
+let pickedStock=null;
+function openAdd(){document.getElementById('addModal').classList.add('open');setTimeout(()=>document.getElementById('fName').focus(),30)}
+function closeAdd(){addMsg('');const m=document.getElementById('addModal');if(m)m.classList.remove('open');const b=document.getElementById('stockSuggestions');if(b)b.style.display='none'}
+function searchStocks(q){
+  q=(q||'').trim().toLowerCase().replace(/\s+/g,''); if(!q) return [];
+  const norm=s=>String(s).toLowerCase().replace(/\s+/g,'');
+  return stockCatalog.map((s,i)=>{
+    const keys=[s.name,s.en,s.ticker].concat(s.aliases||[]).map(norm);
+    let score=99;
+    if(keys.some(k=>k===q)) score=0; else if(keys.some(k=>k.startsWith(q))) score=1; else if(keys.some(k=>k.includes(q))||norm(s.sector).includes(q)) score=2;
+    return {s,i,score};
+  }).filter(x=>x.score<99).sort((a,b)=>a.score-b.score||a.i-b.i).slice(0,8);
+}
+function chooseStock(i){
+ const s=stockCatalog[i]; if(!s)return; pickedStock=s;
+ document.getElementById('fName').value=s.name;
+ document.getElementById('fTicker').value=s.ticker;
+ document.getElementById('fSector').value=s.sector;
+ document.getElementById('fMarket').value=s.market;
+ document.getElementById('stockSuggestions').style.display='none';
+}
+function renderStockSuggestions(q){
+ const box=document.getElementById('stockSuggestions'); if(!box)return;
+ pickedStock=null;
+ if(!(q||'').trim()){box.style.display='none';box.innerHTML='';return;}
+ const hits=searchStocks(q);
+ if(!hits.length){box.innerHTML='<div style="padding:12px" class="sub">목록에 없는 기업입니다 · 기업명과 티커/종목코드를 직접 입력해 추가할 수 있습니다</div>';box.style.display='block';return;}
+ box.innerHTML=hits.map(x=>'<button type="button" data-stock-index="'+x.i+'" style="width:100%;text-align:left;padding:11px 12px;border:0;border-bottom:1px solid #eef1f5;background:white;cursor:pointer"><b>'+esc(x.s.name)+'</b> <span class="sub">'+esc(x.s.en)+' · '+esc(x.s.ticker)+' · '+(x.s.market==='KR'?'한국':'미국')+'</span><br><span class="sub">'+esc(x.s.sector)+'</span></button>').join('');
+ box.style.display='block';
+ box.querySelectorAll('[data-stock-index]').forEach(btn=>btn.addEventListener('click',()=>chooseStock(Number(btn.dataset.stockIndex))));
+}
+function addMsg(t){const m=document.getElementById('addMsg');if(!m)return;m.textContent=t||'';m.style.display=t?'block':'none';}
+function addWatch(){
+ addMsg('');
+ const name=document.getElementById('fName').value.trim(), ticker=document.getElementById('fTicker').value.trim().toUpperCase();
+ if(!name||!ticker){addMsg('기업명과 티커/종목코드를 입력해주세요.');return}
+ if(watch.some(x=>String(x.ticker).toUpperCase()===ticker)){addMsg('이미 관심기업에 있는 종목입니다: '+ticker);return}
+ const c=pickedStock&&pickedStock.ticker===ticker?pickedStock:catalogFor(ticker);
+ watch.push({market:document.getElementById('fMarket').value,name,en:c?c.en:'',ticker,sector:document.getElementById('fSector').value.trim(),level:document.getElementById('fLevel').value,memo:document.getElementById('fMemo').value.trim()});
+ saveWatch();refreshWatchViews();closeAdd();pickedStock=null;
+ ['fName','fTicker','fSector','fMemo'].forEach(id=>document.getElementById(id).value='');
+}
+
+/* Company Integrated Research */
+const LEGACY_KEYS={SAMSUNG:'005930',HYNIX:'000660'};
+let currentCompanyKey=null;
+async function company(t){
+  const ticker=LEGACY_KEYS[t]||String(t).toUpperCase();
+  currentCompanyKey=ticker;
+  const w=watch.find(x=>String(x.ticker).toUpperCase()===ticker);
+  const c=catalogFor(ticker);
+  const name=(w&&w.name)||(c&&c.name)||ticker;
+  const market=(w&&w.market)||(c&&c.market)||'';
+  const exchange=(c&&c.exchange)||(market==='KR'?'한국':market==='US'?'미국':'—');
+  const sector=(w&&w.sector)||(c&&c.sector)||'—';
+  document.getElementById('ctitle').textContent=name;
+  document.getElementById('csub').textContent=[ticker,(c&&c.en&&c.en!==name)?c.en:null,sector].filter(Boolean).join(' · ');
+  document.getElementById('clevel').textContent=w?w.level:'관심기업 아님';
+
+  const [fx,fund,seg,val,fil]=await Promise.all([FxProvider.getUsdKrw(),CompanyDataProvider.getFundamentals(ticker),CompanyDataProvider.getSegments(ticker),CompanyDataProvider.getValuation(ticker),CompanyDataProvider.getFilings(ticker)]);
+  if(currentCompanyKey!==ticker) return;   // 다른 기업을 그 사이 클릭한 경우
+
+  setHTML('fxNote',fx.status==='OK'&&fx.data?`<b>1 USD = ${fx.data.rate.toLocaleString('ko-KR',{minimumFractionDigits:2,maximumFractionDigits:2})}원</b> (기준일 ${esc(fx.data.asOf)} · ${esc(fx.source)} · 참고용)`:`${chip(fx.status)} 환율 연결 전에는 원화 환산을 표시하지 않습니다.`);
+
+  // 기업 개요
+  const prof=[['기업명',esc(name)],['티커',esc(ticker)],['시장',esc(exchange)],['섹터',esc(sector)],['산업',chip(fund.status)],['시가총액',chip(val.status)],['현재 주가',chip(val.status)]];
+  setHTML('profileGrid',prof.map(([k,v])=>`<div class="metric-mini">${k}<b style="font-size:14px">${v}</b></div>`).join(''));
+  setHTML('profileMeta',`기업명·티커·시장·섹터: 앱 내부 종목 목록 / 관심기업 입력값 · 산업·시가총액·주가: ${metaLine(val.source,val.updatedAt)}`);
+
+  // 투자판단 보조 신호
+  setHTML('signalEarnings',chip(fund.status));
+  setHTML('signalConsensus',`<span class="status paid">유료 데이터 필요</span>`);
+  setHTML('signalValuation',chip(val.status));
+  setHTML('signalCatalyst',proInline('ai_catalyst'));
+  setHTML('signalRisk',proInline('ai_risk'));
+
+  // KPI
+  setHTML('quarter',chip(fund.status));
+  setHTML('revenue',chip(fund.status)); setHTML('revchange','');
+  setHTML('profit',chip(fund.status));  setHTML('profitlabel','영업이익 / EPS');
+  setHTML('valuation',chip(val.status)); setHTML('valuationSub',`Consensus — 유료 데이터 필요 ${proBadge('consensus')}`);
+  setHTML('nextdate',chip(fil.status)); setHTML('nextevent','공식 IR · 공시 기준');
+  setHTML('kpiMeta',metaLine(fund.source,fund.updatedAt));
+
+  // 실적
+  setHTML('earningsSummary',`${chip(fund.status)}<div class="sub" style="margin-top:6px">최근 분기 실적은 ${market==='US'?'SEC EDGAR 공시':'기업 공식 IR 자료'} 원문 숫자로만 표시합니다.</div>`);
+  setHTML('thesis',proLock('ai_thesis'));
+  setHTML('companyIssues',`<li>최근 공시 목록 ${chip(fil.status)}<br><span class="sub">${market==='US'?'SEC EDGAR 8-K · 10-Q · 10-K':'DART 공시 · 기업 IR'}</span></li>`);
+  const rows=[['매출',fund.status],['영업이익',fund.status],['EPS',fund.status],['YoY 성장률',fund.status],['가이던스','CHECK']];
+  setHTML('metricRows',rows.map(([k,s])=>`<tr><td><b>${k}</b></td><td>—</td><td>${chip(s)}${k==='가이던스'?'<div class="sub">공식 IR 원문 확인 필요</div>':''}</td></tr>`).join(''));
+  setHTML('metricMeta',metaLine(fund.source,fund.updatedAt));
+  setHTML('companyRisks',proLock('ai_risk'));
+
+  // Business Mix · Market Position (3개 동일 높이 카드 유지)
+  setHTML('businessMix',`${chip(seg.status)}<div class="sub" style="margin-top:6px">${market==='US'?'SEC 10-Q/10-K 세그먼트 공시':'기업 공식 IR 실적자료'} 기준으로 사업부별 매출·영업이익을 표시합니다. 사업부 영업이익을 공시하지 않으면 ${chip('UNDISCLOSED')}로 표시합니다.</div>`);
+  setHTML('marketPosition',proLock('market_share','시장점유율 — 유료 데이터 필요')+'<div class="sub" style="margin-top:6px">시장점유율은 유료 리서치 기관 자료가 필요합니다.</div>');
+  setHTML('competitorRanking',proLock('market_share','경쟁사 순위 — 유료 데이터 필요')+'<div class="sub" style="margin-top:6px">점유율 기준(출하량·매출)과 출처가 확인된 경우에만 표시합니다.</div>');
+
+  // Valuation
+  const vItems=[['PER',chip(val.status)],['PBR',chip(val.status)],['시가총액',chip(val.status)],['EPS (TTM)',chip(fund.status)],['Consensus',proInline('consensus')],['목표주가',proInline('consensus')]];
+  setHTML('valuationStrip',vItems.map(([k,v])=>`<div class="metric-mini">${k}<b style="font-size:13px;margin-top:6px">${v}</b></div>`).join(''));
+  setHTML('valuationMeta',metaLine(val.source,val.updatedAt));
+
+  // 기업 이해
+  const sp=staticProfiles[ticker];
+  setHTML('integratedOverview',sp?esc(sp)+'<div class="meta">정적 설명 · 실시간 데이터 아님</div>':chip('PENDING'));
+  setHTML('integratedStrength',proLock('ai_strength'));
+  setHTML('integratedCompetition',proLock('market_share','시장 위치 / 경쟁사 — 유료 데이터 필요'));
+  setHTML('integratedGrowth',proLock('ai_thesis'));
+  setHTML('integratedChecks',proLock('ai_checks'));
+  setHTML('thesisBreakers',proLock('ai_breaker','AI 분석 — 유료버전 필요'));
+
+  // Investment Narrative (구조 유지 · 잠금)
+  setHTML('narrativeShort',proLock('ai_narrative','AI Investment Narrative — 유료버전 필요'));
+  setHTML('narrativeGrid',['산업 변화','경쟁력','실적 성장','밸류에이션','Catalyst','투자 논리','리스크'].map(t=>`<div class="narr-item"><b>${t}</b><span class="status paid">유료버전 필요</span></div>`).join(''));
+  setHTML('narrativeFull','유료버전에서는 실적·밸류에이션·Catalyst·리스크 데이터를 근거로 위 7개 항목을 서술형으로 작성하고, 모든 수치에 출처와 기준일을 표시합니다. 무료버전에서는 AI 분석을 실행하지 않습니다.');
+  show('company',null);
+}
+function openCompanyResearch(){const el=document.getElementById('narrativeShort');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});}
+
+/* Market Brief */
+function marketCard(def,e){
+  const head=`<div class="label">${def.label}</div>`;
+  const it=e&&e.item;
+  if(e&&e.status==='OK'){
+    const c=MarketFmt.change(def.key,it);
+    return `<div class="card" style="padding:14px">${head}<div class="big" style="font-size:20px">${MarketFmt.value(def.key,it.value)}</div>`+
+      `<div class="sub" style="margin-top:3px">${c?`<span class="${c.d>=0?'up':'down'}">${c.text}</span> · `:''}기준일 ${esc(it.asOf)}</div>`+
+      `<div class="meta" style="margin-top:6px">Source: ${it.sourceUrl?`<a href="${esc(it.sourceUrl)}" target="_blank" rel="noopener" style="color:inherit">${esc(it.source)}</a>`:esc(it.source)}${it.fallbackUsed?' (대체 소스)':''}${it.note?'<br>'+esc(it.note):''}</div></div>`;
+  }
+  let body='';
+  if(e&&e.status==='RESTRICTED') body=`<div class="sub" style="margin-top:6px">${esc(it.note)}</div>${it.sourceUrl?`<div class="meta"><a href="${esc(it.sourceUrl)}" target="_blank" rel="noopener" style="color:var(--accent)">원문에서 보기 ↗</a></div>`:''}`;
+  else if(e&&e.status==='KEY_REQUIRED') body=`<div class="sub" style="margin-top:6px">${esc(it.note)}</div>`;
+  else if(e&&e.status==='STALE') body=`<div class="sub" style="margin-top:6px">마지막 관측 ${esc(it.asOf)} (${e.age}일 전) · 허용 기간 초과로 값 숨김</div>`;
+  else if(e&&e.status==='FAILED') body=`<div class="sub" style="margin-top:6px">최근 수집 실패${it&&it.source?' · '+esc(it.source):''}</div>`;
+  return `<div class="card" style="padding:14px">${head}<div class="big" style="font-size:18px">—</div><div style="margin-top:6px">${chip(e?e.status:'NOT_RUN')}</div>${body}</div>`;
+}
+async function renderMarketBrief(){
+  const snap=await MarketDataProvider.getSnapshot();
+  setHTML('briefAsOf','데이터 기준: '+(snap.updatedAt||'—'));
+  const ser=(snap.data&&snap.data.series)||{};
+  setHTML('marketSnapshot',MarketDataProvider.series.map(def=>{
+    if(snap.status==='OK') return marketCard(def,ser[def.key]);
+    return `<div class="card" style="padding:14px"><div class="label">${def.label}</div><div class="big" style="font-size:18px">—</div><div style="margin-top:6px">${chip(snap.status)}</div></div>`;
+  }).join(''));
+  setHTML('marketSnapshotMeta', metaLine(snap.source,snap.updatedAt)
+    + (snap.runStatus==='PARTIAL'?' · 일부 지표 수집 실패':'')
+    + (snap.status!=='OK'? ' · '+snapMessage(snap):'')
+    + ' · 각 카드의 기준일은 원 데이터의 관측일입니다.');
+  setHTML('briefUS',proLock('ai_market','AI 종합분석 — 유료버전 필요'));
+  setHTML('briefKR',proLock('ai_market','AI 종합분석 — 유료버전 필요'));
+  setHTML('briefConclusion',proLock('ai_market','AI 종합분석 — 유료버전 필요'));
+
+  const macro=await CalendarProvider.getMacro();
+  const t=ser.us10y;
+  const tenY = (snap.status==='OK'&&t&&t.status==='OK')
+    ? `<tr><td><b>미국 10년 국채금리</b></td><td>${MarketFmt.value('us10y',t.item.value)}</td><td>${esc(t.item.asOf)}</td><td>${chip('OK')}<div class="sub">${esc(t.item.source)}</div></td></tr>`
+    : `<tr><td><b>미국 10년 국채금리</b></td><td>—</td><td>—</td><td>${chip(snap.status==='OK'&&t?t.status:snap.status)}</td></tr>`;
+  const mrows=['미국 CPI','고용 (비농업고용 · 실업률)','연방기금금리 · FOMC','한국 기준금리','한국 수출'];
+  setHTML('macroRows',tenY+mrows.map(m=>`<tr><td><b>${m}</b></td><td>—</td><td>—</td><td>${chip(macro.status)}</td></tr>`).join(''));
+  setHTML('macroMeta',metaLine(macro.source,macro.updatedAt));
+  setHTML('macroAi',proLock('ai_market','AI 종합분석 — 유료버전 필요')+'<div class="sub" style="margin-top:6px">여러 지표를 종합한 시장 영향 판단</div>');
+
+  const cal=await CalendarProvider.getEvents();
+  setHTML('briefCalendar',`<tr class="empty-row"><td colspan="3">${chip(cal.status)} 실적 발표 · 경제지표 · 기업 이벤트</td></tr>`);
+  setHTML('briefCalendarMeta',metaLine(cal.source,cal.updatedAt));
+
+  const news=await NewsProvider.getHeadlines();
+  setHTML('newsList',`<li>${chip(news.status)}<br><span class="sub">공개 RSS 헤드라인을 출처·발행시각과 함께 표시할 예정입니다.</span></li>`);
+  setHTML('newsMeta',metaLine(news.source,news.updatedAt));
+  setHTML('newsAi',proLock('ai_news','AI 뉴스분석 — 유료버전 필요')+'<div class="sub" style="margin-top:6px">뉴스 요약 · 투자 영향 · 관련 종목</div>');
+}
+function goMarket(anchorText){
+ show('events',navBtn(1));
+ setTimeout(()=>{const el=[...document.querySelectorAll('#events h2')].find(x=>x.textContent.includes(anchorText));if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},50);
+}
+function goResearch(){show('notes',null);}
+
+/* Investment Radar */
+function renderRadar(){
+  const slot=(title,sub)=>`<div class="card">
+    <h2>${title} ${proBadge('ai_radar')}</h2><div class="sub">${sub}</div>
+    <div class="research-grid" style="margin-top:14px">
+     <div class="note"><b>기업 개요</b><br>${proInline('ai_radar')}</div>
+     <div class="note"><b>사업 구조</b><br>${proInline('ai_radar')}</div>
+     <div class="note"><b>포트폴리오 역할</b><br>${proInline('ai_radar')}</div>
+    </div>
+    <div class="metric-strip">${['핵심 지표 1','핵심 지표 2','핵심 지표 3','핵심 지표 4'].map(m=>`<div class="metric-mini">${m}<b>—</b></div>`).join('')}</div>
+    <div class="note"><b>왜 지금?</b><br>${proInline('ai_radar')}</div>
+    <div class="breaker" style="margin-top:10px"><b>투자 논리 훼손 조건</b><br>${proInline('ai_breaker')}</div>
+  </div>`;
+  setHTML('radarSlots', radarStore.ideas.length? '' : slot('이번 Radar · 신규 아이디어','성장 · 이벤트 아이디어 슬롯')+slot('방어 Radar','방어 · 대기자금 아이디어 슬롯'));
+  setHTML('radarHistory',`<tr class="empty-row"><td colspan="5">기록 없음 · 유료버전 활성화 후 기록이 시작됩니다<br><span class="sub">상태값: ${RADAR_SCHEMA.statusValues.join(' · ')}</span></td></tr>`);
+}
+
+/* 13F */
+function quarterInfo(now){
+  const ends=[]; for(let y=now.getFullYear()-1;y<=now.getFullYear();y++) for(const m of [2,5,8,11]) ends.push(new Date(y,m+1,0));
+  const withDl=ends.map(e=>({end:e,deadline:new Date(e.getFullYear(),e.getMonth(),e.getDate()+45),label:e.getFullYear()+' Q'+(Math.floor(e.getMonth()/3)+1)}));
+  const done=withDl.filter(q=>q.deadline<=now), next=withDl.find(q=>q.deadline>now);
+  return {latest:done[done.length-1],next};
+}
+const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+async function render13F(){
+  const q=quarterInfo(new Date());
+  setHTML('f13Quarter',`분기 데이터 · 최근 공시 대상 ${q.latest.label}`);
+  const r=await Sec13FProvider.getDiscovery();
+  setHTML('f13Status',`<b>${STATUS[r.status].text}</b> — SEC EDGAR 13F-HR 원문 연결 전입니다. 연결 전에는 보유종목과 점수를 표시하지 않습니다.<br><span class="sub">13F 제출기한은 분기말 후 45일입니다(주말·공휴일이면 다음 영업일). 최근 공시 대상 분기: <b>${q.latest.label}</b> (기한 ${ymd(q.latest.deadline)}) · 다음 분기: <b>${q.next.label}</b> (기한 ${ymd(q.next.deadline)} 전후). 13F는 분기말 시점의 보유 현황으로, 현재 보유와 다를 수 있습니다.</span>`);
+  ['f13Kpi1','f13Kpi2','f13Kpi3','f13Kpi4'].forEach(id=>setHTML(id,chip(r.status)));
+  setHTML('discoveryRows',`<tr class="empty-row"><td colspan="6">${chip(r.status)} 신규 편입 · 보유주식 증가/감소 · 연속 매집 · 포트폴리오 비중 · 복수 기관 동시 보유는 SEC 원문 연결 후 계산합니다.</td></tr>`);
+  setHTML('discoveryMeta',metaLine(r.source,r.updatedAt));
+}
+function show13fTab(tab){
+ document.getElementById('tab13f-discovery').style.display=tab==='discovery'?'block':'none';
+ document.getElementById('tab13f-manager').style.display=tab==='manager'?'block':'none';
+ if(tab==='manager') renderManager(document.getElementById('managerSelect').value);
+}
+async function renderManager(key){
+  const m=Sec13FProvider.managers[key]; if(!m) return;
+  document.getElementById('managerTitle').textContent=m.name+' · TOP 10';
+  const r=await Sec13FProvider.getManagerTop(key);
+  setHTML('managerRows',`<tr class="empty-row"><td colspan="7">${chip(r.status)} ${esc(m.name)}의 13F-HR 원문 연결 후 상위 10개 보유종목을 표시합니다.</td></tr>`);
+  setHTML('managerMeta',metaLine(r.source,r.updatedAt));
+}
+
+/* Research Notes (legacy, locked) */
+function renderResearch(key){
+  const sel=document.getElementById('researchSelect');
+  const label=sel?[...sel.options].find(o=>o.value===key):null;
+  const t=document.getElementById('placeholder-title'); if(t) t.textContent=(label?label.textContent:key)+' · Research Notes';
+}
+function filterDiscovery(){ /* 13F 필터: Phase 4에서 실제 데이터와 함께 사용 */ }
+
+/* ---------- Init ---------- */
+function init(){
+  setHTML('appOpenedAt','화면 생성 '+fmtKST(new Date())+' · '+APP.version);
+  refreshWatchViews();
+  renderDashCalendar();
+  renderMarketBrief();
+  renderRadar();
+  render13F();
+  renderManager('berkshire');
+  const rs=document.getElementById('researchSelect');
+  if(rs){rs.addEventListener('change',e=>renderResearch(e.target.value));renderResearch(rs.value);}
+  const fn=document.getElementById('fName');
+  if(fn){fn.addEventListener('input',e=>renderStockSuggestions(e.target.value));fn.addEventListener('focus',e=>{if(e.target.value)renderStockSuggestions(e.target.value);});}
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+</script>
+</body>
+</html>

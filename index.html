@@ -362,6 +362,19 @@ details.market-detail[open]{
 .fn-step ul{margin:0;padding-left:18px;font-size:12.8px;line-height:1.65}
 .fn-hit{font-size:11px;font-weight:700;border-radius:4px;padding:1px 6px;margin-left:4px}
 .fn-hit.on{background:#fdecec;color:#a12a2a}.fn-hit.off{background:#eef6f0;color:#2d6a43}
+/* V20 FREE FINAL+ : compact PRO · FREE 중심 */
+.pro-mini{display:flex;align-items:center;gap:6px;margin-top:9px;padding-top:8px;border-top:1px dashed #e1e5ec;font-size:11.5px;color:var(--muted)}
+.pro-mini .pro-badge{font-size:9px;padding:2px 5px}
+.free-list{margin:0;padding-left:17px;font-size:12.8px;line-height:1.65}
+.free-list li.flag{color:#8a2a2a}
+.fn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:8px;margin-top:8px}
+.fn-area{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:#fff}
+.fn-area h4{margin:0 0 5px;font-size:12.5px;display:flex;justify-content:space-between;gap:6px;align-items:center}
+.fn-area.thin{background:#fafbfc;padding:8px 12px;grid-column:1/-1}
+.fn-area.thin h4{margin:0}
+.price-form{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:12px}
+.price-form input{width:110px;border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:12.5px}
+.linkbtn{background:none;border:0;color:var(--accent);cursor:pointer;font-size:12px;padding:0;font-family:inherit}
 @media(max-width:900px){.plan-chip{display:none}}
 </style>
 </head>
@@ -516,6 +529,7 @@ details.market-detail[open]{
   <h2>Valuation</h2>
   <div class="sub" style="margin-bottom:10px">무료 데이터로 신뢰성 있게 확인 가능한 지표만 표시합니다.</div>
   <div class="metric-strip" id="valuationStrip"></div>
+  <div id="priceForm"></div>
   <div class="meta" id="valuationMeta"></div>
  </div>
 </div>
@@ -551,9 +565,8 @@ details.market-detail[open]{
   <h2>Investment Narrative</h2>
   <div class="sub" style="margin-bottom:10px">실제 실적·성장률·가이던스 숫자를 근거로 한 서술형 분석</div>
   <div id="freeNarrative"></div>
-  <div style="margin:16px 0 8px;font-size:13px;font-weight:700">AI 심층 Investment Narrative</div>
-  <div class="note narrative-preview" id="narrativeShort"></div>
-  <div class="narr-grid" id="narrativeGrid"></div>
+  <div id="narrativeShort"></div>
+  <div class="narr-grid" id="narrativeGrid" style="display:none"></div>
   <details class="market-detail"><summary>내러티브 전체 보기</summary><div class="brief-section" id="narrativeFull"></div></details>
  </div>
 </div>
@@ -585,7 +598,7 @@ details.market-detail[open]{
    <h2>Macro Watch</h2>
    <table><thead><tr><th>지표</th><th>최근값</th><th>발표일 / 다음 발표</th><th>상태</th></tr></thead><tbody id="macroRows"></tbody></table>
    <div class="meta" id="macroMeta"></div>
-   <div class="locked-box" style="margin-top:10px" id="macroAi"></div>
+   <div id="macroAi"></div>
   </div>
  </div>
 
@@ -599,7 +612,7 @@ details.market-detail[open]{
    <h2>핵심 뉴스 Monitor</h2>
    <ul class="news" id="newsList"></ul>
    <div class="meta" id="newsMeta"></div>
-   <div class="locked-box" style="margin-top:10px" id="newsAi"></div>
+   <div id="newsAi"></div>
   </div>
  </div>
  <div class="note"><b>업데이트 원칙:</b> 원시 데이터(지수·금리·환율·유가·경제지표·일정·헤드라인)는 무료 공개 소스에서 자동 갱신하고 각 항목에 출처와 업데이트 시각을 표시합니다. 데이터를 가져오지 못하면 이전 숫자를 남기지 않고 상태를 표시합니다.</div>
@@ -765,7 +778,7 @@ details.market-detail[open]{
    ===================================================================== */
 
 /* ---------- 1) CONFIG ---------- */
-const APP = { version:'V20 FREE FINAL', title:'Investment Research Center · V20 FREE FINAL', plan:'FREE', tz:'Asia/Seoul',
+const APP = { version:'V20 FREE FINAL+', title:'Investment Research Center · V20 FREE FINAL+', plan:'FREE', tz:'Asia/Seoul',
   companyDataUrl:'data/companies.json',
   // GitHub Actions가 생성하는 시장 데이터 JSON (GitHub Pages에서 같은 저장소 경로로 제공)
   marketDataUrl:'data/market.json' };
@@ -1125,7 +1138,7 @@ function renderDashboardWatch(){
     const opts=LEVELS.map(l=>`<option ${x.level===l?'selected':''}>${l}</option>`).join('');
     return `<tr class="company" onclick="company('${esc(x.ticker)}')">
       <td><b>${esc(x.name)}</b><br><span class="pill">${esc(x.ticker)}</span> <span class="sub">${x.market==='KR'?'한국':'미국'}</span></td>
-      <td>${x.market==='KR'?`<span class="status check" title="한국 시세는 무료 키 연결 결정 후 제공">데이터 확인 필요</span>`:`<span class="status paid" title="거래소 시세 라이선스 데이터">유료 데이터 필요</span>`}</td><td>—</td>
+      <td>${(()=>{const p=x.market==='US'?UserPrice.get(String(x.ticker).toUpperCase()):null;return p?`$${p.price.toFixed(2)}<br><span class="sub">입력 ${esc(p.date.slice(5))}</span>`:'<span class="sub" title="주가 자동 수집은 라이선스상 미제공 · 기업 화면에서 직접 입력 가능">—</span>';})()}</td><td>—</td>
       <td onclick="event.stopPropagation()"><select class="lvl-select" aria-label="등급 변경" onchange="changeDashLevel(${i},this.value)">${opts}</select></td>
       <td>${esc(x.memo||'-')}</td>
       <td onclick="event.stopPropagation()"><button class="mini-btn" onclick="deleteDashWatch(${i})">삭제</button></td></tr>`;
@@ -1195,7 +1208,7 @@ async function renderDashCalendar(){
   const items=[['실적 발표','관심기업 공식 IR · SEC 8-K'],['주요 경제지표','BLS · BEA · Fed 공식 일정'],['기업 이벤트','기업 IR 일정']];
   setHTML('dashCalendar',items.map(([t,s])=>`<li><b>${t}</b> ${chip(r.status)}<br><span class="sub">연결 예정 소스: ${s}</span></li>`).join(''));
   setHTML('dashCalendarMeta',metaLine(r.source,r.updatedAt));
-  setHTML('dashPriceMeta','시세 '+metaLine(null,null));
+  setHTML('dashPriceMeta','주가: 라이선스상 자동 수집 미제공 · 기업 화면에서 직접 입력한 가격만 표시(이 브라우저에만 저장)');
 }
 
 /* Legacy watchlist view (kept) */
@@ -1257,6 +1270,123 @@ function addWatch(){
 /* Company Integrated Research */
 const LEGACY_KEYS={SAMSUNG:'005930',HYNIX:'000660'};
 let currentCompanyKey=null;
+/* =====================================================================
+   V20 FREE FINAL+ — 규칙 기반 분석 (AI 아님)
+   입력: data/companies.json (SEC EDGAR 보고값) + 사용자가 직접 입력한 가격(이 브라우저에만 저장)
+   원칙: 보고값 또는 보고값 간 단순 계산(YoY·마진·비중·FCF)만 사용. 없으면 '데이터 확인 필요'.
+   ===================================================================== */
+const UserPrice = {
+  KEY:'irc_user_prices',
+  all(){ try{ return JSON.parse(localStorage.getItem(this.KEY))||{}; }catch(e){ return {}; } },
+  get(t){ return this.all()[t]||null; },
+  set(t,price){ const a=this.all(); a[t]={price, date:todayKST()}; try{localStorage.setItem(this.KEY,JSON.stringify(a));}catch(e){} },
+  del(t){ const a=this.all(); delete a[t]; try{localStorage.setItem(this.KEY,JSON.stringify(a));}catch(e){} }
+};
+function todayKST(){ try{ return new Intl.DateTimeFormat('sv-SE',{timeZone:APP.tz}).format(new Date()); }catch(e){ return new Date().toISOString().slice(0,10); } }
+function daysSince(ymd){ return Math.floor((new Date(todayKST())-new Date(ymd))/86400000); }
+function proMini(f,text){ return `<div class="pro-mini">${proBadge(f)}<span>${esc(text||FEATURES[f].label+' — '+(FEATURES[f].paidData?'유료 데이터 필요':'유료버전 필요'))}</span></div>`; }
+const fpct=p=>(p>=0?'+':'')+p.toFixed(1)+'%', fpp=p=>(p>=0?'+':'')+p.toFixed(1)+'%p';
+const ulist=(arr,cls='')=>`<ul class="free-list">${arr.map(x=>typeof x==='string'?`<li>${x}</li>`:`<li class="${x.flag?'flag':''}">${x.t}</li>`).join('')}</ul>`;
+
+const Analyze = {
+  RULES:{ growthStrong:10, marginMove:1, marginBreak:3, concentration:50, eventDays:90 },
+  ITEM8K:{'1.01':'중요 계약 체결','1.02':'중요 계약 해지','1.05':'사이버보안 사고','2.01':'자산 인수·처분 완료','2.02':'실적 발표','2.03':'재무 의무(차입) 발생','2.04':'채무 조기상환 사유','2.05':'구조조정·철수 비용','2.06':'자산 손상','3.01':'상장 요건 관련 통지','3.02':'미등록 지분 발행','4.01':'감사인 변경','4.02':'과거 재무제표 신뢰 불가','5.01':'지배권 변경','5.02':'임원·이사 변동','5.03':'정관 변경','5.07':'주주총회 결과','7.01':'Reg FD 공시','8.01':'기타 중요 사항'},
+  RISK_ITEMS:['1.02','1.05','2.04','2.05','2.06','3.01','4.01','4.02','5.01'],
+  run(D,unit,fxd){
+    const M=D.metrics||{}, A={D,M,unit,fxd};
+    const q=k=>M[k]&&M[k].q, fy=k=>M[k]&&M[k].fy;
+    A.useFy=!q('revenue')&&!!fy('revenue'); A.per=A.useFy?'회계연도':'분기';
+    const g=k=>A.useFy?fy(k):q(k);
+    ['revenue','operatingIncome','netIncome','epsDiluted','grossProfit'].forEach(k=>A[k]=g(k));
+    const same=(a,b)=>a&&b&&a.end===b.end;
+    const mg=(x,r)=>same(x,r)&&r.value?x.value/r.value*100:null;
+    const pmg=(x,r)=>x&&r&&x.prevValue!=null&&r.prevValue&&x.prevEnd===r.prevEnd?x.prevValue/r.prevValue*100:null;
+    A.opm=mg(A.operatingIncome,A.revenue); A.popm=pmg(A.operatingIncome,A.revenue);
+    A.gpm=mg(A.grossProfit,A.revenue); A.pgpm=pmg(A.grossProfit,A.revenue);
+    // 연간 지표
+    A.revF=fy('revenue'); A.oiF=fy('operatingIncome'); A.epsF=fy('epsDiluted'); A.niF=fy('netIncome');
+    A.rndF=fy('rnd'); A.ocfF=fy('ocf'); A.capexF=fy('capex');
+    A.opmF=mg(A.oiF,A.revF); A.rndRatio=mg(A.rndF,A.revF);
+    A.fcfF=same(A.ocfF,A.capexF)?{value:A.ocfF.value-A.capexF.value,end:A.ocfF.end}:null;
+    A.fcfMargin=A.fcfF&&same(A.fcfF,A.revF)&&A.revF.value?A.fcfF.value/A.revF.value*100:null;
+    A.bal=D.balance||{};
+    A.seg=D.segments&&D.segments.status==='OK'?D.segments:null;
+    A.top=A.seg?A.seg.revenue.rows[0]:null;
+    // 이벤트 (SEC 공시)
+    const cutoff=new Date(Date.now()-this.RULES.eventDays*86400000).toISOString().slice(0,10);
+    A.events=(D.filings||[]).filter(f=>f.date>=cutoff&&f.form.startsWith('8-K')).map(f=>{
+      const codes=(f.items||'').split(',').map(s=>s.trim()).filter(c=>c&&c!=='9.01');
+      return {f, codes, labels:codes.map(c=>this.ITEM8K[c]||('Item '+c)), risk:codes.some(c=>this.RISK_ITEMS.includes(c))};
+    });
+    A.itemsKnown=(D.filings||[]).some(f=>'items' in f);
+    A.periodic=(D.filings||[]).find(f=>/^(10-Q|10-K|20-F)/.test(f.form))||null;
+    this.points(A); this.risks(A); this.breakers(A); this.checks(A);
+    return A;
+  },
+  points(A){
+    const R=this.RULES,p=[],r=A.revenue,o=A.operatingIncome,e=A.epsDiluted;
+    if(r&&r.yoyPct!=null&&r.yoyPct>=R.growthStrong) p.push(`매출 두 자릿수 성장 (YoY ${fpct(r.yoyPct)})`);
+    else if(r&&r.yoyPct!=null&&r.yoyPct>0) p.push(`매출 증가 유지 (YoY ${fpct(r.yoyPct)})`);
+    if(r&&o&&r.yoyPct!=null&&o.yoyPct!=null&&o.end===r.end&&o.yoyPct>r.yoyPct&&o.yoyPct>0) p.push(`영업이익 증가율(${fpct(o.yoyPct)})이 매출 증가율(${fpct(r.yoyPct)})보다 높음 → 영업 레버리지`);
+    if(A.opm!=null&&A.popm!=null&&A.opm-A.popm>=R.marginMove) p.push(`영업이익률 개선 ${A.opm.toFixed(1)}% (${fpp(A.opm-A.popm)})`);
+    if(A.gpm!=null&&A.pgpm!=null&&A.gpm-A.pgpm>=R.marginMove) p.push(`매출총이익률 개선 ${A.gpm.toFixed(1)}% (${fpp(A.gpm-A.pgpm)})`);
+    if(e&&r&&e.end===r.end&&e.yoyPct!=null&&e.yoyPct>0) p.push(`희석 EPS 증가 (YoY ${fpct(e.yoyPct)})`);
+    if(A.fcfF&&A.fcfF.value>0) p.push(`최근 회계연도 FCF 흑자 ${fmtMoney(A.fcfF.value,A.unit('ocf'),A.fxd)}${A.fcfMargin!=null?` (매출 대비 ${A.fcfMargin.toFixed(1)}%)`:''}`);
+    if(A.bal.cash&&A.bal.cash.unit==='USD') p.push(`현금성자산 ${fmtMoney(A.bal.cash.value,'USD',A.fxd)} (${esc(A.bal.cash.end)})`);
+    A.pointList=p;
+  },
+  risks(A){
+    const R=this.RULES,k=[],r=A.revenue,o=A.operatingIncome,e=A.epsDiluted;
+    if(r&&r.yoyPct!=null&&r.yoyPct<0) k.push({t:`${A.per} 매출 감소 (YoY ${fpct(r.yoyPct)})`,flag:1});
+    if(o&&o.yoyPct!=null&&o.yoyPct<0) k.push({t:`영업이익 감소 (YoY ${fpct(o.yoyPct)})`,flag:1});
+    if(A.opm!=null&&A.popm!=null&&A.opm-A.popm<=-R.marginMove) k.push({t:`영업이익률 하락 ${A.opm.toFixed(1)}% (${fpp(A.opm-A.popm)})`,flag:1});
+    if(A.gpm!=null&&A.pgpm!=null&&A.gpm-A.pgpm<=-R.marginMove) k.push({t:`매출총이익률 하락 ${A.gpm.toFixed(1)}% (${fpp(A.gpm-A.pgpm)})`,flag:1});
+    if(e&&e.yoyPct!=null&&e.yoyPct<0) k.push({t:`희석 EPS 감소 (YoY ${fpct(e.yoyPct)})`,flag:1});
+    if(A.netIncome&&A.netIncome.value<0) k.push({t:`${A.per} 순손실 ${fmtMoney(A.netIncome.value,A.unit('netIncome'),A.fxd)}`,flag:1});
+    if(A.fcfF&&A.fcfF.value<0) k.push({t:`최근 회계연도 FCF 적자 ${fmtMoney(A.fcfF.value,A.unit('ocf'),A.fxd)}`,flag:1});
+    if(A.bal.equity&&A.bal.equity.value<0) k.push({t:`자본총계 마이너스 (${esc(A.bal.equity.end)})`,flag:1});
+    if(A.top&&A.top.share!=null&&A.top.share>=R.concentration) k.push({t:`매출 집중: ${esc(A.top.name)} 부문 ${A.top.share}%`,flag:0});
+    A.events.filter(x=>x.risk).forEach(x=>k.push({t:`8-K (${esc(x.f.date)}): ${esc(x.labels.join(', '))}`,flag:1}));
+    A.riskList=k; A.riskCount=k.filter(x=>x.flag).length;
+  },
+  breakers(A){
+    const R=this.RULES,t=[],r=A.revenue,o=A.operatingIncome,e=A.epsDiluted;
+    const hit=v=>v==null?'<span class="fn-hit off" style="background:#f1f3f6;color:#5d6878">판정 불가</span>':v?'<span class="fn-hit on">현재 해당</span>':'<span class="fn-hit off">현재 미해당</span>';
+    if(r) t.push(`${A.per} 매출 YoY 마이너스${r.yoyPct!=null?` (현재 ${fpct(r.yoyPct)})`:''} ${hit(r.yoyPct==null?null:r.yoyPct<0)}`);
+    if(o) t.push(`영업이익 YoY 마이너스${o.yoyPct!=null?` (현재 ${fpct(o.yoyPct)})`:''} ${hit(o.yoyPct==null?null:o.yoyPct<0)}`);
+    if(A.opm!=null) t.push(`영업이익률 전년 대비 ${R.marginBreak}%p 이상 하락${A.popm!=null?` (현재 ${fpp(A.opm-A.popm)})`:''} ${hit(A.popm==null?null:(A.opm-A.popm)<=-R.marginBreak)}`);
+    if(e) t.push(`희석 EPS YoY 마이너스${e.yoyPct!=null?` (현재 ${fpct(e.yoyPct)})`:''} ${hit(e.yoyPct==null?null:e.yoyPct<0)}`);
+    if(A.fcfF) t.push(`연간 FCF 적자 전환 (현재 ${fmtMoney(A.fcfF.value,A.unit('ocf'),null)}) ${hit(A.fcfF.value<0)}`);
+    if(A.itemsKnown) t.push(`최근 ${R.eventDays}일 위험 성격 8-K (구조조정·손상·재무제표 신뢰 불가 등) ${hit(A.events.some(x=>x.risk))}`);
+    A.breakerList=t;
+  },
+  checks(A){
+    const c=[],r=A.revenue,e=A.epsDiluted;
+    if(r) c.push(`다음 ${A.per} 매출 YoY — 현재 ${r.yoyPct!=null?fpct(r.yoyPct):'—'}`);
+    if(A.opm!=null) c.push(`영업이익률 — 현재 ${A.opm.toFixed(1)}%`);
+    if(A.gpm!=null) c.push(`매출총이익률 — 현재 ${A.gpm.toFixed(1)}%`);
+    if(e) c.push(`희석 EPS — 현재 ${fmtEps(e.value,A.unit('epsDiluted'))}${e.yoyPct!=null?` (YoY ${fpct(e.yoyPct)})`:''}`);
+    if(A.top) c.push(`${esc(A.top.name)} 매출 비중 — 현재 ${A.top.share!=null?A.top.share+'%':'—'}`);
+    if(A.fcfMargin!=null) c.push(`FCF 마진 (연간) — 현재 ${A.fcfMargin.toFixed(1)}%`);
+    c.push('가이던스 · 다음 실적일 — <span class="status check">데이터 확인 필요</span> <span class="sub">기업 IR 원문</span>');
+    A.checkList=c;
+  },
+  // 사용자 입력 가격 기반 밸류에이션 (USD 보고 기업만)
+  valuation(A,up){
+    const out={ok:false};
+    if(!up) { out.reason='가격 미입력'; return out; }
+    const sh=A.bal.sharesOutstanding, eq=A.bal.equity, eps=A.epsF;
+    if(A.unit('revenue')&&A.unit('revenue')!=='USD'){ out.reason='보고통화가 USD가 아니어서(ADR 비율 확인 필요) 계산하지 않습니다.'; return out; }
+    out.ok=true; out.price=up.price; out.date=up.date;
+    if(sh&&sh.unit==='shares'){ out.mcap=up.price*sh.value; out.sharesEnd=sh.end; }
+    const eu=A.unit('epsDiluted')||'';
+    if(eps&&eps.value>0&&eu.startsWith('USD')) out.per=up.price/eps.value; else if(eps&&eps.value<=0) out.perNote='적자 (산출 불가)';
+    if(out.mcap&&eq&&eq.unit==='USD'&&eq.value>0) out.pbr=out.mcap/eq.value; else if(eq&&eq.value<=0) out.pbrNote='자본 마이너스';
+    if(out.mcap&&A.fcfF) out.fcfYield=A.fcfF.value/out.mcap*100;
+    return out;
+  }
+};
+
 async function company(t){
   const ticker=LEGACY_KEYS[t]||String(t).toUpperCase();
   currentCompanyKey=ticker;
@@ -1273,190 +1403,189 @@ async function company(t){
   if(currentCompanyKey!==ticker) return;
   const fxd=fx.status==='OK'?fx.data:null;
   const D=r.data, M=(D&&D.metrics)||{}, seg=D&&D.segments;
-  const priceStatus = market==='KR' ? `<span class="status check">데이터 확인 필요</span>` : proInline('price_data');
-  const st=r.status==='PARTIAL'?'OK':r.status;               // 부분 실패도 있는 항목은 표시
-  const miss=chip(st==='OK'?'CHECK':st);                      // 데이터 파일은 있으나 해당 항목이 없을 때
+  const st=r.status==='PARTIAL'?'OK':r.status;
+  const miss=chip(st==='OK'?'CHECK':st);
   const why=r.reason?`<div class="sub" style="margin-top:6px">${esc(r.reason)}</div>`:'';
   const secMeta=metaLine(r.source,r.updatedAt)+(r.status==='PARTIAL'?' · 일부 항목 수집 실패':'');
+  const unit=k=>M[k]&&M[k].unit;
+  const A=D&&D.metrics?Analyze.run(D,unit,fxd):null;
+  const up=market==='US'?UserPrice.get(ticker):null;
+  const V=A?Analyze.valuation(A,up):{ok:false};
+  const priceHint = market==='KR' ? '<span class="status check">데이터 확인 필요</span>'
+    : `<button class="linkbtn" onclick="focusPriceInput()">가격 직접 입력 →</button>`;
 
   setHTML('fxNote',fxd?`<b>1 USD = ${fxd.rate.toLocaleString('ko-KR',{minimumFractionDigits:2,maximumFractionDigits:2})}원</b> (기준일 ${esc(fxd.asOf)} · ${esc(fx.source)}) · 실적 기간 평균환율이 아닌 최신 기준환율로 환산한 참고값`:`${chip(fx.status)} 환율을 확인할 수 없어 원화 환산을 표시하지 않습니다.`);
 
   // 기업 개요
+  const priceCell = V.ok ? `$${V.price.toFixed(2)} <span class="sub">직접 입력 · ${esc(V.date)}</span>` : priceHint;
+  const mcapCell = V.ok&&V.mcap ? `${fmtMoney(V.mcap,'USD',fxd)} <span class="sub">계산값</span>` : (V.ok?'<span class="status check">데이터 확인 필요</span> <span class="sub">발행주식수 없음</span>':priceHint);
   const prof=[['기업명',esc(D&&D.name?D.name:name)],['티커',esc(ticker)],['시장',esc((D&&D.exchange)||(c&&c.exchange)||(market==='KR'?'한국':'미국'))],['섹터',esc(sector)],
-    ['산업',D&&D.sicDescription?esc(D.sicDescription)+' <span class="sub">(SEC SIC)</span>':miss],['시가총액',priceStatus],['현재 주가',priceStatus]];
+    ['산업',D&&D.sicDescription?esc(D.sicDescription)+' <span class="sub">(SEC SIC)</span>':miss],['시가총액',mcapCell],['현재 주가',priceCell]];
   setHTML('profileGrid',prof.map(([k,v])=>`<div class="metric-mini">${k}<b style="font-size:14px">${v}</b></div>`).join(''));
-  setHTML('profileMeta',`기업명·시장·산업: ${D?'SEC EDGAR submissions':'앱 내부 종목 목록 / 관심기업 입력값'} · 섹터: 앱 내부 분류 · ${secMeta}`);
+  setHTML('profileMeta',`기업명·시장·산업: ${D?'SEC EDGAR submissions':'앱 내부 종목 목록 / 관심기업 입력값'} · ${secMeta}${V.ok?` · 주가: 사용자 입력(${esc(V.date)}, 이 브라우저에만 저장) · 시가총액 = 입력 주가 × SEC 발행주식수${V.sharesEnd?'('+esc(V.sharesEnd)+')':''}`:''}`);
 
   const rq=M.revenue&&M.revenue.q, oq=M.operatingIncome&&M.operatingIncome.q, nq=M.netIncome&&M.netIncome.q, eq=M.epsDiluted&&M.epsDiluted.q;
   const rf=M.revenue&&M.revenue.fy, of=M.operatingIncome&&M.operatingIncome.fy, nf=M.netIncome&&M.netIncome.fy, ef=M.epsDiluted&&M.epsDiluted.fy;
-  const unit=k=>M[k]&&M[k].unit;
   const qLabel=rq?`FY${rq.fy||''} ${rq.fp||''}`.trim():null;
 
-  // 신호 (규칙 기반 · AI 판단 아님)
+  // 신호 (모두 규칙 기반)
   setHTML('signalEarnings',rq&&rq.yoyPct!=null?`<span style="font-size:15px">${yoyHtml(rq.yoyPct)}</span><div class="sub" style="font-size:11px;font-weight:400">분기 매출 기준 · 규칙 기반</div>`:miss);
   setHTML('signalConsensus',`<span class="status paid">유료 데이터 필요</span>`);
-  setHTML('signalValuation',priceStatus);
-  setHTML('signalCatalyst',proInline('ai_catalyst'));
-  setHTML('signalRisk',proInline('ai_risk'));
+  setHTML('signalValuation',V.ok&&V.per?`<span style="font-size:15px">PER ${V.per.toFixed(1)}배</span><div class="sub" style="font-size:11px;font-weight:400">입력 주가 · 연간 EPS 기준</div>`:(A?`<span class="sub" style="font-size:12px;font-weight:500">가격 입력 시 계산</span>`:miss));
+  setHTML('signalCatalyst',A&&A.itemsKnown?`<span style="font-size:15px">8-K ${A.events.length}건</span><div class="sub" style="font-size:11px;font-weight:400">최근 90일 · SEC 공시</div>`:(A?`<span class="sub" style="font-size:12px;font-weight:500">다음 수집 후 표시</span>`:miss));
+  setHTML('signalRisk',A?`<span style="font-size:15px" class="${A.riskCount?'down':''}">점검 ${A.riskCount}건 해당</span><div class="sub" style="font-size:11px;font-weight:400">규칙 기반 · 아래 리스크 참고</div>`:miss);
 
   // KPI
-  // 분기 데이터가 없으면(해외기업 등) 최근 회계연도로 대체하고 그 사실을 표시
   const useFy=!rq&&!!rf, kr=rq||rf, ko=useFy?of:oq, ke=useFy?ef:eq;
   setHTML('quarter',rq?esc(qLabel):(rf?`FY${esc(rf.fy||rf.end.slice(0,4))} <span class="sub" style="font-size:12px">연간</span>`:miss));
   setHTML('revenue',kr?fmtMoney(kr.value,unit('revenue'),fxd):miss); setHTML('revchange',kr?yoyHtml(kr.yoyPct)+` · ${esc(kr.end)} 종료 ${useFy?'회계연도':'분기'}`:'');
   setHTML('profit',ko?fmtMoney(ko.value,unit('operatingIncome'),fxd):(ke?fmtEps(ke.value,unit('epsDiluted')):miss));
   setHTML('profitlabel',ko?`영업이익 · ${yoyHtml(ko.yoyPct)}${ke?' · 희석 EPS '+fmtEps(ke.value,unit('epsDiluted')):''}`:(ke?'희석 EPS':'영업이익 / EPS'));
-  setHTML('valuation',priceStatus); setHTML('valuationSub',`Consensus — 유료 데이터 필요 ${proBadge('consensus')}`);
-  setHTML('nextdate','<span class="status check">데이터 확인 필요</span>'); setHTML('nextevent','다음 실적일은 기업 IR 공지 확인');
+  setHTML('valuation',V.ok&&V.per?`PER ${V.per.toFixed(1)}배`:(market==='KR'?'<span class="status check">데이터 확인 필요</span>':'<span class="sub" style="font-size:13px;font-weight:600">가격 입력 시 계산</span>'));
+  setHTML('valuationSub',`Consensus ${proBadge('consensus')}`);
+  setHTML('nextdate',A&&A.periodic?esc(A.periodic.date):'<span class="status check">데이터 확인 필요</span>'); setHTML('nextevent',A&&A.periodic?`최근 정기공시 ${esc(A.periodic.form)} · 다음 실적일은 IR 확인`:'다음 실적일은 기업 IR 공지 확인');
+  document.querySelector('#nextdate').closest('.card').querySelector('.label').textContent=A&&A.periodic?'최근 정기공시':'다음 확정 일정';
   setHTML('kpiMeta',secMeta+(rq?` · 원문: ${esc(rq.form)} ${esc(rq.filed)} 제출`:'')+(unit('revenue')&&unit('revenue')!=='USD'&&unit('revenue')!=='KRW'?` · 보고통화 ${esc(unit('revenue'))} (원화 환산 안 함)`:''));
 
-  // 실적 요약 (데이터로 구성한 사실 문장 · AI 아님)
-  if(rq){
-    const parts=[`${esc(rq.end)} 종료 분기(${esc(qLabel)}) 매출 ${fmtMoney(rq.value,unit('revenue'),fxd)}${rq.yoyPct!=null?`, 전년 동기 대비 ${rq.yoyPct>=0?'+':''}${rq.yoyPct.toFixed(1)}%`:''}.`];
-    if(oq&&oq.end===rq.end) parts.push(`영업이익 ${fmtMoney(oq.value,unit('operatingIncome'),fxd)}${oq.yoyPct!=null?` (YoY ${oq.yoyPct>=0?'+':''}${oq.yoyPct.toFixed(1)}%)`:''}.`);
-    if(eq&&eq.end===rq.end) parts.push(`희석 EPS ${fmtEps(eq.value,unit('epsDiluted'))}.`);
-    setHTML('earningsSummary',parts.join(' ')+`<div class="meta">SEC ${esc(rq.form)} XBRL 보고값 · AI 분석 아님</div>`);
-  } else setHTML('earningsSummary',`${chip(st==='OK'?'CHECK':st)}${why||'<div class="sub" style="margin-top:6px">최근 분기 실적이 XBRL로 확인되지 않습니다(해외기업은 연간 보고서만 있을 수 있음).</div>'}`);
-  setHTML('thesis',proLock('ai_thesis'));
+  // 실적 요약
+  if(kr){
+    const parts=[`${esc(kr.end)} 종료 ${useFy?'회계연도':'분기('+esc(qLabel)+')'} 매출 ${fmtMoney(kr.value,unit('revenue'),fxd)}${kr.yoyPct!=null?`, 전년 대비 ${fpct(kr.yoyPct)}`:''}.`];
+    if(ko&&ko.end===kr.end) parts.push(`영업이익 ${fmtMoney(ko.value,unit('operatingIncome'),fxd)}${ko.yoyPct!=null?` (YoY ${fpct(ko.yoyPct)})`:''}${A&&A.opm!=null?`, 영업이익률 ${A.opm.toFixed(1)}%`:''}.`);
+    if(ke&&ke.end===kr.end) parts.push(`희석 EPS ${fmtEps(ke.value,unit('epsDiluted'))}.`);
+    setHTML('earningsSummary',parts.join(' ')+`<div class="meta">SEC ${esc(kr.form)} XBRL 보고값 · 규칙 기반 요약</div>`);
+  } else setHTML('earningsSummary',`${miss}${why}`);
+
+  // 투자 포인트 / 리스크 (FREE 중심 + compact PRO)
+  setHTML('thesis',A?(A.pointList.length?ulist(A.pointList):'<div class="sub">규칙 기준을 충족한 포인트 없음</div>')+proMini('ai_thesis','AI 심층 해석 — 유료버전'):`${miss}${why}`);
+  setHTML('companyRisks',A?(A.riskList.length?ulist(A.riskList):'<div class="sub">규칙 기준에 해당하는 리스크 신호 없음</div>')+`<div class="meta">SEC 숫자·8-K 항목 기준 기계적 점검</div>`+proMini('ai_risk','AI 리스크 심층분석 — 유료버전'):`${miss}${why}`);
+
   const fl=D&&D.filings;
-  setHTML('companyIssues',fl&&fl.length? fl.slice(0,6).map(f=>`<li><span class="date">${esc(f.date)}</span><a href="${esc(f.url)}" target="_blank" rel="noopener" style="color:var(--accent)"><b>${esc(f.form)}</b></a> <span class="sub">${esc(f.desc||'')}${f.reportDate?' · 기준일 '+esc(f.reportDate):''}</span></li>`).join('')+`<li class="sub" style="border:0">Source: SEC EDGAR · Last Updated: ${esc(r.updatedAt||'—')}</li>`
-    : `<li>최근 공시 목록 ${chip(st==='OK'?'CHECK':st)}${why}</li>`);
+  setHTML('companyIssues',fl&&fl.length? fl.slice(0,6).map(f=>{const it=(f.items||'').split(',').map(s=>s.trim()).filter(x=>x&&x!=='9.01').map(x=>Analyze.ITEM8K[x]||('Item '+x));
+      return `<li><span class="date">${esc(f.date)}</span><a href="${esc(f.url)}" target="_blank" rel="noopener" style="color:var(--accent)"><b>${esc(f.form)}</b></a> <span class="sub">${it.length?esc(it.join(' · ')):esc(f.desc||'')}${f.reportDate?' · 기준일 '+esc(f.reportDate):''}</span></li>`;}).join('')+`<li class="sub" style="border:0">Source: SEC EDGAR · Last Updated: ${esc(r.updatedAt||'—')}</li>`
+    : `<li>최근 공시 목록 ${miss}${why}</li>`);
 
   const row=(label,q,f,k,isEps)=>`<tr><td><b>${label}</b></td><td>${q?(isEps?fmtEps(q.value,unit(k)):fmtMoney(q.value,unit(k),fxd))+'<br>'+yoyHtml(q.yoyPct)+` <span class="sub">${esc(q.end)}</span>`:'—'}</td><td>${f?(isEps?fmtEps(f.value,unit(k)):fmtMoney(f.value,unit(k),fxd))+'<br>'+yoyHtml(f.yoyPct)+` <span class="sub">${esc(f.end)}</span>`:'—'}</td></tr>`;
   setHTML('metricHead','<tr><th>항목</th><th>최근 분기</th><th>최근 회계연도</th></tr>');
   setHTML('metricRows',D&&D.metrics? row('매출',rq,rf,'revenue')+row('영업이익',oq,of,'operatingIncome')+row('순이익',nq,nf,'netIncome')+row('희석 EPS',eq,ef,'epsDiluted',true)
       +`<tr><td><b>가이던스</b></td><td colspan="2"><span class="status check">데이터 확인 필요</span> <span class="sub">XBRL 미포함 · 기업 IR 원문 확인</span></td></tr>`
-    : ['매출','영업이익','순이익','희석 EPS'].map(k=>`<tr><td><b>${k}</b></td><td>—</td><td>${chip(st==='OK'?'CHECK':st)}</td></tr>`).join(''));
+    : ['매출','영업이익','순이익','희석 EPS'].map(k=>`<tr><td><b>${k}</b></td><td>—</td><td>${miss}</td></tr>`).join(''));
   setHTML('metricMeta',secMeta+' · YoY는 SEC 보고값으로 계산 · 원화 환산은 참고값');
-  setHTML('companyRisks',proLock('ai_risk'));
 
   // Business Mix (3개 동일 높이 카드 유지)
   if(seg&&seg.status==='OK'){
     const R=seg.revenue, P=seg.profit, pmap={}; (P&&P.rows||[]).forEach(x=>pmap[x.member]=x);
     const ru=unit('revenue')||'USD';
     const rows=R.rows.slice(0,6).map(x=>{
-      const pr=pmap[x.member];
-      const pct=x.share!=null?Math.max(0,Math.min(100,x.share)):null;
+      const pr=pmap[x.member]; const pct=x.share!=null?Math.max(0,Math.min(100,x.share)):null;
       return `<div class="mix-row"><div class="mix-head"><b>${esc(x.name)}</b><span>${fmtMoney(x.value,ru,null)}${x.share!=null?' · '+x.share+'%':''}</span></div>${pct!=null?`<div class="mix-bar"><div class="mix-fill" style="width:${pct}%"></div></div>`:''}<div class="sub">사업부 이익: ${pr?fmtMoney(pr.value,ru,null):(seg.profitStatus==='OK'?'<span class="status undisclosed">미공개</span>':'XBRL 태그 없음 · 원문 확인')}</div></div>`;
     }).join('');
     setHTML('businessMix',rows+`<div class="meta">${esc(R.start)}~${esc(R.end)} · <a href="${esc(seg.filing.url)}" target="_blank" rel="noopener" style="color:inherit">${esc(seg.filing.form)} ${esc(seg.filing.filed)}</a> · 비중은 연결 매출 대비</div>`);
   } else if(seg){
     setHTML('businessMix',`<span class="status check">데이터 확인 필요</span><div class="sub" style="margin-top:6px">${esc(seg.reason||'')}</div>${seg.filing?`<div class="meta"><a href="${esc(seg.filing.url)}" target="_blank" rel="noopener" style="color:var(--accent)">${esc(seg.filing.form)} 원문 보기 ↗</a></div>`:''}`);
-  } else {
-    setHTML('businessMix',`${chip(st==='OK'?'CHECK':st)}${why||'<div class="sub" style="margin-top:6px">사업부별 매출·영업이익은 공시 원문 기준으로만 표시하며, 공시하지 않은 항목은 미공개로 표시합니다.</div>'}`);
-  }
-  setHTML('marketPosition',proLock('market_share','시장점유율 — 유료 데이터 필요')+'<div class="sub" style="margin-top:6px">시장점유율은 유료 리서치 기관 자료가 필요합니다.</div>');
-  setHTML('competitorRanking',proLock('market_share','경쟁사 순위 — 유료 데이터 필요')+'<div class="sub" style="margin-top:6px">점유율 기준(출하량·매출)과 출처가 확인된 경우에만 표시합니다.</div>');
+  } else setHTML('businessMix',`${miss}${why}`);
+  setHTML('marketPosition',(A&&D.sicDescription?`<div class="sub">SEC 산업분류: <b>${esc(D.sicDescription)}</b></div>`:'')+proMini('market_share','시장점유율 — 유료 데이터 필요'));
+  setHTML('competitorRanking',(A&&A.top?`<div class="sub">회사 내 최대 사업부: <b>${esc(A.top.name)}</b>${A.top.share!=null?' ('+A.top.share+'%)':''}</div>`:'')+proMini('market_share','경쟁사 순위 — 유료 데이터 필요'));
 
-  // Valuation
-  const vItems=[['PER',priceStatus],['PBR',priceStatus],['시가총액',priceStatus],
-    ['EPS (최근 회계연도 · 희석)',ef?fmtEps(ef.value,unit('epsDiluted'))+` <span class="sub">${esc(ef.end)}</span>`:miss],
-    ['Consensus',proInline('consensus')],['목표주가',proInline('consensus')]];
-  setHTML('valuationStrip',vItems.map(([k,v])=>`<div class="metric-mini">${k}<b style="font-size:13px;margin-top:6px">${v}</b></div>`).join(''));
-  setHTML('valuationMeta','EPS: '+secMeta+' · PER·PBR·시가총액은 주가 데이터 필요');
+  // Valuation (사용자 입력 가격 기반 계산 + PRO)
+  const na=x=>!A?miss:(x?`<span class="sub" style="font-weight:500">${x}</span>`:'<span class="sub" style="font-weight:500">가격 입력 시</span>');
+  const vItems=[
+    ['PER (연간 EPS)',V.per?V.per.toFixed(1)+'배':na(V.perNote||(V.ok?'EPS 없음':''))],
+    ['PBR',V.pbr?V.pbr.toFixed(2)+'배':na(V.pbrNote||(V.ok?'자본·주식수 없음':''))],
+    ['시가총액',V.mcap?fmtMoney(V.mcap,'USD',fxd):na(V.ok?'주식수 없음':'')],
+    ['FCF 수익률',V.fcfYield!=null?V.fcfYield.toFixed(1)+'%':na(V.ok?'FCF 없음':'')],
+    ['EPS (연간 · 희석)',ef?fmtEps(ef.value,unit('epsDiluted'))+` <span class="sub">${esc(ef.end)}</span>`:miss],
+    ['Consensus · 목표주가',proInline('consensus')]];
+  setHTML('valuationStrip',(market==='KR'?[['PER',''],['PBR',''],['시가총액','']].map(([k])=>[k,'<span class="status check">데이터 확인 필요</span>']).concat([['Consensus · 목표주가',proInline('consensus')]]):vItems)
+    .map(([k,v])=>`<div class="metric-mini">${k}<b style="font-size:13px;margin-top:6px">${v}</b></div>`).join(''));
+  setHTML('priceForm', market==='US'&&A ? `<div class="price-form"><span><b>현재가 직접 입력 (USD)</b></span><input id="userPrice" type="number" step="0.01" min="0" inputmode="decimal" placeholder="예: 182.40" value="${up?up.price:''}"><button class="mini-btn" onclick="saveUserPrice('${esc(ticker)}')">계산</button>${up?`<button class="linkbtn" onclick="clearUserPrice('${esc(ticker)}')">입력 삭제</button>`:''}<span class="sub">증권사 앱 등에서 확인한 가격 · 이 브라우저에만 저장되며 GitHub에 올라가지 않음${up&&daysSince(up.date)>3?` · <b style="color:#8a5a12">입력 후 ${daysSince(up.date)}일 경과</b>`:''}</span></div>`
+    : (market==='KR'?'<div class="sub" style="margin-top:8px">한국 기업은 OpenDART 연결 전이라 계산하지 않습니다.</div>':''));
+  setHTML('valuationMeta',`주가 자동 수집 미제공(라이선스) · 계산식: 시가총액 = 입력 주가 × SEC 발행주식수 · PER = 입력 주가 ÷ 최근 회계연도 희석 EPS · PBR = 시가총액 ÷ 자본총계 · FCF = 영업현금흐름 − CAPEX (연간) · ${secMeta}`);
 
-  // 기업 이해 · 이하 AI 영역 (변경 없음)
+  // 기업 이해
   const sp=staticProfiles[ticker];
-  setHTML('integratedOverview',sp?esc(sp)+'<div class="meta">정적 설명 · 실시간 데이터 아님</div>':(D&&D.sicDescription?esc(D.sicDescription)+'<div class="meta">SEC SIC 산업분류</div>':chip('PENDING')));
-  setHTML('integratedStrength',proLock('ai_strength'));
-  setHTML('integratedCompetition',proLock('market_share','시장 위치 / 경쟁사 — 유료 데이터 필요'));
-  setHTML('integratedGrowth',proLock('ai_thesis'));
-  setHTML('integratedChecks',proLock('ai_checks'));
-  setHTML('thesisBreakers',proLock('ai_breaker','AI 분석 — 유료버전 필요'));
-  setHTML('freeNarrative',FreeNarrative.render({D,M,seg,unit,fxd,st,r,market}));
-  setHTML('narrativeShort',proLock('ai_narrative','AI Investment Narrative (심층) — 유료버전 필요'));
-  setHTML('narrativeGrid',['산업 변화','경쟁력','실적 성장','밸류에이션','Catalyst','투자 논리','리스크'].map(t=>`<div class="narr-item"><b>${t}</b><span class="status paid">유료버전 필요</span></div>`).join(''));
-  setHTML('narrativeFull','유료버전에서는 실적·밸류에이션·Catalyst·리스크 데이터를 근거로 위 7개 항목을 서술형으로 작성하고, 모든 수치에 출처와 기준일을 표시합니다. 무료버전에서는 AI 분석을 실행하지 않습니다.');
+  setHTML('integratedOverview',sp?esc(sp)+'<div class="meta">정적 설명 · 실시간 데이터 아님</div>':(D&&D.sicDescription?esc(D.sicDescription)+'<div class="meta">SEC SIC 산업분류</div>':miss));
+  const comp=[];
+  if(A){
+    if(A.gpm!=null) comp.push(`매출총이익률 ${A.gpm.toFixed(1)}%${A.pgpm!=null?` (전년 ${A.pgpm.toFixed(1)}%)`:''}`);
+    if(A.opm!=null) comp.push(`영업이익률 ${A.opm.toFixed(1)}%${A.popm!=null?` (전년 ${A.popm.toFixed(1)}%)`:''}`);
+    if(A.rndRatio!=null) comp.push(`R&D 투자 매출 대비 ${A.rndRatio.toFixed(1)}% (연간 ${fmtMoney(A.rndF.value,unit('rnd'),fxd)})`);
+    if(A.fcfMargin!=null) comp.push(`FCF 마진 ${A.fcfMargin.toFixed(1)}% (연간)`);
+    if(A.seg&&A.seg.profit&&A.seg.profit.rows.length) comp.push(`이익 최대 사업부: ${esc(A.seg.profit.rows[0].name)}`);
+  }
+  setHTML('integratedStrength',A?(comp.length?ulist(comp)+'<div class="meta">수익성·투자 지표 (SEC 보고값 계산)</div>':'<div class="sub">계산 가능한 경쟁력 지표 없음</div>')+proMini('ai_strength','경쟁력 정성 평가 — 유료버전'):`${miss}`);
+  setHTML('integratedCompetition',proMini('market_share','시장 위치 / 경쟁사 — 유료 데이터 필요'));
+  const gr=[];
+  if(A){
+    if(rq) gr.push(`분기 매출 ${fmtMoney(rq.value,unit('revenue'),fxd)} · ${rq.yoyPct!=null?'YoY '+fpct(rq.yoyPct):'YoY —'}`);
+    if(oq) gr.push(`분기 영업이익 ${oq.yoyPct!=null?'YoY '+fpct(oq.yoyPct):'YoY —'}${A.opm!=null&&!A.useFy?` · 이익률 ${A.opm.toFixed(1)}%`:''}`);
+    if(rf) gr.push(`연간 매출 ${fmtMoney(rf.value,unit('revenue'),fxd)} · ${rf.yoyPct!=null?'YoY '+fpct(rf.yoyPct):'YoY —'} (${esc(rf.end)})`);
+    if(ef) gr.push(`연간 희석 EPS ${fmtEps(ef.value,unit('epsDiluted'))}${ef.yoyPct!=null?` · YoY ${fpct(ef.yoyPct)}`:''}`);
+    if(A.opmF!=null) gr.push(`연간 영업이익률 ${A.opmF.toFixed(1)}%`);
+  }
+  setHTML('integratedGrowth',A?(gr.length?ulist(gr):'<div class="sub">성장 지표 없음</div>')+`<div class="meta">${secMeta}</div>`+proMini('ai_thesis','성장 동인 해석 — 유료버전'):`${miss}${why}`);
+  setHTML('integratedChecks',A?ulist(A.checkList)+`<div class="meta">다음 10-Q/10-K 수집 시 같은 기준으로 재확인</div>`:`${miss}`);
+  setHTML('thesisBreakers',A&&A.breakerList.length?ulist(A.breakerList)+`<div class="meta">SEC 보고값·8-K 기준 기계적 점검</div>`+proMini('ai_breaker','뉴스·경쟁·가이던스 반영 판단 — 유료버전'):`${miss}${why}`);
+
+  // Investment Narrative: FREE 7개 영역 + AI 심층 1줄
+  setHTML('freeNarrative',FreeNarrative.render({A,D,r,market,fxd,V}));
+  setHTML('narrativeShort',proMini('ai_narrative','AI 심층 Investment Narrative — 유료버전 필요'));
+  setHTML('narrativeGrid','');
+  setHTML('narrativeFull','FREE Narrative는 SEC 보고값과 공시 항목만으로 규칙에 따라 자동 작성됩니다. 유료버전에서는 산업·경쟁·뉴스·컨센서스를 반영한 서술형 심층 분석이 같은 자리에 추가됩니다.');
   show('company',null);
 }
-/* =====================================================================
-   FREE Narrative — 규칙/템플릿 기반 (AI 아님)
-   - 입력: data/companies.json (SEC EDGAR XBRL 보고값)만 사용
-   - 숫자는 보고값 그대로 또는 보고값 간 단순 계산(YoY·이익률·비중)만 표시
-   - 데이터가 없으면 해당 단계에 '데이터 확인 필요'
-   - AI 심층 Narrative(PRO)와 별개. 유료버전에서는 AIProvider가 별도 슬롯을 채운다.
-   ===================================================================== */
+function focusPriceInput(){ const el=document.getElementById('userPrice'); if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); setTimeout(()=>el.focus(),300);} }
+function saveUserPrice(t){
+  const v=parseFloat(document.getElementById('userPrice').value);
+  if(!(v>0)){ document.getElementById('userPrice').style.borderColor='var(--red)'; return; }
+  UserPrice.set(t,Math.round(v*100)/100); company(t).then(()=>setTimeout(focusPriceInput,50)); renderDashboardWatch();
+}
+function clearUserPrice(t){ UserPrice.del(t); company(t); renderDashboardWatch(); }
+
 const FreeNarrative = {
-  RULES:{ growthStrong:10, marginMove:1, marginBreak:3, concentration:50 },
-  pct(p){ return (p>=0?'+':'')+p.toFixed(1)+'%'; },
-  pp(p){ return (p>=0?'+':'')+p.toFixed(1)+'%p'; },
-  margin(oi,rev){ return (oi&&rev&&oi.end===rev.end&&rev.value)? oi.value/rev.value*100 : null; },
-  prevMargin(oi,rev){ return (oi&&rev&&oi.prevValue!=null&&rev.prevValue&&oi.prevEnd===rev.prevEnd)? oi.prevValue/rev.prevValue*100 : null; },
-  step(n,title,body){ return `<div class="fn-step"><h4><span class="n">${n}</span>${title}</h4>${body}</div>`; },
-  na(reason){ return `<span class="status check">데이터 확인 필요</span>${reason?` <span class="sub">${esc(reason)}</span>`:''}`; },
-  render({D,M,seg,unit,fxd,st,r,market}){
-    const head=`<div class="locked" style="margin-bottom:4px"><span class="free-badge">FREE Narrative</span><span class="sub">규칙·템플릿 기반 자동 생성 · SEC 보고값만 사용 · AI 분석 아님 · 투자 권유 아님</span></div>`;
-    if(!D||!D.metrics){
+  area(title,body,thin){ return `<div class="fn-area${thin?' thin':''}"><h4><span>${title}</span>${thin?body:''}</h4>${thin?'':body}</div>`; },
+  render({A,D,r,market,fxd,V}){
+    const head=`<div class="locked" style="margin-bottom:4px"><span class="free-badge">FREE Narrative</span><span class="sub">규칙·템플릿 기반 자동 생성 · SEC 보고값과 공시 항목만 사용 · AI 분석 아님 · 투자 권유 아님</span></div>`;
+    if(!A){
       const why = market==='KR' ? '한국 기업은 OpenDART 연결 전이라 생성할 수 없습니다.' : (r&&r.reason)||'기업 데이터가 없습니다.';
-      return head+['실적 변화','사업 흐름','투자 포인트','확인할 지표','투자 논리 훼손 조건'].map((t,i)=>this.step(i+1,t,this.na(i===0?why:''))).join('');
+      return head+`<div class="fn-area thin"><h4><span class="status check">데이터 확인 필요</span><span class="sub" style="font-weight:400">${esc(why)}</span></h4></div>`;
     }
-    // 기준 기간: 최근 분기, 없으면 최근 회계연도
-    const pick=k=>M[k]&&(M[k].q||null), pickFy=k=>M[k]&&(M[k].fy||null);
-    const useFy=!pick('revenue')&&!!pickFy('revenue');
-    const g=k=>useFy?pickFy(k):pick(k);
-    const rev=g('revenue'), oi=g('operatingIncome'), ni=g('netIncome'), eps=g('epsDiluted');
-    const per=useFy?'회계연도':'분기', ru=unit('revenue');
-    const money=(x,k)=>fmtMoney(x.value,unit(k),fxd);
-    const m=this.margin(oi,rev), pm=this.prevMargin(oi,rev);
-    const src=rev?`SEC ${esc(rev.form)} (${esc(rev.filed)} 제출) · ${esc(rev.end)} 종료 ${per}`:'SEC EDGAR';
-
-    // 1) 실적 변화 — 보고값과 YoY만 서술
-    const s1=[];
-    if(rev){
-      s1.push(`매출 ${money(rev,'revenue')}`+(rev.yoyPct!=null?`, 전년 동기 대비 ${this.pct(rev.yoyPct)} (${rev.yoyPct>=this.RULES.growthStrong?'두 자릿수 증가':rev.yoyPct>=0?'증가':'감소'})`:' · YoY '+this.na()));
-      if(oi&&oi.end===rev.end) s1.push(`영업이익 ${money(oi,'operatingIncome')}`+(oi.yoyPct!=null?`, YoY ${this.pct(oi.yoyPct)}`:''));
-      else s1.push('영업이익 '+this.na('동일 기간 보고값 없음'));
-      if(m!=null) s1.push(`영업이익률 ${m.toFixed(1)}%`+(pm!=null?` (전년 동기 ${pm.toFixed(1)}%, ${this.pp(m-pm)})`:''));
-      if(eps&&eps.end===rev.end) s1.push(`희석 EPS ${fmtEps(eps.value,unit('epsDiluted'))}`+(eps.yoyPct!=null?`, YoY ${this.pct(eps.yoyPct)}`:''));
-      if(ni&&ni.end===rev.end&&ni.yoyPct!=null) s1.push(`순이익 YoY ${this.pct(ni.yoyPct)}`);
-    }
-    const b1 = rev ? `<ul>${s1.map(x=>`<li>${x}</li>`).join('')}</ul><div class="meta">${src}${useFy?' · 분기 XBRL 없음 → 연간 기준':''}</div>` : this.na('매출 보고값 없음');
-
-    // 2) 사업 흐름 — 세그먼트 구성(비중)만 서술. 부문별 성장률은 데이터 없음
-    let b2;
-    if(seg&&seg.status==='OK'){
-      const rows=seg.revenue.rows, top=rows[0];
-      const li=[`최대 사업부: <b>${esc(top.name)}</b> ${fmtMoney(top.value,ru||'USD',null)}${top.share!=null?` (연결 매출의 ${top.share}%)`:''}`];
-      if(rows.length>1) li.push('구성: '+rows.slice(0,4).map(x=>`${esc(x.name)}${x.share!=null?' '+x.share+'%':''}`).join(' · '));
-      if(seg.profit&&seg.profit.rows.length){ const tp=seg.profit.rows[0]; li.push(`사업부 이익 최대: <b>${esc(tp.name)}</b> ${fmtMoney(tp.value,ru||'USD',null)}`); }
-      else li.push('사업부 이익: XBRL 태그 없음 · 원문 확인');
-      li.push('사업부별 YoY: '+this.na('직전 연도 세그먼트 값 미수집'));
-      b2=`<ul>${li.map(x=>`<li>${x}</li>`).join('')}</ul><div class="meta">SEC ${esc(seg.filing.form)} ${esc(seg.filing.filed)} XBRL 세그먼트 · ${esc(seg.revenue.start)}~${esc(seg.revenue.end)}</div>`;
-    } else b2=this.na(seg&&seg.reason?seg.reason:'사업부 데이터 없음');
-
-    // 3) 투자 포인트 — 규칙 충족 여부로만 생성 (판단·추천 아님)
-    const p=[];
-    if(rev&&rev.yoyPct!=null&&rev.yoyPct>=this.RULES.growthStrong) p.push(`매출 두 자릿수 성장 (YoY ${this.pct(rev.yoyPct)})`);
-    else if(rev&&rev.yoyPct!=null&&rev.yoyPct>0) p.push(`매출 증가 유지 (YoY ${this.pct(rev.yoyPct)})`);
-    if(rev&&oi&&rev.yoyPct!=null&&oi.yoyPct!=null&&oi.end===rev.end&&oi.yoyPct>rev.yoyPct&&oi.yoyPct>0) p.push(`영업이익 증가율(${this.pct(oi.yoyPct)})이 매출 증가율(${this.pct(rev.yoyPct)})보다 높음 → 영업 레버리지`);
-    if(m!=null&&pm!=null&&m-pm>=this.RULES.marginMove) p.push(`영업이익률 개선 (${this.pp(m-pm)})`);
-    if(eps&&eps.yoyPct!=null&&eps.yoyPct>0&&eps.end===(rev&&rev.end)) p.push(`희석 EPS 증가 (YoY ${this.pct(eps.yoyPct)})`);
-    if(seg&&seg.status==='OK'&&seg.revenue.rows[0].share!=null&&seg.revenue.rows[0].share>=this.RULES.concentration) p.push(`매출이 ${esc(seg.revenue.rows[0].name)} 부문에 집중 (${seg.revenue.rows[0].share}%) — 해당 부문 실적이 핵심 변수`);
-    const b3 = rev ? (p.length?`<ul>${p.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<div class="sub">규칙 기준(매출 성장 · 영업 레버리지 · 이익률 개선 · EPS 증가)을 충족한 포인트 없음</div>')
-      +`<div class="meta">데이터 기반 관찰 포인트 · 밸류에이션·Catalyst·경쟁 구도 판단은 포함하지 않음</div>` : this.na();
-
-    // 4) 확인할 지표 — 현재 값을 기준선으로 제시
-    const c=[];
-    if(rev) c.push(`다음 ${per} 매출 YoY — 현재 ${rev.yoyPct!=null?this.pct(rev.yoyPct):'—'}`);
-    if(m!=null) c.push(`영업이익률 — 현재 ${m.toFixed(1)}%`);
-    if(eps) c.push(`희석 EPS — 현재 ${fmtEps(eps.value,unit('epsDiluted'))}${eps.yoyPct!=null?` (YoY ${this.pct(eps.yoyPct)})`:''}`);
-    if(seg&&seg.status==='OK') c.push(`${esc(seg.revenue.rows[0].name)} 매출 비중 — 현재 ${seg.revenue.rows[0].share!=null?seg.revenue.rows[0].share+'%':'—'}`);
-    c.push('가이던스 · 다음 실적일 — '+this.na('기업 IR 원문 확인'));
-    const b4=`<ul>${c.map(x=>`<li>${x}</li>`).join('')}</ul><div class="meta">다음 10-Q/10-K 수집 시 같은 기준으로 재확인</div>`;
-
-    // 5) 투자 논리 훼손 조건 — 기계적 조건 + 현재 데이터 기준 해당 여부
-    const hit=v=>v==null?'<span class="fn-hit off" style="background:#f1f3f6;color:#5d6878">판정 불가</span>':v?'<span class="fn-hit on">현재 해당</span>':'<span class="fn-hit off">현재 미해당</span>';
-    const t=[];
-    if(rev) t.push(`${per} 매출 YoY가 마이너스${rev.yoyPct!=null?` (현재 ${this.pct(rev.yoyPct)})`:''} ${hit(rev.yoyPct==null?null:rev.yoyPct<0)}`);
-    if(oi) t.push(`영업이익 YoY가 마이너스${oi.yoyPct!=null?` (현재 ${this.pct(oi.yoyPct)})`:''} ${hit(oi.yoyPct==null?null:oi.yoyPct<0)}`);
-    if(m!=null) t.push(`영업이익률이 전년 동기 대비 ${this.RULES.marginBreak}%p 이상 하락${pm!=null?` (현재 ${this.pp(m-pm)})`:''} ${hit(pm==null?null:(m-pm)<=-this.RULES.marginBreak)}`);
-    if(eps) t.push(`희석 EPS YoY가 마이너스${eps.yoyPct!=null?` (현재 ${this.pct(eps.yoyPct)})`:''} ${hit(eps.yoyPct==null?null:eps.yoyPct<0)}`);
-    const b5 = t.length ? `<ul>${t.map(x=>`<li>${x}</li>`).join('')}</ul><div class="meta">SEC 보고값 기준 기계적 점검 · 뉴스·경쟁·가이던스를 반영한 해석은 ${proBadge('ai_breaker')} AI 분석</div>` : this.na();
-
-    return head+this.step(1,'실적 변화',b1)+this.step(2,'사업 흐름',b2)+this.step(3,'투자 포인트',b3)+this.step(4,'확인할 지표',b4)+this.step(5,'투자 논리 훼손 조건',b5)
+    const rev=A.revenue, per=A.per, out=[];
+    // 1. 실적 성장
+    const g=[];
+    if(rev) g.push(`${per} 매출 ${fmtMoney(rev.value,A.unit('revenue'),fxd)}${rev.yoyPct!=null?`, YoY ${fpct(rev.yoyPct)} (${rev.yoyPct>=Analyze.RULES.growthStrong?'두 자릿수 증가':rev.yoyPct>=0?'증가':'감소'})`:''}`);
+    if(A.operatingIncome&&A.operatingIncome.yoyPct!=null) g.push(`영업이익 YoY ${fpct(A.operatingIncome.yoyPct)}${A.opm!=null?` · 이익률 ${A.opm.toFixed(1)}%${A.popm!=null?' ('+fpp(A.opm-A.popm)+')':''}`:''}`);
+    if(A.epsDiluted&&A.epsDiluted.yoyPct!=null) g.push(`희석 EPS YoY ${fpct(A.epsDiluted.yoyPct)}`);
+    if(A.revF&&A.revF.yoyPct!=null&&!A.useFy) g.push(`연간 매출 YoY ${fpct(A.revF.yoyPct)} (${esc(A.revF.end)})`);
+    out.push(this.area('실적 성장',g.length?ulist(g):'<span class="status check">데이터 확인 필요</span>'));
+    // 2. 투자 논리 (규칙 충족 포인트)
+    out.push(this.area('투자 논리',A.pointList.length?ulist(A.pointList.slice(0,4)):'<div class="sub">규칙 기준(성장·레버리지·마진·EPS·FCF)을 충족한 항목 없음</div>'));
+    // 3. 리스크
+    out.push(this.area(`리스크 <span class="sub" style="font-weight:500">${A.riskCount}건 해당</span>`,A.riskList.length?ulist(A.riskList.slice(0,5)):'<div class="sub">규칙 기준에 해당하는 신호 없음</div>'));
+    // 4. Catalyst (SEC 공시로 확인되는 이벤트만)
+    let cat;
+    if(!A.itemsKnown) cat='<div class="sub">8-K 항목 정보는 다음 기업 데이터 수집 후 표시</div>';
+    else if(A.events.length) cat=ulist(A.events.slice(0,4).map(x=>`<a href="${esc(x.f.url)}" target="_blank" rel="noopener" style="color:var(--accent)">${esc(x.f.date)} 8-K</a> · ${esc(x.labels.join(', ')||'항목 미기재')}`));
+    else cat='<div class="sub">최근 90일 8-K 없음</div>';
+    if(A.periodic) cat+=`<div class="meta">최근 정기공시: ${esc(A.periodic.form)} ${esc(A.periodic.date)} · 예정 이벤트(실적일 등)는 IR 확인</div>`;
+    out.push(this.area('Catalyst',cat));
+    // 5. 경쟁력 (수익성 지표)
+    const k=[];
+    if(A.gpm!=null) k.push(`매출총이익률 ${A.gpm.toFixed(1)}%`);
+    if(A.opm!=null) k.push(`영업이익률 ${A.opm.toFixed(1)}%`);
+    if(A.rndRatio!=null) k.push(`R&D/매출 ${A.rndRatio.toFixed(1)}% (연간)`);
+    if(A.top) k.push(`최대 사업부 ${esc(A.top.name)}${A.top.share!=null?' '+A.top.share+'%':''}`);
+    out.push(this.area('경쟁력',k.length?ulist(k)+'<div class="meta">수익성 지표 · 점유율 비교는 PRO</div>':'<span class="status check">데이터 확인 필요</span>'));
+    // 6. 밸류에이션
+    const v=V.ok?[V.per?`PER ${V.per.toFixed(1)}배 (연간 EPS)`:null,V.pbr?`PBR ${V.pbr.toFixed(2)}배`:null,V.mcap?`시가총액 ${fmtMoney(V.mcap,'USD',fxd)}`:null,V.fcfYield!=null?`FCF 수익률 ${V.fcfYield.toFixed(1)}%`:null].filter(Boolean):[];
+    out.push(this.area('밸류에이션',v.length?ulist(v)+`<div class="meta">입력 주가 $${V.price.toFixed(2)} (${esc(V.date)}) 기준 · 컨센서스 비교는 PRO</div>`
+      :`<div class="sub">${V.reason&&V.reason!=='가격 미입력'?esc(V.reason):'Valuation에서 현재가를 입력하면 PER·PBR·시가총액·FCF 수익률을 계산합니다.'}</div>`));
+    // 7. 산업 변화 — 무료 데이터로는 산업 단위 변화를 확인할 수 없어 한 줄로 축약
+    out.push(this.area('산업 변화',`<span class="sub" style="font-weight:400">${D.sicDescription?'SEC 분류: '+esc(D.sicDescription)+' · ':''}산업 데이터 미제공 ${proBadge('ai_narrative')}</span>`,true));
+    return head+`<div class="fn-grid">${out.join('')}</div>`
       +`<div class="meta" style="margin-top:8px">Source: SEC EDGAR · Last Updated: ${esc(r&&r.updatedAt||'—')}${fxd?` · 원화 환산: 1 USD = ${fxd.rate.toLocaleString('ko-KR',{maximumFractionDigits:2})}원 (기준일 ${esc(fxd.asOf)})`:''}</div>`;
   }
 };
+
 function openCompanyResearch(){const el=document.getElementById('narrativeShort');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});}
 
 /* Market Brief */
@@ -1488,9 +1617,13 @@ async function renderMarketBrief(){
     + (snap.runStatus==='PARTIAL'?' · 일부 지표 수집 실패':'')
     + (snap.status!=='OK'? ' · '+snapMessage(snap):'')
     + ' · 각 카드의 기준일은 원 데이터의 관측일입니다.');
-  setHTML('briefUS',proLock('ai_market','AI 종합분석 — 유료버전 필요'));
-  setHTML('briefKR',proLock('ai_market','AI 종합분석 — 유료버전 필요'));
-  setHTML('briefConclusion',proLock('ai_market','AI 종합분석 — 유료버전 필요'));
+  const line=(k,lbl)=>{const e=ser[k]; if(snap.status!=='OK'||!e||e.status!=='OK') return null; const c=MarketFmt.change(k,e.item);
+    return `${lbl} ${MarketFmt.value(k,e.item.value)}${c?` <span class="${c.d>=0?'up':'down'}">${c.text}</span>`:''} <span class="sub">${esc(e.item.asOf)}</span>`;};
+  const us=[line('us10y','미국 10년물'),line('dxy','Dollar Index (Fed Broad)'),line('wti','WTI')].filter(Boolean);
+  const krl=[line('usdkrw','USD/KRW')].filter(Boolean);
+  setHTML('briefUS',(us.length?ulist(us):`<span class="sub">${snap.status==='OK'?'수집된 미국 지표 없음':esc(snapMessage(snap))}</span>`)+'<div class="meta">FREE · 원 데이터 요약 · 지수(S&P 500 등)는 라이선스 제한</div>');
+  setHTML('briefKR',(krl.length?ulist(krl):'<span class="sub">수집된 지표 없음</span>')+'<div class="meta">FREE · KOSPI·KOSDAQ은 무료 키 연결 전</div>');
+  setHTML('briefConclusion',proMini('ai_market','AI 종합분석 (시장 영향 판단) — 유료버전 필요'));
 
   const macro=await CalendarProvider.getMacro();
   const t=ser.us10y;
@@ -1500,7 +1633,7 @@ async function renderMarketBrief(){
   const mrows=['미국 CPI','고용 (비농업고용 · 실업률)','연방기금금리 · FOMC','한국 기준금리','한국 수출'];
   setHTML('macroRows',tenY+mrows.map(m=>`<tr><td><b>${m}</b></td><td>—</td><td>—</td><td>${chip(macro.status)}</td></tr>`).join(''));
   setHTML('macroMeta',metaLine(macro.source,macro.updatedAt));
-  setHTML('macroAi',proLock('ai_market','AI 종합분석 — 유료버전 필요')+'<div class="sub" style="margin-top:6px">여러 지표를 종합한 시장 영향 판단</div>');
+  setHTML('macroAi',proMini('ai_market','여러 지표를 종합한 AI 시장 영향 판단 — 유료버전 필요'));
 
   const cal=await CalendarProvider.getEvents();
   setHTML('briefCalendar',`<tr class="empty-row"><td colspan="3">${chip(cal.status)} 실적 발표 · 경제지표 · 기업 이벤트</td></tr>`);
@@ -1509,7 +1642,7 @@ async function renderMarketBrief(){
   const news=await NewsProvider.getHeadlines();
   setHTML('newsList',`<li>${chip(news.status)}<br><span class="sub">공개 RSS 헤드라인을 출처·발행시각과 함께 표시할 예정입니다.</span></li>`);
   setHTML('newsMeta',metaLine(news.source,news.updatedAt));
-  setHTML('newsAi',proLock('ai_news','AI 뉴스분석 — 유료버전 필요')+'<div class="sub" style="margin-top:6px">뉴스 요약 · 투자 영향 · 관련 종목</div>');
+  setHTML('newsAi',proMini('ai_news','AI 뉴스분석 (요약 · 투자 영향) — 유료버전 필요'));
 }
 function goMarket(anchorText){
  show('events',navBtn(1));
@@ -1519,17 +1652,7 @@ function goResearch(){show('notes',null);}
 
 /* Investment Radar */
 function renderRadar(){
-  const slot=(title,sub)=>`<div class="card">
-    <h2>${title} ${proBadge('ai_radar')}</h2><div class="sub">${sub}</div>
-    <div class="research-grid" style="margin-top:14px">
-     <div class="note"><b>기업 개요</b><br>${proInline('ai_radar')}</div>
-     <div class="note"><b>사업 구조</b><br>${proInline('ai_radar')}</div>
-     <div class="note"><b>포트폴리오 역할</b><br>${proInline('ai_radar')}</div>
-    </div>
-    <div class="metric-strip">${['핵심 지표 1','핵심 지표 2','핵심 지표 3','핵심 지표 4'].map(m=>`<div class="metric-mini">${m}<b>—</b></div>`).join('')}</div>
-    <div class="note"><b>왜 지금?</b><br>${proInline('ai_radar')}</div>
-    <div class="breaker" style="margin-top:10px"><b>투자 논리 훼손 조건</b><br>${proInline('ai_breaker')}</div>
-  </div>`;
+  const slot=(title,sub)=>`<div class="card" style="padding:14px 18px"><h2 style="margin:0 0 4px">${title}</h2><div class="sub">${sub}</div>${proMini('ai_radar','기업 개요 · 사업 구조 · 포트폴리오 역할 · 핵심 지표 · 왜 지금 · 훼손 조건 — AI 종목발굴 유료버전')}</div>`;
   setHTML('radarSlots', radarStore.ideas.length? '' : slot('이번 Radar · 신규 아이디어','성장 · 이벤트 아이디어 슬롯')+slot('방어 Radar','방어 · 대기자금 아이디어 슬롯'));
   setHTML('radarHistory',`<tr class="empty-row"><td colspan="5">기록 없음 · 유료버전 활성화 후 기록이 시작됩니다<br><span class="sub">상태값: ${RADAR_SCHEMA.statusValues.join(' · ')}</span></td></tr>`);
 }

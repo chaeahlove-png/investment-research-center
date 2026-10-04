@@ -1,8 +1,100 @@
 {
   "schemaVersion": 1,
-  "generatedAt": null,
-  "runStatus": "NOT_RUN",
-  "collected": 0,
+  "generatedAt": "2026-10-04T11:30:24Z",
+  "runStatus": "OK",
+  "collected": 4,
   "expected": 4,
-  "series": {}
+  "series": {
+    "spx": {
+      "label": "S&P 500",
+      "status": "RESTRICTED",
+      "value": null,
+      "note": "S&P Dow Jones Indices 저작권 데이터 — 공개 저장소에 수치를 재게시하지 않습니다.",
+      "sourceUrl": "https://fred.stlouisfed.org/series/SP500"
+    },
+    "ndx": {
+      "label": "Nasdaq",
+      "status": "RESTRICTED",
+      "value": null,
+      "note": "Nasdaq, Inc. 저작권 데이터 — 공개 저장소에 수치를 재게시하지 않습니다.",
+      "sourceUrl": "https://fred.stlouisfed.org/series/NASDAQCOM"
+    },
+    "dji": {
+      "label": "Dow",
+      "status": "RESTRICTED",
+      "value": null,
+      "note": "S&P Dow Jones Indices 저작권 데이터 — 공개 저장소에 수치를 재게시하지 않습니다.",
+      "sourceUrl": "https://fred.stlouisfed.org/series/DJIA"
+    },
+    "kospi": {
+      "label": "KOSPI",
+      "status": "KEY_REQUIRED",
+      "value": null,
+      "note": "키 없이 사용할 수 있는 공식 무료 소스 없음 · 공공데이터포털(무료 키) 연결 여부 결정 필요",
+      "sourceUrl": null
+    },
+    "kosdaq": {
+      "label": "KOSDAQ",
+      "status": "KEY_REQUIRED",
+      "value": null,
+      "note": "키 없이 사용할 수 있는 공식 무료 소스 없음 · 공공데이터포털(무료 키) 연결 여부 결정 필요",
+      "sourceUrl": null
+    },
+    "us10y": {
+      "label": "미국 10년 국채금리",
+      "status": "OK",
+      "value": 5.28,
+      "unit": "%",
+      "asOf": "2026-10-02",
+      "prev": 5.24,
+      "prevDate": "2026-10-01",
+      "source": "U.S. Treasury · Daily Par Yield Curve",
+      "sourceUrl": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve",
+      "maxAgeDays": 6,
+      "note": "",
+      "fallbackUsed": false
+    },
+    "dxy": {
+      "label": "Dollar Index",
+      "status": "OK",
+      "value": 120.33,
+      "unit": "index",
+      "asOf": "2026-09-25",
+      "prev": 120.5521,
+      "prevDate": "2026-09-24",
+      "source": "Federal Reserve H.10 · Nominal Broad U.S. Dollar Index (FRED DTWEXBGS)",
+      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXBGS&cosd=2026-08-05",
+      "maxAgeDays": 14,
+      "note": "Fed Broad 지수 · ICE DXY와 다른 지수 · 주 1회 발표",
+      "fallbackUsed": false
+    },
+    "wti": {
+      "label": "WTI",
+      "status": "OK",
+      "value": 96.16,
+      "unit": "USD/bbl",
+      "asOf": "2026-09-29",
+      "prev": 99.37,
+      "prevDate": "2026-09-28",
+      "source": "U.S. EIA · WTI Cushing Spot (FRED DCOILWTICO)",
+      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILWTICO&cosd=2026-08-05",
+      "maxAgeDays": 14,
+      "note": "EIA 현물가격 · 주 단위 갱신",
+      "fallbackUsed": false
+    },
+    "usdkrw": {
+      "label": "USD/KRW",
+      "status": "OK",
+      "value": 1348.2762,
+      "unit": "KRW",
+      "asOf": "2026-10-02",
+      "prev": 1361.2675,
+      "prevDate": "2026-10-01",
+      "source": "ECB 기준환율 교차계산 (EUR/KRW ÷ EUR/USD)",
+      "sourceUrl": "https://data.ecb.europa.eu/data/datasets/EXR",
+      "maxAgeDays": 6,
+      "note": "ECB 14:15 CET 기준환율로 계산한 참고 환율",
+      "fallbackUsed": false
+    }
+  }
 }

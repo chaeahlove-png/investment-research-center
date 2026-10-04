@@ -23,3 +23,13 @@ KOSPI · KOSDAQ은 키 없는 공식 무료 소스가 없어 보류 중입니다
 ## 실패 처리
 수집 실패 시 이전 값을 이어 쓰지 않고 `FAILED`로 기록 → 앱에 `업데이트 실패` 표시.
 기준일이 허용 기간을 넘으면 값을 숨기고 `업데이트 필요` 표시.
+
+## 기업 데이터 (Phase 3 · SEC EDGAR)
+GitHub Actions(`.github/workflows/update-company-data.yml`, 평일 08:10 KST) → `scripts/fetch_companies.py`
+→ `data/companies.json` 저장 → Company Research 화면에 표시
+
+- 대상: `config/companies.json`의 미국 상장사 티커 (관심기업 추가 시 여기에도 티커 추가)
+- 항목: 기업명·거래소·SEC 산업분류, 매출·영업이익·순이익·희석 EPS(분기/연간, YoY), XBRL로 태그된 사업부 매출·이익, 최근 공시
+- SEC 요청에는 연락처가 담긴 User-Agent가 필요 → 저장소 Secret `SEC_USER_AGENT`
+- 주가·시가총액·PER·PBR: 거래소 라이선스 데이터 → 무료버전 미제공
+- 한국 기업: OpenDART(무료 키) 연결 결정 전까지 미제공

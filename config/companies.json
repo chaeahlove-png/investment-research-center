@@ -1,0 +1,4 @@
+{
+  "_comment": "SEC 데이터를 수집할 미국 상장사 티커 목록. 관심기업을 추가하면 여기에도 티커를 추가하세요.",
+  "us": ["QCOM","AMZN","TSM","ARM","NVDA","AVGO","MU","AMD","INTC","MSFT","GOOGL","AAPL","META","TSLA"]
+}

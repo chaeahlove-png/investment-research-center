@@ -1,0 +1,36 @@
+name: Update company data
+
+on:
+  schedule:
+    - cron: "10 23 * * 0-4"   # 08:10 KST (월~금) · 시장 데이터 수집(07:30)과 시간 분리
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: company-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Collect company data (SEC EDGAR)
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: python scripts/fetch_companies.py
+      - name: Commit data/companies.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/companies.json
+          git diff --cached --quiet && echo "변경 없음" && exit 0
+          git commit -m "data: company update $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3; do git pull --rebase && git push && exit 0; sleep 5; done
+          exit 1

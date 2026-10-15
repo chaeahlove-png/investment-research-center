@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "generatedAt": "2026-10-14T23:29:37Z",
+ "generatedAt": "2026-10-15T23:28:15Z",
  "source": "SEC EDGAR (data.sec.gov)",
  "companies": {
   "QCOM": {
@@ -830,6 +830,15 @@
    "filings": [
     {
      "form": "6-K",
+     "date": "2026-10-15",
+     "reportDate": "2026-09-30",
+     "accn": "0001046179-26-000726",
+     "desc": "6-K",
+     "items": "",
+     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000726/tsm-20261015x6k.htm"
+    },
+    {
+     "form": "6-K",
      "date": "2026-10-08",
      "reportDate": "2026-09-30",
      "accn": "0001046179-26-000680",
@@ -953,15 +962,6 @@
      "desc": "6-K",
      "items": "",
      "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000377/tsm-monthend6kx20260625.htm"
-    },
-    {
-     "form": "6-K",
-     "date": "2026-06-10",
-     "reportDate": "2026-05-31",
-     "accn": "0001046179-26-000367",
-     "desc": "6-K",
-     "items": "",
-     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000367/tsm-revenue20260610.htm"
     }
    ],
    "metrics": {

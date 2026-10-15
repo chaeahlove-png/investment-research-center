@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-14T22:53:23Z",
+  "generatedAt": "2026-10-15T10:02:50Z",
   "runStatus": "OK",
   "collected": 4,
   "expected": 4,
@@ -63,7 +63,7 @@
       "prev": 121.4469,
       "prevDate": "2026-10-08",
       "source": "Federal Reserve H.10 · Nominal Broad U.S. Dollar Index (FRED DTWEXBGS)",
-      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXBGS&cosd=2026-08-15",
+      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXBGS&cosd=2026-08-16",
       "maxAgeDays": 14,
       "note": "Fed Broad 지수 · ICE DXY와 다른 지수 · 주 1회 발표",
       "fallbackUsed": false
@@ -77,7 +77,7 @@
       "prev": 96.13,
       "prevDate": "2026-10-05",
       "source": "U.S. EIA · WTI Cushing Spot (FRED DCOILWTICO)",
-      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILWTICO&cosd=2026-08-15",
+      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILWTICO&cosd=2026-08-16",
       "maxAgeDays": 14,
       "note": "EIA 현물가격 · 주 단위 갱신",
       "fallbackUsed": false

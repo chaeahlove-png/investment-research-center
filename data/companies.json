@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "generatedAt": "2026-10-19T23:32:37Z",
+ "generatedAt": "2026-10-20T23:29:53Z",
  "source": "SEC EDGAR (data.sec.gov)",
  "companies": {
   "QCOM": {
@@ -2424,7 +2424,7 @@
    "errors": [],
    "sic": "3674",
    "sicDescription": "Semiconductors & Related Devices",
-   "fiscalYearEnd": "0903",
+   "fiscalYearEnd": "0902",
    "filings": [
     {
      "form": "10-K",

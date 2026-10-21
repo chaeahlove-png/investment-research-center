@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "generatedAt": "2026-10-20T23:29:53Z",
+ "generatedAt": "2026-10-21T23:31:32Z",
  "source": "SEC EDGAR (data.sec.gov)",
  "companies": {
   "QCOM": {
@@ -5020,6 +5020,15 @@
    "fiscalYearEnd": "1231",
    "filings": [
     {
+     "form": "8-K",
+     "date": "2026-10-21",
+     "reportDate": "2026-10-19",
+     "accn": "0001628280-26-066700",
+     "desc": "8-K",
+     "items": "1.01,2.02,8.01,9.01",
+     "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026066700/meta-20261019.htm"
+    },
+    {
      "form": "10-Q",
      "date": "2026-07-30",
      "reportDate": "2026-06-30",
@@ -5144,15 +5153,6 @@
      "desc": "10-Q",
      "items": "",
      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828025047240/meta-20250930.htm"
-    },
-    {
-     "form": "8-K",
-     "date": "2025-10-29",
-     "reportDate": "2025-10-29",
-     "accn": "0001628280-25-047114",
-     "desc": "8-K",
-     "items": "2.02,9.01",
-     "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828025047114/meta-20251029.htm"
     }
    ],
    "metrics": {
@@ -5450,6 +5450,15 @@
    "filings": [
     {
      "form": "8-K",
+     "date": "2026-10-21",
+     "reportDate": "2026-10-21",
+     "accn": "0001628280-26-066738",
+     "desc": "8-K",
+     "items": "2.02,9.01",
+     "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828026066738/tsla-20261021.htm"
+    },
+    {
+     "form": "8-K",
      "date": "2026-10-02",
      "reportDate": "2026-10-02",
      "accn": "0001628280-26-064366",
@@ -5573,15 +5582,6 @@
      "desc": "10-Q",
      "items": "",
      "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828025045968/tsla-20250930.htm"
-    },
-    {
-     "form": "8-K",
-     "date": "2025-10-22",
-     "reportDate": "2025-10-22",
-     "accn": "0001628280-25-045861",
-     "desc": "8-K",
-     "items": "2.02,9.01",
-     "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828025045861/tsla-20251022.htm"
     }
    ],
    "metrics": {

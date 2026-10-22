@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "generatedAt": "2026-10-21T23:31:32Z",
+ "generatedAt": "2026-10-22T23:31:54Z",
  "source": "SEC EDGAR (data.sec.gov)",
  "companies": {
   "QCOM": {
@@ -830,6 +830,15 @@
    "filings": [
     {
      "form": "6-K",
+     "date": "2026-10-22",
+     "reportDate": "2026-09-30",
+     "accn": "0001046179-26-000728",
+     "desc": "6-K",
+     "items": "",
+     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000728/tsm-monthend6kx20261022.htm"
+    },
+    {
+     "form": "6-K",
      "date": "2026-10-15",
      "reportDate": "2026-09-30",
      "accn": "0001046179-26-000726",
@@ -953,15 +962,6 @@
      "desc": "6-K",
      "items": "",
      "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000381/a20260702changeofaztreasur.htm"
-    },
-    {
-     "form": "6-K",
-     "date": "2026-06-25",
-     "reportDate": "2026-05-31",
-     "accn": "0001046179-26-000377",
-     "desc": "6-K",
-     "items": "",
-     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000377/tsm-monthend6kx20260625.htm"
     }
    ],
    "metrics": {
@@ -5020,6 +5020,15 @@
    "fiscalYearEnd": "1231",
    "filings": [
     {
+     "form": "10-Q",
+     "date": "2026-10-22",
+     "reportDate": "2026-09-30",
+     "accn": "0001628280-26-066773",
+     "desc": "10-Q",
+     "items": "",
+     "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026066773/meta-20260930.htm"
+    },
+    {
      "form": "8-K",
      "date": "2026-10-21",
      "reportDate": "2026-10-19",
@@ -5144,15 +5153,6 @@
      "desc": "8-K",
      "items": "8.01,9.01",
      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000119312525262593/d75422d8k.htm"
-    },
-    {
-     "form": "10-Q",
-     "date": "2025-10-30",
-     "reportDate": "2025-09-30",
-     "accn": "0001628280-25-047240",
-     "desc": "10-Q",
-     "items": "",
-     "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828025047240/meta-20250930.htm"
     }
    ],
    "metrics": {
@@ -5160,17 +5160,17 @@
      "concept": "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax",
      "unit": "USD",
      "q": {
-      "value": 60801000000,
-      "start": "2026-04-01",
-      "end": "2026-06-30",
+      "value": 64601000000,
+      "start": "2026-07-01",
+      "end": "2026-09-30",
       "form": "10-Q",
-      "filed": "2026-07-30",
-      "accn": "0001628280-26-050705",
+      "filed": "2026-10-22",
+      "accn": "0001628280-26-066773",
       "fy": 2026,
-      "fp": "Q2",
-      "prevValue": 47516000000,
-      "prevEnd": "2025-06-30",
-      "yoyPct": 27.96
+      "fp": "Q3",
+      "prevValue": 51242000000,
+      "prevEnd": "2025-09-30",
+      "yoyPct": 26.07
      },
      "fy": {
       "value": 200966000000,
@@ -5190,17 +5190,17 @@
      "concept": "us-gaap:OperatingIncomeLoss",
      "unit": "USD",
      "q": {
-      "value": 18775000000,
-      "start": "2026-04-01",
-      "end": "2026-06-30",
+      "value": 12988000000,
+      "start": "2026-07-01",
+      "end": "2026-09-30",
       "form": "10-Q",
-      "filed": "2026-07-30",
-      "accn": "0001628280-26-050705",
+      "filed": "2026-10-22",
+      "accn": "0001628280-26-066773",
       "fy": 2026,
-      "fp": "Q2",
-      "prevValue": 20441000000,
-      "prevEnd": "2025-06-30",
-      "yoyPct": -8.15
+      "fp": "Q3",
+      "prevValue": 20535000000,
+      "prevEnd": "2025-09-30",
+      "yoyPct": -36.75
      },
      "fy": {
       "value": 83276000000,
@@ -5220,17 +5220,17 @@
      "concept": "us-gaap:NetIncomeLoss",
      "unit": "USD",
      "q": {
-      "value": 15848000000,
-      "start": "2026-04-01",
-      "end": "2026-06-30",
+      "value": 9860000000,
+      "start": "2026-07-01",
+      "end": "2026-09-30",
       "form": "10-Q",
-      "filed": "2026-07-30",
-      "accn": "0001628280-26-050705",
+      "filed": "2026-10-22",
+      "accn": "0001628280-26-066773",
       "fy": 2026,
-      "fp": "Q2",
-      "prevValue": 18337000000,
-      "prevEnd": "2025-06-30",
-      "yoyPct": -13.57
+      "fp": "Q3",
+      "prevValue": 2709000000,
+      "prevEnd": "2025-09-30",
+      "yoyPct": 263.97
      },
      "fy": {
       "value": 60458000000,
@@ -5250,17 +5250,17 @@
      "concept": "us-gaap:EarningsPerShareDiluted",
      "unit": "USD/shares",
      "q": {
-      "value": 6.18,
-      "start": "2026-04-01",
-      "end": "2026-06-30",
+      "value": 3.83,
+      "start": "2026-07-01",
+      "end": "2026-09-30",
       "form": "10-Q",
-      "filed": "2026-07-30",
-      "accn": "0001628280-26-050705",
+      "filed": "2026-10-22",
+      "accn": "0001628280-26-066773",
       "fy": 2026,
-      "fp": "Q2",
-      "prevValue": 7.14,
-      "prevEnd": "2025-06-30",
-      "yoyPct": -13.45
+      "fp": "Q3",
+      "prevValue": 1.05,
+      "prevEnd": "2025-09-30",
+      "yoyPct": 264.76
      },
      "fy": {
       "value": 23.49,
@@ -5281,17 +5281,17 @@
      "concept": "us-gaap:ResearchAndDevelopmentExpense",
      "unit": "USD",
      "q": {
-      "value": 21656000000,
-      "start": "2026-04-01",
-      "end": "2026-06-30",
+      "value": 20054000000,
+      "start": "2026-07-01",
+      "end": "2026-09-30",
       "form": "10-Q",
-      "filed": "2026-07-30",
-      "accn": "0001628280-26-050705",
+      "filed": "2026-10-22",
+      "accn": "0001628280-26-066773",
       "fy": 2026,
-      "fp": "Q2",
-      "prevValue": 12942000000,
-      "prevEnd": "2025-06-30",
-      "yoyPct": 67.33
+      "fp": "Q3",
+      "prevValue": 15144000000,
+      "prevEnd": "2025-09-30",
+      "yoyPct": 32.42
      },
      "fy": {
       "value": 57372000000,
@@ -5370,18 +5370,18 @@
    },
    "balance": {
     "equity": {
-     "value": 261221000000,
-     "end": "2026-06-30",
+     "value": 272386000000,
+     "end": "2026-09-30",
      "form": "10-Q",
-     "filed": "2026-07-30",
+     "filed": "2026-10-22",
      "unit": "USD",
      "concept": "us-gaap:StockholdersEquity"
     },
     "cash": {
-     "value": 15462000000,
-     "end": "2026-06-30",
+     "value": 11222000000,
+     "end": "2026-09-30",
      "form": "10-Q",
-     "filed": "2026-07-30",
+     "filed": "2026-10-22",
      "unit": "USD",
      "concept": "us-gaap:CashAndCashEquivalentsAtCarryingValue"
     },
@@ -5391,47 +5391,47 @@
     "status": "OK",
     "filing": {
      "form": "10-Q",
-     "filed": "2026-07-30",
-     "accn": "0001628280-26-050705",
-     "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026050705/meta-20260630.htm"
+     "filed": "2026-10-22",
+     "accn": "0001628280-26-066773",
+     "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026066773/meta-20260930.htm"
     },
     "revenue": {
      "concept": "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax",
-     "start": "2026-04-01",
-     "end": "2026-06-30",
-     "total": 60801000000.0,
+     "start": "2026-07-01",
+     "end": "2026-09-30",
+     "total": 64601000000.0,
      "rows": [
       {
        "member": "meta:FamilyOfAppsMember",
        "name": "Family Of Apps",
-       "value": 60370000000.0,
+       "value": 64158000000.0,
        "share": 99.3
       },
       {
        "member": "meta:RealityLabsMember",
        "name": "Reality Labs",
-       "value": 431000000.0,
+       "value": 443000000.0,
        "share": 0.7
       }
      ]
     },
     "profit": {
      "concept": "us-gaap:OperatingIncomeLoss",
-     "start": "2026-04-01",
-     "end": "2026-06-30",
-     "total": 18775000000.0,
+     "start": "2026-07-01",
+     "end": "2026-09-30",
+     "total": 12988000000.0,
      "rows": [
       {
        "member": "meta:FamilyOfAppsMember",
        "name": "Family Of Apps",
-       "value": 23394000000.0,
-       "share": 124.6
+       "value": 17117000000.0,
+       "share": 131.8
       },
       {
        "member": "meta:RealityLabsMember",
        "name": "Reality Labs",
-       "value": -4619000000.0,
-       "share": -24.6
+       "value": -4129000000.0,
+       "share": -31.8
       }
      ]
     },
@@ -5448,6 +5448,15 @@
    "sicDescription": "Motor Vehicles & Passenger Car Bodies",
    "fiscalYearEnd": "1231",
    "filings": [
+    {
+     "form": "10-Q",
+     "date": "2026-10-22",
+     "reportDate": "2026-09-30",
+     "accn": "0001628280-26-066775",
+     "desc": "10-Q",
+     "items": "",
+     "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828026066775/tsla-20260930.htm"
+    },
     {
      "form": "8-K",
      "date": "2026-10-21",
@@ -5573,15 +5582,6 @@
      "desc": "FORM 8-K",
      "items": "5.02,5.07,9.01",
      "url": "https://www.sec.gov/Archives/edgar/data/1318605/000110465925108507/tm2530590d1_8k.htm"
-    },
-    {
-     "form": "10-Q",
-     "date": "2025-10-23",
-     "reportDate": "2025-09-30",
-     "accn": "0001628280-25-045968",
-     "desc": "10-Q",
-     "items": "",
-     "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828025045968/tsla-20250930.htm"
     }
    ],
    "metrics": {
@@ -5589,17 +5589,17 @@
      "concept": "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax",
      "unit": "USD",
      "q": {
-      "value": 28236000000,
-      "start": "2026-04-01",
-      "end": "2026-06-30",
+      "value": 28046000000,
+      "start": "2026-07-01",
+      "end": "2026-09-30",
       "form": "10-Q",
-      "filed": "2026-07-23",
-      "accn": "0001628280-26-049270",
+      "filed": "2026-10-22",
+      "accn": "0001628280-26-066775",
       "fy": 2026,
-      "fp": "Q2",
-      "prevValue": 22496000000,
-      "prevEnd": "2025-06-30",
-      "yoyPct": 25.52
+      "fp": "Q3",
+      "prevValue": 28095000000,
+      "prevEnd": "2025-09-30",
+      "yoyPct": -0.17
      },
      "fy": {
       "value": 94827000000,
@@ -5619,17 +5619,17 @@
      "concept": "us-gaap:OperatingIncomeLoss",
      "unit": "USD",
      "q": {
-      "value": 398000000,
-      "start": "2026-04-01",
-      "end": "2026-06-30",
+      "value": 718000000,
+      "start": "2026-07-01",
+      "end": "2026-09-30",
       "form": "10-Q",
-      "filed": "2026-07-23",
-      "accn": "0001628280-26-049270",
+      "filed": "2026-10-22",
+      "accn": "0001628280-26-066775",
       "fy": 2026,
-      "fp": "Q2",
-      "prevValue": 923000000,
-      "prevEnd": "2025-06-30",
-      "yoyPct": -56.88
+      "fp": "Q3",
+      "prevValue": 1624000000,
+      "prevEnd": "2025-09-30",
+      "yoyPct": -55.79
      },
      "fy": {
       "value": 4355000000,
@@ -5649,17 +5649,17 @@
      "concept": "us-gaap:NetIncomeLoss",
      "unit": "USD",
      "q": {
-      "value": 1114000000,
-      "start": "2026-04-01",
-      "end": "2026-06-30",
+      "value": 787000000,
+      "start": "2026-07-01",
+      "end": "2026-09-30",
       "form": "10-Q",
-      "filed": "2026-07-23",
-      "accn": "0001628280-26-049270",
+      "filed": "2026-10-22",
+      "accn": "0001628280-26-066775",
       "fy": 2026,
-      "fp": "Q2",
-      "prevValue": 1172000000,
-      "prevEnd": "2025-06-30",
-      "yoyPct": -4.95
+      "fp": "Q3",
+      "prevValue": 1373000000,
+      "prevEnd": "2025-09-30",
+      "yoyPct": -42.68
      },
      "fy": {
       "value": 3794000000,
@@ -5679,17 +5679,17 @@
      "concept": "us-gaap:EarningsPerShareDiluted",
      "unit": "USD/shares",
      "q": {
-      "value": 0.32,
-      "start": "2026-04-01",
-      "end": "2026-06-30",
+      "value": 0.22,
+      "start": "2026-07-01",
+      "end": "2026-09-30",
       "form": "10-Q",
-      "filed": "2026-07-23",
-      "accn": "0001628280-26-049270",
+      "filed": "2026-10-22",
+      "accn": "0001628280-26-066775",
       "fy": 2026,
-      "fp": "Q2",
-      "prevValue": 0.33,
-      "prevEnd": "2025-06-30",
-      "yoyPct": -3.03
+      "fp": "Q3",
+      "prevValue": 0.39,
+      "prevEnd": "2025-09-30",
+      "yoyPct": -43.59
      },
      "fy": {
       "value": 1.08,
@@ -5709,17 +5709,17 @@
      "concept": "us-gaap:GrossProfit",
      "unit": "USD",
      "q": {
-      "value": 4751000000,
-      "start": "2026-04-01",
-      "end": "2026-06-30",
+      "value": 5494000000,
+      "start": "2026-07-01",
+      "end": "2026-09-30",
       "form": "10-Q",
-      "filed": "2026-07-23",
-      "accn": "0001628280-26-049270",
+      "filed": "2026-10-22",
+      "accn": "0001628280-26-066775",
       "fy": 2026,
-      "fp": "Q2",
-      "prevValue": 3878000000,
-      "prevEnd": "2025-06-30",
-      "yoyPct": 22.51
+      "fp": "Q3",
+      "prevValue": 5054000000,
+      "prevEnd": "2025-09-30",
+      "yoyPct": 8.71
      },
      "fy": {
       "value": 17094000000,
@@ -5739,17 +5739,17 @@
      "concept": "us-gaap:ResearchAndDevelopmentExpense",
      "unit": "USD",
      "q": {
-      "value": 2371000000,
-      "start": "2026-04-01",
-      "end": "2026-06-30",
+      "value": 2761000000,
+      "start": "2026-07-01",
+      "end": "2026-09-30",
       "form": "10-Q",
-      "filed": "2026-07-23",
-      "accn": "0001628280-26-049270",
+      "filed": "2026-10-22",
+      "accn": "0001628280-26-066775",
       "fy": 2026,
-      "fp": "Q2",
-      "prevValue": 1589000000,
-      "prevEnd": "2025-06-30",
-      "yoyPct": 49.21
+      "fp": "Q3",
+      "prevValue": 1630000000,
+      "prevEnd": "2025-09-30",
+      "yoyPct": 69.39
      },
      "fy": {
       "value": 6411000000,
@@ -5828,26 +5828,26 @@
    },
    "balance": {
     "equity": {
-     "value": 86858000000,
-     "end": "2026-06-30",
+     "value": 89289000000,
+     "end": "2026-09-30",
      "form": "10-Q",
-     "filed": "2026-07-23",
+     "filed": "2026-10-22",
      "unit": "USD",
      "concept": "us-gaap:StockholdersEquity"
     },
     "cash": {
-     "value": 15219000000,
-     "end": "2026-06-30",
+     "value": 17853000000,
+     "end": "2026-09-30",
      "form": "10-Q",
-     "filed": "2026-07-23",
+     "filed": "2026-10-22",
      "unit": "USD",
      "concept": "us-gaap:CashAndCashEquivalentsAtCarryingValue"
     },
     "sharesOutstanding": {
-     "value": 3949547394,
-     "end": "2026-07-16",
+     "value": 3952757946,
+     "end": "2026-10-15",
      "form": "10-Q",
-     "filed": "2026-07-23",
+     "filed": "2026-10-22",
      "unit": "shares",
      "concept": "dei:EntityCommonStockSharesOutstanding"
     }
@@ -5856,27 +5856,27 @@
     "status": "OK",
     "filing": {
      "form": "10-Q",
-     "filed": "2026-07-23",
-     "accn": "0001628280-26-049270",
-     "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828026049270/tsla-20260630.htm"
+     "filed": "2026-10-22",
+     "accn": "0001628280-26-066775",
+     "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828026066775/tsla-20260930.htm"
     },
     "revenue": {
      "concept": "us-gaap:Revenues",
-     "start": "2026-04-01",
-     "end": "2026-06-30",
-     "total": 28236000000.0,
+     "start": "2026-07-01",
+     "end": "2026-09-30",
+     "total": 28046000000.0,
      "rows": [
       {
        "member": "tsla:AutomotiveSegmentMember",
        "name": "Automotive",
-       "value": 25097000000.0,
-       "share": 88.9
+       "value": 25165000000.0,
+       "share": 89.7
       },
       {
        "member": "tsla:EnergyGenerationAndStorageSegmentMember",
        "name": "Energy Generation And Storage",
-       "value": 3139000000.0,
-       "share": 11.1
+       "value": 2881000000.0,
+       "share": 10.3
       }
      ]
     },

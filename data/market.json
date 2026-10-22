@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-21T22:55:22Z",
-  "runStatus": "PARTIAL",
-  "collected": 2,
+  "generatedAt": "2026-10-22T10:06:25Z",
+  "runStatus": "OK",
+  "collected": 4,
   "expected": 4,
   "series": {
     "spx": {
@@ -56,27 +56,31 @@
     },
     "dxy": {
       "label": "Dollar Index",
-      "status": "FAILED",
-      "value": null,
+      "status": "OK",
+      "value": 121.4048,
       "unit": "index",
-      "asOf": null,
+      "asOf": "2026-10-16",
+      "prev": 121.5693,
+      "prevDate": "2026-10-15",
       "source": "Federal Reserve H.10 · Nominal Broad U.S. Dollar Index (FRED DTWEXBGS)",
-      "sourceUrl": null,
+      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXBGS&cosd=2026-08-23",
       "maxAgeDays": 14,
       "note": "Fed Broad 지수 · ICE DXY와 다른 지수 · 주 1회 발표",
-      "error": "Federal Reserve H.10 · Nominal Broad U.S. Dollar Index (FRED DTWEXBGS): FRED CSV 형식 아님"
+      "fallbackUsed": false
     },
     "wti": {
       "label": "WTI",
-      "status": "FAILED",
-      "value": null,
+      "status": "OK",
+      "value": 107.89,
       "unit": "USD/bbl",
-      "asOf": null,
+      "asOf": "2026-10-20",
+      "prev": 110.01,
+      "prevDate": "2026-10-19",
       "source": "U.S. EIA · WTI Cushing Spot (FRED DCOILWTICO)",
-      "sourceUrl": null,
+      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILWTICO&cosd=2026-08-23",
       "maxAgeDays": 14,
       "note": "EIA 현물가격 · 주 단위 갱신",
-      "error": "U.S. EIA · WTI Cushing Spot (FRED DCOILWTICO): FRED CSV 형식 아님"
+      "fallbackUsed": false
     },
     "usdkrw": {
       "label": "USD/KRW",

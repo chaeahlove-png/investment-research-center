@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-25T22:48:35Z",
+  "generatedAt": "2026-10-26T16:16:20Z",
   "runStatus": "OK",
   "collected": 4,
   "expected": 4,
@@ -63,7 +63,7 @@
       "prev": 121.5693,
       "prevDate": "2026-10-15",
       "source": "Federal Reserve H.10 · Nominal Broad U.S. Dollar Index (FRED DTWEXBGS)",
-      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXBGS&cosd=2026-08-26",
+      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXBGS&cosd=2026-08-27",
       "maxAgeDays": 14,
       "note": "Fed Broad 지수 · ICE DXY와 다른 지수 · 주 1회 발표",
       "fallbackUsed": false
@@ -77,7 +77,7 @@
       "prev": 110.01,
       "prevDate": "2026-10-19",
       "source": "U.S. EIA · WTI Cushing Spot (FRED DCOILWTICO)",
-      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILWTICO&cosd=2026-08-26",
+      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILWTICO&cosd=2026-08-27",
       "maxAgeDays": 14,
       "note": "EIA 현물가격 · 주 단위 갱신",
       "fallbackUsed": false
@@ -85,11 +85,11 @@
     "usdkrw": {
       "label": "USD/KRW",
       "status": "OK",
-      "value": 1324.4528,
+      "value": 1325.2771,
       "unit": "KRW",
-      "asOf": "2026-10-23",
-      "prev": 1324.6319,
-      "prevDate": "2026-10-22",
+      "asOf": "2026-10-26",
+      "prev": 1324.4528,
+      "prevDate": "2026-10-23",
       "source": "ECB 기준환율 교차계산 (EUR/KRW ÷ EUR/USD)",
       "sourceUrl": "https://data.ecb.europa.eu/data/datasets/EXR",
       "maxAgeDays": 6,

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-27T15:30:01Z",
+  "generatedAt": "2026-10-28T01:31:30Z",
   "runStatus": "OK",
   "collected": 4,
   "expected": 4,
@@ -43,11 +43,11 @@
     "us10y": {
       "label": "미국 10년 국채금리",
       "status": "OK",
-      "value": 5.0,
+      "value": 4.99,
       "unit": "%",
-      "asOf": "2026-10-26",
+      "asOf": "2026-10-27",
       "prev": 5.0,
-      "prevDate": "2026-10-23",
+      "prevDate": "2026-10-26",
       "source": "U.S. Treasury · Daily Par Yield Curve",
       "sourceUrl": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve",
       "maxAgeDays": 6,
@@ -63,7 +63,7 @@
       "prev": 121.3531,
       "prevDate": "2026-10-22",
       "source": "Federal Reserve H.10 · Nominal Broad U.S. Dollar Index (FRED DTWEXBGS)",
-      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXBGS&cosd=2026-08-28",
+      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXBGS&cosd=2026-08-29",
       "maxAgeDays": 14,
       "note": "Fed Broad 지수 · ICE DXY와 다른 지수 · 주 1회 발표",
       "fallbackUsed": false
@@ -77,7 +77,7 @@
       "prev": 110.01,
       "prevDate": "2026-10-19",
       "source": "U.S. EIA · WTI Cushing Spot (FRED DCOILWTICO)",
-      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILWTICO&cosd=2026-08-28",
+      "sourceUrl": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILWTICO&cosd=2026-08-29",
       "maxAgeDays": 14,
       "note": "EIA 현물가격 · 주 단위 갱신",
       "fallbackUsed": false

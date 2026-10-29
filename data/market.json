@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-29T01:53:24Z",
+  "generatedAt": "2026-10-29T16:22:05Z",
   "runStatus": "OK",
   "collected": 4,
   "expected": 4,
@@ -85,11 +85,11 @@
     "usdkrw": {
       "label": "USD/KRW",
       "status": "OK",
-      "value": 1340.4743,
+      "value": 1337.2866,
       "unit": "KRW",
-      "asOf": "2026-10-28",
-      "prev": 1327.7489,
-      "prevDate": "2026-10-27",
+      "asOf": "2026-10-29",
+      "prev": 1340.4743,
+      "prevDate": "2026-10-28",
       "source": "ECB 기준환율 교차계산 (EUR/KRW ÷ EUR/USD)",
       "sourceUrl": "https://data.ecb.europa.eu/data/datasets/EXR",
       "maxAgeDays": 6,

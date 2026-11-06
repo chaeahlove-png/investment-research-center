@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "generatedAt": "2026-11-05T03:26:35Z",
+ "generatedAt": "2026-11-06T03:22:15Z",
  "source": "SEC EDGAR (data.sec.gov)",
  "companies": {
   "QCOM": {
@@ -2427,6 +2427,15 @@
    "fiscalYearEnd": "0902",
    "filings": [
     {
+     "form": "8-K",
+     "date": "2026-11-05",
+     "reportDate": "2026-11-02",
+     "accn": "0001104659-26-123389",
+     "desc": "FORM 8-K",
+     "items": "5.02,9.01",
+     "url": "https://www.sec.gov/Archives/edgar/data/723125/000110465926123389/tm2629062d1_8k.htm"
+    },
+    {
      "form": "10-K",
      "date": "2026-10-09",
      "reportDate": "2026-09-03",
@@ -2551,15 +2560,6 @@
      "desc": "FORM 8-K",
      "items": "5.02,9.01",
      "url": "https://www.sec.gov/Archives/edgar/data/723125/000110465925101237/tm2529116d1_8k.htm"
-    },
-    {
-     "form": "10-K",
-     "date": "2025-10-03",
-     "reportDate": "2025-08-28",
-     "accn": "0000723125-25-000028",
-     "desc": "10-K",
-     "items": "",
-     "url": "https://www.sec.gov/Archives/edgar/data/723125/000072312525000028/mu-20250828.htm"
     }
    ],
    "metrics": {
@@ -3703,6 +3703,15 @@
    "filings": [
     {
      "form": "8-K",
+     "date": "2026-11-05",
+     "reportDate": "2026-11-04",
+     "accn": "0001193125-26-448357",
+     "desc": "8-K",
+     "items": "5.02",
+     "url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526448357/d177209d8k.htm"
+    },
+    {
+     "form": "8-K",
      "date": "2026-11-04",
      "reportDate": "2026-10-29",
      "accn": "0001193125-26-447173",
@@ -3826,15 +3835,6 @@
      "desc": "8-K",
      "items": "5.02,5.07",
      "url": "https://www.sec.gov/Archives/edgar/data/789019/000119312525311196/d34077d8k.htm"
-    },
-    {
-     "form": "10-Q",
-     "date": "2025-10-29",
-     "reportDate": "2025-09-30",
-     "accn": "0001193125-25-256321",
-     "desc": "10-Q",
-     "items": "",
-     "url": "https://www.sec.gov/Archives/edgar/data/789019/000119312525256321/msft-20250930.htm"
     }
    ],
    "metrics": {
@@ -4167,6 +4167,15 @@
    "fiscalYearEnd": "1231",
    "filings": [
     {
+     "form": "8-K",
+     "date": "2026-11-05",
+     "reportDate": "2026-11-05",
+     "accn": "0001193125-26-449835",
+     "desc": "8-K",
+     "items": "8.01,9.01",
+     "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526449835/d174184d8k.htm"
+    },
+    {
      "form": "10-Q",
      "date": "2026-10-29",
      "reportDate": "2026-09-30",
@@ -4291,15 +4300,6 @@
      "desc": "8-K",
      "items": "5.02",
      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000034/goog-20260407.htm"
-    },
-    {
-     "form": "8-K",
-     "date": "2026-04-02",
-     "reportDate": "2026-03-30",
-     "accn": "0001652044-26-000031",
-     "desc": "8-K",
-     "items": "5.02",
-     "url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000031/goog-20260330.htm"
     }
    ],
    "metrics": {
@@ -5001,12 +5001,21 @@
    "status": "OK",
    "cik": "0001326801",
    "name": "Meta Platforms, Inc.",
-   "exchange": "Nasdaq",
+   "exchange": "Nasdaq, Nasdaq",
    "errors": [],
    "sic": "7370",
    "sicDescription": "Services-Computer Programming, Data Processing, Etc.",
    "fiscalYearEnd": "1231",
    "filings": [
+    {
+     "form": "8-K",
+     "date": "2026-11-05",
+     "reportDate": "2026-11-03",
+     "accn": "0001193125-26-450074",
+     "desc": "8-K",
+     "items": "8.01,9.01",
+     "url": "https://www.sec.gov/Archives/edgar/data/1326801/000119312526450074/d166273d8k.htm"
+    },
     {
      "form": "8-K",
      "date": "2026-10-29",
@@ -5132,15 +5141,6 @@
      "desc": "8-K",
      "items": "5.02",
      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828025058337/meta-20251219.htm"
-    },
-    {
-     "form": "8-K",
-     "date": "2025-12-12",
-     "reportDate": "2025-12-05",
-     "accn": "0001628280-25-056768",
-     "desc": "8-K",
-     "items": "8.01,9.01",
-     "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828025056768/meta-20251205.htm"
     }
    ],
    "metrics": {

@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "generatedAt": "2026-11-09T02:35:23Z",
+ "generatedAt": "2026-11-10T04:35:05Z",
  "source": "SEC EDGAR (data.sec.gov)",
  "companies": {
   "QCOM": {
@@ -4583,6 +4583,15 @@
    "fiscalYearEnd": "0926",
    "filings": [
     {
+     "form": "8-K",
+     "date": "2026-11-09",
+     "reportDate": "2026-11-05",
+     "accn": "0001140361-26-042798",
+     "desc": "",
+     "items": "8.01,9.01",
+     "url": "https://www.sec.gov/Archives/edgar/data/320193/000114036126042798/ef20085077_8k.htm"
+    },
+    {
      "form": "10-K",
      "date": "2026-11-03",
      "reportDate": "2026-09-26",
@@ -4707,15 +4716,6 @@
      "desc": "8-K",
      "items": "2.02,9.01",
      "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000077/aapl-20251030.htm"
-    },
-    {
-     "form": "10-Q",
-     "date": "2025-08-01",
-     "reportDate": "2025-06-28",
-     "accn": "0000320193-25-000073",
-     "desc": "10-Q",
-     "items": "",
-     "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000073/aapl-20250628.htm"
     }
    ],
    "metrics": {

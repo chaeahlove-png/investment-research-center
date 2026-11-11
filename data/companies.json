@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "generatedAt": "2026-11-10T04:35:05Z",
+ "generatedAt": "2026-11-11T02:43:44Z",
  "source": "SEC EDGAR (data.sec.gov)",
  "companies": {
   "QCOM": {
@@ -830,6 +830,24 @@
    "filings": [
     {
      "form": "6-K",
+     "date": "2026-11-10",
+     "reportDate": "2026-11-10",
+     "accn": "0001046179-26-000797",
+     "desc": "6-K",
+     "items": "",
+     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000797/tsm-boardx202611xx.htm"
+    },
+    {
+     "form": "6-K",
+     "date": "2026-11-10",
+     "reportDate": "2026-10-31",
+     "accn": "0001046179-26-000796",
+     "desc": "6-K",
+     "items": "",
+     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000796/tsm-revenue20261110.htm"
+    },
+    {
+     "form": "6-K",
      "date": "2026-10-22",
      "reportDate": "2026-09-30",
      "accn": "0001046179-26-000728",
@@ -944,24 +962,6 @@
      "desc": "6-K",
      "items": "",
      "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000451/tsm-20260716x6k.htm"
-    },
-    {
-     "form": "6-K",
-     "date": "2026-07-13",
-     "reportDate": "2026-06-30",
-     "accn": "0001046179-26-000447",
-     "desc": "6-K",
-     "items": "",
-     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000447/tsm-revenue20260713.htm"
-    },
-    {
-     "form": "6-K",
-     "date": "2026-07-02",
-     "reportDate": "2026-07-02",
-     "accn": "0001046179-26-000381",
-     "desc": "6-K",
-     "items": "",
-     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000381/a20260702changeofaztreasur.htm"
     }
    ],
    "metrics": {

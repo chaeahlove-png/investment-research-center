@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "generatedAt": "2026-11-12T03:45:52Z",
+ "generatedAt": "2026-11-13T03:21:49Z",
  "source": "SEC EDGAR (data.sec.gov)",
  "companies": {
   "QCOM": {
@@ -830,6 +830,15 @@
    "filings": [
     {
      "form": "6-K",
+     "date": "2026-11-12",
+     "reportDate": "2026-11-12",
+     "accn": "0001046179-26-000800",
+     "desc": "6-K",
+     "items": "",
+     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000800/a20261112statementregardin.htm"
+    },
+    {
+     "form": "6-K",
      "date": "2026-11-10",
      "reportDate": "2026-11-10",
      "accn": "0001046179-26-000797",
@@ -953,15 +962,6 @@
      "desc": "6-K",
      "items": "",
      "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000459/tsm-monthend6kx20260724.htm"
-    },
-    {
-     "form": "6-K",
-     "date": "2026-07-16",
-     "reportDate": "2026-06-30",
-     "accn": "0001046179-26-000451",
-     "desc": "6-K",
-     "items": "",
-     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000451/tsm-20260716x6k.htm"
     }
    ],
    "metrics": {
@@ -1538,6 +1538,15 @@
    "filings": [
     {
      "form": "8-K",
+     "date": "2026-11-12",
+     "reportDate": "2026-11-11",
+     "accn": "0001045810-26-000082",
+     "desc": "8-K",
+     "items": "5.02,9.01",
+     "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000082/nvda-20261111.htm"
+    },
+    {
+     "form": "8-K",
      "date": "2026-09-03",
      "reportDate": "2026-09-02",
      "accn": "0001045810-26-000078",
@@ -1661,15 +1670,6 @@
      "desc": "8-K",
      "items": "2.02,9.01",
      "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000019/nvda-20260225.htm"
-    },
-    {
-     "form": "8-K",
-     "date": "2026-01-23",
-     "reportDate": "2026-01-20",
-     "accn": "0001045810-26-000003",
-     "desc": "8-K",
-     "items": "5.02",
-     "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000003/nvda-20260120.htm"
     }
    ],
    "metrics": {
@@ -5009,6 +5009,15 @@
    "filings": [
     {
      "form": "8-K",
+     "date": "2026-11-12",
+     "reportDate": "2026-11-12",
+     "accn": "0001193125-26-458525",
+     "desc": "8-K",
+     "items": "8.01,9.01",
+     "url": "https://www.sec.gov/Archives/edgar/data/1326801/000119312526458525/d177728d8k.htm"
+    },
+    {
+     "form": "8-K",
      "date": "2026-11-05",
      "reportDate": "2026-11-03",
      "accn": "0001193125-26-450074",
@@ -5132,15 +5141,6 @@
      "desc": "8-K",
      "items": "5.02",
      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026002429/meta-20260112.htm"
-    },
-    {
-     "form": "8-K",
-     "date": "2025-12-19",
-     "reportDate": "2025-12-19",
-     "accn": "0001628280-25-058337",
-     "desc": "8-K",
-     "items": "5.02",
-     "url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828025058337/meta-20251219.htm"
     }
    ],
    "metrics": {

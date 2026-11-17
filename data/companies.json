@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "generatedAt": "2026-11-16T02:40:53Z",
+ "generatedAt": "2026-11-17T05:01:44Z",
  "source": "SEC EDGAR (data.sec.gov)",
  "companies": {
   "QCOM": {
@@ -4580,7 +4580,7 @@
    "errors": [],
    "sic": "3571",
    "sicDescription": "Electronic Computers",
-   "fiscalYearEnd": "0926",
+   "fiscalYearEnd": "0925",
    "filings": [
     {
      "form": "8-K",

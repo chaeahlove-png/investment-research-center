@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "generatedAt": "2026-11-17T05:01:44Z",
+ "generatedAt": "2026-11-18T04:10:16Z",
  "source": "SEC EDGAR (data.sec.gov)",
  "companies": {
   "QCOM": {
@@ -1538,6 +1538,15 @@
    "filings": [
     {
      "form": "8-K",
+     "date": "2026-11-17",
+     "reportDate": "2026-11-17",
+     "accn": "0001045810-26-000088",
+     "desc": "8-K",
+     "items": "2.02,9.01",
+     "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000088/nvda-20261117.htm"
+    },
+    {
+     "form": "8-K",
      "date": "2026-11-12",
      "reportDate": "2026-11-11",
      "accn": "0001045810-26-000082",
@@ -1661,15 +1670,6 @@
      "desc": "10-K",
      "items": "",
      "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/nvda-20260125.htm"
-    },
-    {
-     "form": "8-K",
-     "date": "2026-02-25",
-     "reportDate": "2026-02-25",
-     "accn": "0001045810-26-000019",
-     "desc": "8-K",
-     "items": "2.02,9.01",
-     "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000019/nvda-20260225.htm"
     }
    ],
    "metrics": {

@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "generatedAt": "2026-11-20T03:56:43Z",
+ "generatedAt": "2026-11-23T03:40:31Z",
  "source": "SEC EDGAR (data.sec.gov)",
  "companies": {
   "QCOM": {
@@ -2852,6 +2852,15 @@
    "fiscalYearEnd": "1226",
    "filings": [
     {
+     "form": "8-K",
+     "date": "2026-11-20",
+     "reportDate": "2026-11-18",
+     "accn": "0000002488-26-000218",
+     "desc": "8-K",
+     "items": "5.03,9.01",
+     "url": "https://www.sec.gov/Archives/edgar/data/2488/000000248826000218/amd-20261118.htm"
+    },
+    {
      "form": "10-Q",
      "date": "2026-11-04",
      "reportDate": "2026-09-26",
@@ -2976,15 +2985,6 @@
      "desc": "10-K/A",
      "items": "",
      "url": "https://www.sec.gov/Archives/edgar/data/2488/000000248826000021/amd-20251227.htm"
-    },
-    {
-     "form": "10-K",
-     "date": "2026-02-04",
-     "reportDate": "2025-12-27",
-     "accn": "0000002488-26-000018",
-     "desc": "10-K",
-     "items": "",
-     "url": "https://www.sec.gov/Archives/edgar/data/2488/000000248826000018/amd-20251227.htm"
     }
    ],
    "metrics": {

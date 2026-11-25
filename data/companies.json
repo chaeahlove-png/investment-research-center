@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "generatedAt": "2026-11-24T06:54:37Z",
+ "generatedAt": "2026-11-25T05:23:17Z",
  "source": "SEC EDGAR (data.sec.gov)",
  "companies": {
   "QCOM": {
@@ -13,6 +13,15 @@
    "sicDescription": "Radio & Tv Broadcasting & Communications Equipment",
    "fiscalYearEnd": "0927",
    "filings": [
+    {
+     "form": "8-K",
+     "date": "2026-11-24",
+     "reportDate": "2026-11-20",
+     "accn": "0000804328-26-000138",
+     "desc": "8-K",
+     "items": "5.02,9.01",
+     "url": "https://www.sec.gov/Archives/edgar/data/804328/000080432826000138/qcom-20261120.htm"
+    },
     {
      "form": "8-K",
      "date": "2026-11-13",
@@ -138,15 +147,6 @@
      "desc": "8-K",
      "items": "5.02",
      "url": "https://www.sec.gov/Archives/edgar/data/804328/000080432826000008/qcom-20260113.htm"
-    },
-    {
-     "form": "8-K",
-     "date": "2025-12-16",
-     "reportDate": "2025-12-10",
-     "accn": "0000804328-25-000098",
-     "desc": "8-K",
-     "items": "5.02",
-     "url": "https://www.sec.gov/Archives/edgar/data/804328/000080432825000098/qcom-20251210.htm"
     }
    ],
    "metrics": {
@@ -4168,6 +4168,15 @@
    "filings": [
     {
      "form": "8-K",
+     "date": "2026-11-24",
+     "reportDate": "2026-11-24",
+     "accn": "0001193125-26-475973",
+     "desc": "8-K",
+     "items": "8.01,9.01",
+     "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526475973/d91615d8k.htm"
+    },
+    {
+     "form": "8-K",
      "date": "2026-11-05",
      "reportDate": "2026-11-05",
      "accn": "0001193125-26-449835",
@@ -4291,15 +4300,6 @@
      "desc": "8-K",
      "items": "2.02,9.01",
      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000043/goog-20260429.htm"
-    },
-    {
-     "form": "8-K",
-     "date": "2026-04-10",
-     "reportDate": "2026-04-07",
-     "accn": "0001652044-26-000034",
-     "desc": "8-K",
-     "items": "5.02",
-     "url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000034/goog-20260407.htm"
     }
    ],
    "metrics": {

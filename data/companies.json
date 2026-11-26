@@ -1,6 +1,6 @@
 {
  "schemaVersion": 1,
- "generatedAt": "2026-11-25T05:23:17Z",
+ "generatedAt": "2026-11-26T04:56:32Z",
  "source": "SEC EDGAR (data.sec.gov)",
  "companies": {
   "QCOM": {
@@ -830,6 +830,24 @@
    "filings": [
     {
      "form": "6-K",
+     "date": "2026-11-25",
+     "reportDate": "2026-11-25",
+     "accn": "0001046179-26-000807",
+     "desc": "6-K",
+     "items": "",
+     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000807/tsm-dividendadjustmentx202.htm"
+    },
+    {
+     "form": "6-K",
+     "date": "2026-11-25",
+     "reportDate": "2026-10-31",
+     "accn": "0001046179-26-000805",
+     "desc": "6-K",
+     "items": "",
+     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000805/tsm-monthend6kx20261125.htm"
+    },
+    {
+     "form": "6-K",
      "date": "2026-11-13",
      "reportDate": "2026-09-30",
      "accn": "0001046179-26-000801",
@@ -944,24 +962,6 @@
      "desc": "6-K",
      "items": "",
      "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000539/sonysemiconductorsolutions.htm"
-    },
-    {
-     "form": "6-K",
-     "date": "2026-08-11",
-     "reportDate": "2026-08-11",
-     "accn": "0001046179-26-000536",
-     "desc": "6-K",
-     "items": "",
-     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000536/tsm-boardx20260811.htm"
-    },
-    {
-     "form": "6-K",
-     "date": "2026-08-10",
-     "reportDate": "2026-07-31",
-     "accn": "0001046179-26-000471",
-     "desc": "6-K",
-     "items": "",
-     "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000471/tsm-revenue20260810.htm"
     }
    ],
    "metrics": {
